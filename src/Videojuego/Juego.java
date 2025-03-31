@@ -15,7 +15,6 @@ public class Juego {
     Enemigo NPC;
 
 
-
     public void controldelJuego(){
         //Creamos Personajes y les asignamos su rival correspondiente
         CrearPersonaje();
@@ -25,12 +24,12 @@ public class Juego {
 
         //Hacemos que el juego se ejecute en bucle de turnos mientras alguno de los dos personajes tenga vida
         do{
-            player.toString();
+            System.out.println(player);
             turnoJugador();
-            NPC.toString();
+            System.out.println(NPC);
             turnoEnemigo();
             player.Estamina+=10;
-        }while(player.Vida > 0 || NPC.Vida > 0);
+        }while(player.Vida > 0 || NPC.Vida > 0 );
 
         //Limitamos la estamina a 100
         do{
@@ -77,10 +76,11 @@ public class Juego {
         double num;
         num=Math.random()*2;
 
-        if(num > 1)
+        if(num > 1){
             NPC=new Duende();
-        else
-            NPC=new Bruja();
+        }else {
+            NPC = new Bruja();
+        }
 
         return NPC;
     }
@@ -104,16 +104,18 @@ public class Juego {
                     player.Curarse();
                 }else{
                     System.out.println("No tienes suficiente Estamina \n ");
-                } break;
+                    turnoJugador();
+                }
             case 4:
                 if(player.Estamina >= 75){
                     player.SuperAtaque();
                 }else{
                     System.out.println("No tienes suficiente Estamina \n ");
-                } break;
+                    turnoJugador();
+                }
             default:
                 System.out.println("No puedes huir en este juego, elige una accion valida \n ");
-                break;
+                turnoJugador();
         }
 
     }
@@ -121,7 +123,7 @@ public class Juego {
     public void turnoEnemigo(){
         double contarla=Math.random();
 
-        if(contarla < 0.75){
+        if(contarla > 0.25){
             NPC.Atacar();
         }else{
             NPC.Defender();

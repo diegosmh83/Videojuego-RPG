@@ -6,35 +6,24 @@ public class Arquero extends Jugador {
 
     public Arquero(int vida, int ataque, int estamina) {
         super(vida, ataque, estamina);
+        Vida=VIDA_BASE_ARQUERO;
+        Ataque=ATAQUE_ARQUERO;
+        Estamina=15;
     }
 
     public Arquero() {
-    }
-
-    @Override
-    public int CalcularVida(){
-        return Vida=80;
-    }
-
-    @Override
-    public int CalcularAtaque(){
-        return Ataque=20;
-    }
-
-    @Override
-    public int CalcularEstamina(){
-        return Estamina=15;
+        Vida=VIDA_BASE_ARQUERO;
+        Ataque=ATAQUE_ARQUERO;
+        Estamina=15;
     }
 
 
-    Enemigo NPC;
+
 
     @Override
     public boolean Atacar(){
 
         System.out.println("Has escogido atacar \n ");
-
-        int ataqueBase = Ataque;
 
         double defense=Math.random();
 
@@ -75,7 +64,7 @@ public class Arquero extends Jugador {
             }
         }
 
-        Ataque = ataqueBase;
+        Ataque = ATAQUE_ARQUERO;
         return true;
     }
 
@@ -134,10 +123,10 @@ public class Arquero extends Jugador {
     @Override
     public String toString() {
         return " Arquero: " +
-                " \n Vida=" + Vida +
-                " \n Ataque=" + Ataque +
-                "\n Estamina=" + Estamina+
-                " \n Daño total: " +danoIngfligido+"\n";
+                " || Vida=" + Vida +
+                " || Ataque=" + Ataque +
+                " || Estamina=" + Estamina+
+                " || Daño total: " +danoIngfligido+"\n";
     }
 
 }

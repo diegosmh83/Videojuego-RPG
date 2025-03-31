@@ -12,7 +12,7 @@ public abstract class Jugador extends Personaje implements AccionesJugador {
 
     public Jugador(int vida, int ataque, int estamina) {
         super(vida, ataque);
-        Estamina = CalcularEstamina();
+        Estamina = estamina;
     }
 
     public Jugador() {
@@ -30,7 +30,6 @@ public abstract class Jugador extends Personaje implements AccionesJugador {
 
     public abstract void SuperAtaque();
 
-    public abstract int CalcularEstamina();
 
 
 }

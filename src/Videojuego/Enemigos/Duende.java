@@ -2,22 +2,13 @@ package Videojuego.Enemigos;
 
 public class Duende extends Enemigo {
 
-    public Duende(int vida, int ataque) {
-        super(vida, ataque);
-    }
 
     public Duende() {
+        Vida=150;
+        Ataque=10;
     }
 
-    @Override
-    public int CalcularVida(){
-        return Vida=150;
-    }
 
-    @Override
-    public int CalcularAtaque(){
-        return Ataque=10;
-    }
 
     @Override
     public boolean Atacar(){
@@ -68,10 +59,10 @@ public class Duende extends Enemigo {
 
     @Override
     public String toString() {
-        return "Estadisticas Duende: " +
-                " \n Vida=" + Vida +
-                " \n Ataque=" + Ataque+
-                " \n Daño total: " +danoIngfligido;
+        return "Estadisticas Mago: " +
+                " Vida=" + Vida +
+                " Ataque=" + Ataque+
+                " Daño total: " +danoIngfligido+" \n";
     }
 
 }

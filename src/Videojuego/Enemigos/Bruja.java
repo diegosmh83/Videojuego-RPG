@@ -3,21 +3,9 @@ package Videojuego.Enemigos;
 public class Bruja extends Enemigo {
 
 
-    public Bruja(int vida, int ataque) {
-        super(vida, ataque);
-    }
-
     public Bruja() {
-    }
-
-    @Override
-    public int CalcularVida(){
-        return Vida=125;
-    }
-
-    @Override
-    public int CalcularAtaque(){
-        return Ataque=15;
+        Vida=125;
+        Ataque=15;
     }
 
 
@@ -70,10 +58,10 @@ public class Bruja extends Enemigo {
 
     @Override
     public String toString() {
-        return "Estadisticas Mago: " +
-                " \n Vida=" + Vida +
-                " \n Ataque=" + Ataque+
-                " \n Daño total: " +danoIngfligido;
+        return "Bruja: " +
+                " Vida=" + Vida +
+                " Ataque=" + Ataque+
+                " Daño total: " +danoIngfligido+ " \n ";
     }
 
 

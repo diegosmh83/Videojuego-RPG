@@ -5,32 +5,22 @@ public class Guerrero extends Jugador {
 
     public Guerrero(int vida, int ataque, int estamina) {
         super(vida, ataque, estamina);
+        Vida=VIDA_BASE_GUERRERO;
+        Ataque=ATAQUE_GUERRERO;
+        Estamina=0;
     }
 
     public Guerrero() {
+        Vida=VIDA_BASE_GUERRERO;
+        Ataque=ATAQUE_GUERRERO;
+        Estamina=0;
     }
 
-    @Override
-    public int CalcularVida(){
-        return Vida=100;
-    }
-
-    @Override
-    public int CalcularAtaque(){
-        return Ataque=25;
-    }
-
-    @Override
-    public int CalcularEstamina(){
-        return Estamina=0;
-    }
 
     @Override
     public boolean Atacar(){
 
         System.out.println("Has escogido Atacar \n ");
-
-        int ataqueBase = Ataque;
 
         double defense=Math.random();
 
@@ -72,7 +62,7 @@ public class Guerrero extends Jugador {
             }
         }
 
-        Ataque = ataqueBase;
+        Ataque = ATAQUE_GUERRERO;
         return true;
     }
 
@@ -129,10 +119,10 @@ public class Guerrero extends Jugador {
     @Override
     public String toString() {
         return " Guerrero: " +
-                " \n Vida=" + Vida +
-                " \n Ataque=" + Ataque +
-                "\n Estamina=" + Estamina +
-        " \n Daño total: " +danoIngfligido+" \n ";
+                " || Vida=" + Vida +
+                " || Ataque=" + Ataque +
+                " || Estamina=" + Estamina +
+        " || Daño total: " +danoIngfligido+"\n";
     }
 
 

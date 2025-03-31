@@ -3,23 +3,22 @@ package Videojuego;
 public abstract class Personaje  {
 
     public int Vida;
-    public final int VIDA_BASE_GUERRERO=100;
-    public final int VIDA_BASE_MAGO=75;
-    public final int VIDA_BASE_ARQUERO=80;
+    public static final int VIDA_BASE_GUERRERO=100;
+    public static final int VIDA_BASE_MAGO=75;
+    public static final int VIDA_BASE_ARQUERO=80;
+    public static final int ATAQUE_GUERRERO=25;
+    public static final int ATAQUE_ARQUERO=20;
+    public static final int ATAQUE_MAGO=30;
     public int Ataque;
     public int danoIngfligido = 0;
 
     public Personaje(int vida, int ataque) {
-        Vida=CalcularVida();
-        Ataque = CalcularAtaque();
+        Vida=vida;
+        Ataque = ataque;
     }
 
     public Personaje() {
     }
-
-    public abstract int CalcularVida();
-
-   public abstract int CalcularAtaque();
 
 
 }
