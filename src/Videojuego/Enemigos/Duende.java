@@ -2,12 +2,10 @@ package Videojuego.Enemigos;
 
 public class Duende extends Enemigo {
 
-
     public Duende() {
         Vida=150;
         Ataque=10;
     }
-
 
 
     @Override
@@ -17,25 +15,22 @@ public class Duende extends Enemigo {
 
         int ataqueBase = Ataque;
 
-       if(jugadorActual.Defender()){
-           double defense;
+       if (jugadorActual.defenderse){
 
-           defense=Math.random();
+           double defense=Math.random();
 
            if(defense < 0.2 ){
-               System.out.println("Defensa fallida \n " );
+               System.out.println("Tu defensa ha resultado fallida \n " );
            }else if(defense >= 0.2 && defense <=0.8){
                Ataque-=Ataque*0.25;
                System.out.println("Defensa Normal \n ");
            }else{
                Ataque=0;
-               System.out.println("Defensa impecable \n ");
+               System.out.println("Has realizado una defensa impecable \n ");
            }
        }
 
-        double attack;
-
-        attack=Math.random();
+        double attack=Math.random();
 
         if(attack < 0.7){
             jugadorActual.Vida-=Ataque;
@@ -46,23 +41,27 @@ public class Duende extends Enemigo {
             System.out.println("Daño: "+Ataque);
             danoIngfligido+=Ataque;
         }
+
         Ataque = ataqueBase;
+
+        defenderse=false;
 
         return true;
     }
 
+
     @Override
     public boolean Defender(){
+
+        defenderse=true;
 
         return true;
     }
 
     @Override
     public String toString() {
-        return "Estadisticas Mago: " +
-                " Vida=" + Vida +
-                " Ataque=" + Ataque+
-                " Daño total: " +danoIngfligido+" \n";
+        return "Duende: " +
+                " Vida=" + Vida;
     }
 
 }

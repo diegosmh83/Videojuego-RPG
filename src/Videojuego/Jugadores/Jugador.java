@@ -22,6 +22,8 @@ public abstract class Jugador extends Personaje implements AccionesJugador {
         this.enemigoActual=enemigo;
     }
 
+    public boolean defenderse;
+
     public abstract boolean Atacar();
 
     public abstract boolean Defender();

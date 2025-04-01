@@ -17,7 +17,7 @@ public class Mago extends Jugador {
 
         double defense=Math.random();
 
-        if(enemigoActual.Defender()){
+        if(enemigoActual.defenderse){
             System.out.println("El enemigo se esta defendiendo... \n ");
 
 
@@ -59,11 +59,19 @@ public class Mago extends Jugador {
         }
         Ataque = ATAQUE_MAGO;
 
+        defenderse=false;
+
         return true;
     }
 
+
+
     @Override
     public boolean Defender(){
+
+        defenderse=true;
+
+        System.out.println("Has escogido defenderte \n ");
 
         return true;
     }

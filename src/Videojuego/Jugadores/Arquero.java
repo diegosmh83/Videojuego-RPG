@@ -27,7 +27,7 @@ public class Arquero extends Jugador {
 
         double defense=Math.random();
 
-        if(enemigoActual.Defender()){
+        if(enemigoActual.defenderse){
             System.out.println("El enemigo se esta defendiendo... \n ");
 
             if(defense < 0.2){
@@ -47,16 +47,16 @@ public class Arquero extends Jugador {
 
         if(attack <= 0.2){
             double ataqueP = Ataque/2.5;
-            System.out.println("Has realizado un ataque penoso (fallo) \n Daño: " +ataqueP);
+            System.out.println("Has realizado un ataque penoso (fallo) \nDaño: " +ataqueP);
             danoIngfligido+=ataqueP;
             enemigoActual.Vida-=ataqueP;
         }else if(attack > 0.2 && attack <= 0.8){
-            System.out.println("Has realizado un ataque normal \n Daño: " +Ataque);
+            System.out.println("Has realizado un ataque normal \nDaño: " +Ataque);
             danoIngfligido+=Ataque;
             enemigoActual.Vida-=Ataque;
         }else if (attack > 0.8){
             int ataqueC = Ataque*3;
-            System.out.println("¡Has realizado un ataque critico! (suerte) \n Daño: " +ataqueC);
+            System.out.println("¡Has realizado un ataque critico! (suerte) \nDaño: " +ataqueC);
             danoIngfligido+=ataqueC;
             enemigoActual.Vida-=ataqueC;
             if(defense > 0.8 ){
@@ -65,12 +65,17 @@ public class Arquero extends Jugador {
         }
 
         Ataque = ATAQUE_ARQUERO;
+
+        defenderse=false;
+
         return true;
     }
 
 
     @Override
     public boolean Defender(){
+
+        defenderse=true;
 
         return true;
     }
@@ -123,7 +128,7 @@ public class Arquero extends Jugador {
     @Override
     public String toString() {
         return " Arquero: " +
-                " || Vida=" + Vida +
+                " Vida=" + Vida +
                 " || Ataque=" + Ataque +
                 " || Estamina=" + Estamina+
                 " || Daño total: " +danoIngfligido+"\n";

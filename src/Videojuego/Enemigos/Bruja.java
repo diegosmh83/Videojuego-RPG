@@ -16,7 +16,7 @@ public class Bruja extends Enemigo {
 
         int ataqueBase = Ataque;
 
-        if(jugadorActual.Defender()){
+        if(jugadorActual.defenderse){
             double defense;
 
             defense=Math.random();
@@ -47,11 +47,17 @@ public class Bruja extends Enemigo {
         }
         Ataque = ataqueBase;
 
+        defenderse=false;
+
         return true;
     }
 
+
+
     @Override
     public boolean Defender(){
+
+        defenderse=true;
 
         return true;
     }
@@ -59,9 +65,7 @@ public class Bruja extends Enemigo {
     @Override
     public String toString() {
         return "Bruja: " +
-                " Vida=" + Vida +
-                " Ataque=" + Ataque+
-                " Daño total: " +danoIngfligido+ " \n ";
+                " Vida=" + Vida;
     }
 
 

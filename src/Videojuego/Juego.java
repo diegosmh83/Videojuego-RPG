@@ -88,7 +88,7 @@ public class Juego {
     public void turnoJugador(){
         int jugar;
 
-        System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Curacion (20 Estamina) \n 4-Habilidad Especial (75 Estamina)");
+        System.out.println("¿Que quieres hacer? Estamina: "+player.Estamina+" \n 1-Ataque \n 2-Defensa \n 3-Curacion (20 Estamina) \n 4-Habilidad Especial (75 Estamina)");
 
         jugar=sc.nextInt();
 
