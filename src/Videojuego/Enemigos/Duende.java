@@ -11,42 +11,57 @@ public class Duende extends Enemigo {
     @Override
     public boolean Atacar(){
 
-        System.out.println("El enemigo ha atacado \n ");
+        do{
 
-        int ataqueBase = Ataque;
+            System.out.println("El enemigo va a atacar \n ");
 
-       if (jugadorActual.defenderse){
+            int ataqueBase = Ataque;
 
-           double defense=Math.random();
 
-           if(defense < 0.2 ){
-               System.out.println("Tu defensa ha resultado fallida \n " );
-           }else if(defense >= 0.2 && defense <=0.8){
-               Ataque-=Ataque*0.25;
-               System.out.println("Defensa Normal \n ");
-           }else{
-               Ataque=0;
-               System.out.println("Has realizado una defensa impecable \n ");
-           }
-       }
+            //Sub-metodo para defender:
+            if (jugadorActual.defenderse){
 
-        double attack=Math.random();
+                double defense=Math.random();
 
-        if(attack < 0.7){
-            jugadorActual.Vida-=Ataque;
-            System.out.println("Daño: "+Ataque);
-            danoIngfligido+=Ataque;
-        }else{
-            jugadorActual.Vida-=Ataque*1.75;
-            System.out.println("Daño: "+Ataque);
-            danoIngfligido+=Ataque;
-        }
+                if(defense < 0.2 ){
+                    System.out.println("Tu defensa ha resultado fallida \n " );
+                }else if(defense >= 0.2 && defense <=0.8){
+                    Ataque-=Ataque*0.25;
+                    System.out.println("Defensa Normal \n ");
+                }else{
+                    Ataque=0;
+                    System.out.println("¡Has realizado una defensa perfecta! \n ");
+                }
 
-        Ataque = ataqueBase;
+            }
 
-        defenderse=false;
 
-        return true;
+
+            double attack=Math.random();
+
+
+            //Sub-metodo para atacar:
+            if(attack < 0.7){
+                System.out.println("Ha realizado un ataque normal \n");
+                jugadorActual.Vida-=Ataque;
+                System.out.println("Daño recibido: "+Ataque);
+                danoIngfligido+=Ataque;
+            }else{
+                System.out.println("El enemigo ha realizado un ataque critico \n");
+                int ataqueC= Ataque*2;
+                jugadorActual.Vida-=ataqueC;
+                System.out.println("Daño recibido: "+ataqueC);
+                danoIngfligido+=Ataque;
+            }
+
+            Ataque = ataqueBase;
+
+            defenderse=false;
+
+            return true;
+
+        }while (Vida > 0);
+
     }
 
 
@@ -60,8 +75,7 @@ public class Duende extends Enemigo {
 
     @Override
     public String toString() {
-        return "Duende: " +
-                " Vida=" + Vida;
+        return " Vida Duende: " + Vida + "\n";
     }
 
 }

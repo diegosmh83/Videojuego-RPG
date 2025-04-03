@@ -12,7 +12,7 @@ public class Bruja extends Enemigo {
     @Override
     public boolean Atacar(){
 
-        System.out.println("El enemigo ha atacado \n ");
+        System.out.println("El enemigo va a atacar \n ");
 
         int ataqueBase = Ataque;
 
@@ -22,13 +22,13 @@ public class Bruja extends Enemigo {
             defense=Math.random();
 
             if(defense < 0.2 ){
-                System.out.println("Defensa fallida \n " );
+                System.out.println("Tu defensa ha resultado fallida \n " );
             }else if(defense >= 0.2 && defense <=0.8){
                 Ataque-=Ataque*0.25;
                 System.out.println("Defensa Normal \n ");
             }else{
                 Ataque=0;
-                System.out.println("¡Defensa Perfecta! \n ");
+                System.out.println("¡Has realizado una defensa Perfecta! \n ");
             }
         }
 
@@ -37,12 +37,15 @@ public class Bruja extends Enemigo {
         attack=Math.random();
 
         if(attack < 0.7){
+            System.out.println("Ha realizado un ataque normal \n");
             jugadorActual.Vida-=Ataque;
-            System.out.println("Daño: "+Ataque);
+            System.out.println("Daño recibido: "+Ataque);
             danoIngfligido+=Ataque;
         }else{
-            jugadorActual.Vida-=Ataque*1.5;
-            System.out.println("Daño: "+Ataque);
+            System.out.println("El enemigo ha realizado un ataque critico \n");
+            int ataqueC=Ataque*2;
+            jugadorActual.Vida-=ataqueC;
+            System.out.println("Daño recibido: "+ataqueC);
             danoIngfligido+=Ataque;
         }
         Ataque = ataqueBase;
@@ -64,8 +67,7 @@ public class Bruja extends Enemigo {
 
     @Override
     public String toString() {
-        return "Bruja: " +
-                " Vida=" + Vida;
+        return " Vida Bruja:" + Vida+"\n";
     }
 
 

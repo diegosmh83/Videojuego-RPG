@@ -20,6 +20,17 @@ public class Guerrero extends Jugador {
     @Override
     public boolean Atacar(){
 
+        if(defenderse){
+            double probabilidad=Math.random();
+
+            if(probabilidad > 0.75){
+                System.out.println("Perdiste el turno de ataque por tardar en reincorporarte tras la " +
+                        "defensa (lento)");
+                defenderse=false;
+                return false;
+            }
+        }
+
         System.out.println("Has escogido Atacar \n ");
 
         double defense=Math.random();
@@ -45,21 +56,22 @@ public class Guerrero extends Jugador {
 
         if(attack <= 0.2){
             int ataqueP = Ataque/3;
-            System.out.println("Has realizado un ataque penoso (fallo) \nDaño: " +ataqueP);
+            System.out.println("Has realizado un ataque penoso (fallo) \nDaño: " +ataqueP+"\n");
             danoIngfligido+=ataqueP;
             enemigoActual.Vida-=ataqueP;
         }else if(attack > 0.2 && attack <= 0.8){
-            System.out.println("Has realizado un ataque normal \nDaño: " +Ataque);
+            System.out.println("Has realizado un ataque normal \nDaño: " +Ataque+"\n");
             danoIngfligido+=Ataque;
             enemigoActual.Vida-=Ataque;
         }else if (attack > 0.8){
-            int ataqueC = Ataque*2;
-            System.out.println("¡Has realizado un ataque critico! (Suerte) \nDaño: " +ataqueC);
-            danoIngfligido+=ataqueC;
-            enemigoActual.Vida-=ataqueC;
             if(defense > 0.8){
                 System.out.println("Pero no te ha servido de nada");
             }
+            int ataqueC = Ataque*2;
+            System.out.println("¡Has realizado un ataque critico! (Suerte) \nDaño: " +ataqueC+"\n");
+            danoIngfligido+=ataqueC;
+            enemigoActual.Vida-=ataqueC;
+
         }
 
         Ataque = ATAQUE_GUERRERO;
@@ -97,6 +109,8 @@ public class Guerrero extends Jugador {
             Vida+=Kuracion;
             System.out.println("Has aumentado la vida en "+Kuracion+" puntos");
         }
+
+        defenderse=false;
     }
 
     @Override
@@ -112,20 +126,22 @@ public class Guerrero extends Jugador {
             int SuperC = Ataque*5;
             System.out.println("¡¡Y ademas has realizado un ataque ciritico!!");
             enemigoActual.Vida-=SuperC;
-            System.out.println("Daño: "+SuperC);
+            System.out.println("Daño: "+SuperC+"\n");
             danoIngfligido+=SuperC;
         }else {
             int Super = Ataque*3;
             enemigoActual.Vida-=Super;
-            System.out.println("Daño: "+Super);
+            System.out.println("Daño: "+Super+"\n");
             danoIngfligido+=Super;
         }
+
+        defenderse=false;
     }
 
     @Override
     public String toString() {
-        return " Guerrero: " +
-                " || Vida=" + Vida +
+        return " Guerrero: \n" +
+                " Vida=" + Vida +
                 " || Ataque=" + Ataque +
                 " || Estamina=" + Estamina +
         " || Daño total: " +danoIngfligido+"\n";

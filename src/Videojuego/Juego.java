@@ -22,26 +22,36 @@ public class Juego {
         player.asignarEnemigo(NPC);
         NPC.asignarJugador(player);
 
-        //Hacemos que el juego se ejecute en bucle de turnos mientras alguno de los dos personajes tenga vida
-        do{
+        /*Hacemos que el juego se ejecute en bucle de turnos mientras ambos personajes tengan vida y
+        comprobamos despues de cada turno si hemos matado al enemigo si es asi mostramos mensaje de
+        fin de juego antes de terminarlo
+         */
+        while(player.Vida > 0 && NPC.Vida > 0){
             System.out.println(player);
             turnoJugador();
+
+            if(NPC.Vida <= 0){
+                System.out.println("Has matado al enemigo \n");
+                System.out.println("¡Has ganado!");
+                break;
+            }
+
             System.out.println(NPC);
             turnoEnemigo();
+
+            if(player.Vida <= 0){
+                System.out.println("El enemigo te ha derrotado \n");
+                System.out.println("Has perdido...");
+                break;
+            }
+
             player.Estamina+=10;
-        }while(player.Vida > 0 || NPC.Vida > 0 );
 
-        //Limitamos la estamina a 100
-        do{
-            --player.Estamina;
-        }while(player.Estamina > 100);
+            //Limitamos la estamina a 100
+            while(player.Estamina > 100){
+                --player.Estamina;
+            }
 
-        //Determinamos el mensaje de fin de juego
-
-        if(player.Vida <= 0){
-            System.out.println("Has perdido...");
-        }else if(NPC.Vida <= 0){
-            System.out.println("¡Has ganado!");
         }
 
     }
@@ -78,8 +88,10 @@ public class Juego {
 
         if(num > 1){
             NPC=new Duende();
+            System.out.println("Tu rival es un Duende (Vida inicial: 150) \n");
         }else {
             NPC = new Bruja();
+            System.out.println("Tu rival es una Bruja (Vida inicial: 125) \n");
         }
 
         return NPC;
@@ -88,7 +100,7 @@ public class Juego {
     public void turnoJugador(){
         int jugar;
 
-        System.out.println("¿Que quieres hacer? Estamina: "+player.Estamina+" \n 1-Ataque \n 2-Defensa \n 3-Curacion (20 Estamina) \n 4-Habilidad Especial (75 Estamina)");
+        System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Curacion (20 Estamina) \n 4-Habilidad Especial (75 Estamina)");
 
         jugar=sc.nextInt();
 
@@ -102,6 +114,7 @@ public class Juego {
             case 3:
                 if(player.Estamina >= 20){
                     player.Curarse();
+                    break;
                 }else{
                     System.out.println("No tienes suficiente Estamina \n ");
                     turnoJugador();
@@ -109,6 +122,7 @@ public class Juego {
             case 4:
                 if(player.Estamina >= 75){
                     player.SuperAtaque();
+                    break;
                 }else{
                     System.out.println("No tienes suficiente Estamina \n ");
                     turnoJugador();
