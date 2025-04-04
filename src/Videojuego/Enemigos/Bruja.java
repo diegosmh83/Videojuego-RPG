@@ -1,5 +1,7 @@
 package Videojuego.Enemigos;
 
+import static Videojuego.Juego.dificultad;
+
 public class Bruja extends Enemigo {
 
 
@@ -10,7 +12,48 @@ public class Bruja extends Enemigo {
 
 
     @Override
-    public boolean Atacar(){
+    public void Atacar(){
+
+        //puedes perder el turno de ataque si te defiendes
+        if(defenderse){
+            double probabilidad=Math.random();
+
+            switch (dificultad){
+
+                case 1:{
+                    if(probabilidad > 0.7){
+                        System.out.println("La bruja perdio el turno de ataque por tardar en reincorporarte tras la " +
+                                "defensa \n ");
+                        defenderse=false;
+                        return;
+                    }
+                    break;
+                }
+
+                case 2:{
+                    if(probabilidad > 0.8){
+                        System.out.println("La bruja perdio el turno de ataque por tardar en reincorporarte tras la " +
+                                "defensa \n");
+                        defenderse=false;
+                        return;
+                    }
+                    break;
+                }
+
+                case 3:{
+                    if(probabilidad > 0.9){
+                        System.out.println("La bruja perdio el turno de ataque por tardar en reincorporarte tras la " +
+                                "defensa \n");
+                        defenderse=false;
+                        return;
+                    }
+                    break;
+                }
+
+            }
+
+
+        }
 
         System.out.println("El enemigo va a atacar \n ");
 
@@ -52,17 +95,16 @@ public class Bruja extends Enemigo {
 
         defenderse=false;
 
-        return true;
+
     }
 
 
 
     @Override
-    public boolean Defender(){
+    public void Defender(){
 
         defenderse=true;
 
-        return true;
     }
 
     @Override

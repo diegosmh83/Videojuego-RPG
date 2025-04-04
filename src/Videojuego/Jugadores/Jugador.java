@@ -10,10 +10,6 @@ public abstract class Jugador extends Personaje implements AccionesJugador {
     public int Estamina;
     public Enemigo enemigoActual;
 
-    public Jugador(int vida, int ataque, int estamina) {
-        super(vida, ataque);
-        Estamina = estamina;
-    }
 
     public Jugador() {
     }
@@ -24,9 +20,9 @@ public abstract class Jugador extends Personaje implements AccionesJugador {
 
     public boolean defenderse;
 
-    public abstract boolean Atacar();
+    public abstract void Atacar();
 
-    public abstract boolean Defender();
+    public abstract void Defender();
 
     public abstract void Curarse();
 

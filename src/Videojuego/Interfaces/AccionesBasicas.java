@@ -2,8 +2,8 @@ package Videojuego.Interfaces;
 
 public interface AccionesBasicas {
 
-    public boolean Atacar();
+    void Atacar();
 
-    public boolean Defender();
+    void Defender();
 
 }

@@ -18,9 +18,9 @@ public  abstract class Enemigo extends Personaje implements AccionesBasicas {
 
     public boolean defenderse;
 
-    public abstract boolean Atacar();
+    public abstract void Atacar();
 
-    public abstract boolean Defender();
+    public abstract void Defender();
 
 
 
