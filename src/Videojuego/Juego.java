@@ -2,6 +2,7 @@ package Videojuego;
 import Videojuego.Enemigos.Bruja;
 import Videojuego.Enemigos.Duende;
 import Videojuego.Enemigos.Enemigo;
+import Videojuego.Interfaces.ColoresConsola;
 import Videojuego.Jugadores.Arquero;
 import Videojuego.Jugadores.Guerrero;
 import Videojuego.Jugadores.Jugador;
@@ -37,7 +38,7 @@ public class Juego {
 
             if(NPC.Vida <= 0){
                 System.out.println("Has matado al enemigo \n");
-                System.out.println("¡Has ganado!");
+                System.out.println(ColoresConsola.enVerde("¡Has ganado!"));
                 break;
             }
 
@@ -46,7 +47,7 @@ public class Juego {
 
             if(player.Vida <= 0){
                 System.out.println("El enemigo te ha derrotado \n");
-                System.out.println("Has perdido...");
+                System.out.println(ColoresConsola.enRojo("Has perdido..."));
                 break;
             }
 
@@ -77,7 +78,7 @@ public class Juego {
 
         switch (dificultad){
             case 1: { //Nivel Facil
-                System.out.println("Has elegido el modo Facil \n ");
+                System.out.println(ColoresConsola.enVerde("Has elegido el modo Facil \n "));
                 NPC.Vida-=15;
                 NPC.Ataque-=3;
                 player.Vida+=10;
@@ -87,12 +88,12 @@ public class Juego {
 
             case 2:{ //Nivel Normal
                 //Vida y ataques predeterminados
-                System.out.println("Has elegido el modo Normal \n ");
+                System.out.println(ColoresConsola.enAmarillo("Has elegido el modo Normal \n "));
                 break;
             }
 
             case 3: { //Nivel Dificil
-                System.out.println("Has elegido el modo Dificil");
+                System.out.println(ColoresConsola.enRojo("Has elegido el modo Dificil"));
                 NPC.Vida+=10;
                 NPC.Ataque+=5;
                 player.Vida-=10;
@@ -173,7 +174,6 @@ public class Juego {
         }
 
 
-
         jugar=sc.nextInt();
 
         switch (jugar){
@@ -188,7 +188,7 @@ public class Juego {
                     player.Curarse();
                     break;
                 }else{
-                    System.out.println("No tienes suficiente Estamina \n ");
+                    System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
                     turnoJugador();
                 }
             case 4:{
@@ -198,7 +198,7 @@ public class Juego {
                             player.SuperAtaque();
                             break;
                         }else{
-                            System.out.println("No tienes suficiente Estamina \n ");
+                            System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
                             turnoJugador();
                         }
                         break;
@@ -208,7 +208,7 @@ public class Juego {
                             player.SuperAtaque();
                             break;
                         }else{
-                            System.out.println("No tienes suficiente Estamina \n ");
+                            System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
                             turnoJugador();
                         }
                         break;
@@ -218,7 +218,7 @@ public class Juego {
                             player.SuperAtaque();
                             break;
                         }else{
-                            System.out.println("No tienes suficiente Estamina \n ");
+                            System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
                             turnoJugador();
                         }
                         break;

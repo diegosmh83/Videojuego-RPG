@@ -12,10 +12,6 @@ public abstract class Personaje  {
     public int Ataque;
     public int danoIngfligido = 0;
 
-    public Personaje(int vida, int ataque) {
-        Vida=vida;
-        Ataque = ataque;
-    }
 
     public Personaje() {
     }

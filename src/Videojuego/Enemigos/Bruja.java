@@ -1,5 +1,7 @@
 package Videojuego.Enemigos;
 
+import Videojuego.Interfaces.ColoresConsola;
+
 import static Videojuego.Juego.dificultad;
 
 public class Bruja extends Enemigo {
@@ -22,8 +24,8 @@ public class Bruja extends Enemigo {
 
                 case 1:{
                     if(probabilidad > 0.7){
-                        System.out.println("La bruja perdio el turno de ataque por tardar en reincorporarte tras la " +
-                                "defensa \n ");
+                        System.out.println(("La bruja perdio el turno de ataque por tardar en reincorporarte tras la " +
+                                "defensa \n "));
                         defenderse=false;
                         return;
                     }
@@ -32,8 +34,8 @@ public class Bruja extends Enemigo {
 
                 case 2:{
                     if(probabilidad > 0.8){
-                        System.out.println("La bruja perdio el turno de ataque por tardar en reincorporarte tras la " +
-                                "defensa \n");
+                        System.out.println(("La bruja perdio el turno de ataque por tardar en reincorporarte tras la " +
+                                "defensa \n"));
                         defenderse=false;
                         return;
                     }
@@ -42,8 +44,8 @@ public class Bruja extends Enemigo {
 
                 case 3:{
                     if(probabilidad > 0.9){
-                        System.out.println("La bruja perdio el turno de ataque por tardar en reincorporarte tras la " +
-                                "defensa \n");
+                        System.out.println(("La bruja perdio el turno de ataque por tardar en reincorporarte tras la " +
+                                "defensa \n"));
                         defenderse=false;
                         return;
                     }
@@ -55,7 +57,7 @@ public class Bruja extends Enemigo {
 
         }
 
-        System.out.println("El enemigo va a atacar \n ");
+        System.out.println(("El enemigo va a atacar \n "));
 
         int ataqueBase = Ataque;
 
@@ -65,13 +67,13 @@ public class Bruja extends Enemigo {
             defense=Math.random();
 
             if(defense < 0.2 ){
-                System.out.println("Tu defensa ha resultado fallida \n " );
+                System.out.println(ColoresConsola.enAzul("Tu defensa ha resultado fallida \n ") );
             }else if(defense >= 0.2 && defense <=0.8){
                 Ataque-=Ataque*0.25;
-                System.out.println("Defensa Normal \n ");
+                System.out.println(ColoresConsola.enAzul("Has realizado una defensa normal \n "));
             }else{
                 Ataque=0;
-                System.out.println("¡Has realizado una defensa Perfecta! \n ");
+                System.out.println(ColoresConsola.enVerde("¡Has realizado una defensa Perfecta! \n "));
             }
         }
 
@@ -80,15 +82,15 @@ public class Bruja extends Enemigo {
         attack=Math.random();
 
         if(attack < 0.7){
-            System.out.println("Ha realizado un ataque normal \n");
+            System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal \n"));
             jugadorActual.Vida-=Ataque;
-            System.out.println("Daño recibido: "+Ataque);
+            System.out.println(ColoresConsola.enRojo("Daño recibido: "+Ataque));
             danoIngfligido+=Ataque;
         }else{
-            System.out.println("El enemigo ha realizado un ataque critico \n");
+            System.out.println(ColoresConsola.enAmarillo("El enemigo ha realizado un ataque critico \n"));
             int ataqueC=Ataque*2;
             jugadorActual.Vida-=ataqueC;
-            System.out.println("Daño recibido: "+ataqueC);
+            System.out.println(ColoresConsola.enRojo("Daño recibido: "+ataqueC));
             danoIngfligido+=Ataque;
         }
         Ataque = ataqueBase;
@@ -109,7 +111,7 @@ public class Bruja extends Enemigo {
 
     @Override
     public String toString() {
-        return " Vida Bruja:" + Vida+"\n";
+        return ColoresConsola.ROJO+ "(( Vida Bruja:" + Vida+" ))\n"+ColoresConsola.RESET;
     }
 
 

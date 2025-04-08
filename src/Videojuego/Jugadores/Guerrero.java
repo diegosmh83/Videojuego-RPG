@@ -1,5 +1,7 @@
 package Videojuego.Jugadores;
 
+import Videojuego.Interfaces.ColoresConsola;
+
 import static Videojuego.Juego.dificultad;
 
 public class Guerrero extends Jugador {
@@ -55,7 +57,7 @@ public class Guerrero extends Jugador {
 
         }
 
-        System.out.println("Has escogido Atacar \n ");
+        System.out.println(("Has escogido Atacar \n "));
 
         double defense=Math.random();
 
@@ -64,13 +66,13 @@ public class Guerrero extends Jugador {
 
 
             if(defense < 0.2){
-                System.out.println("La defensa del enemigo ha resultado fallida \n ");
-            }else if (defense >= 0.2 && defense <= 0.8){
+                System.out.println(ColoresConsola.enAmarillo("La defensa del enemigo ha resultado fallida \n "));
+            }else if (defense <= 0.8){
                 Ataque-=Ataque*0.25;
-                System.out.println("El enemigo se ha defendido \n " );
+                System.out.println(ColoresConsola.enAmarillo("El enemigo se ha defendido \n ") );
             }else{
                 Ataque=0;
-                System.out.println("El enemigo ha realizado una defensa impecable \n ");
+                System.out.println(ColoresConsola.enAmarillo("El enemigo ha realizado una defensa impecable \n "));
             }
         }
 
@@ -82,25 +84,25 @@ public class Guerrero extends Jugador {
 
                 if(attack <= 0.1){
                     int ataqueP = Ataque/3;
-                    System.out.println("Has realizado un ataque penoso (fallo) \n");
+                    System.out.println(ColoresConsola.AZUL+"Has realizado un ataque penoso (fallo) \n"+ColoresConsola.RESET);
                     danoIngfligido+=ataqueP;
                     enemigoActual.Vida-=ataqueP;
-                    System.out.println("Daño infligido: "+ataqueP+ "\n");
+                    System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueP+ "\n"+ColoresConsola.RESET);
                 }else if(attack > 0.1 && attack <= 0.7){
-                    System.out.println("Has realizado un ataque normal \n");
+                    System.out.println(ColoresConsola.AZUL+"Has realizado un ataque normal \n"+ColoresConsola.RESET);
                     danoIngfligido+=Ataque;
                     enemigoActual.Vida-=Ataque;
-                    System.out.println("Daño infligido: "+Ataque+ "\n");
-                }else if (attack > 0.7){
+                    System.out.println(ColoresConsola.VERDE+"Daño infligido: "+Ataque+ "\n"+ColoresConsola.RESET);
+                }else {
                     int ataqueC = Ataque*2;
-                    System.out.println("¡Has realizado un ataque critico! (Suerte) \n");
+                    System.out.println(ColoresConsola.VERDE+"¡Has realizado un ataque critico! (Suerte) \n"+ColoresConsola.VERDE);
                     if(enemigoActual.defenderse && defense > 0.8){
                         System.out.println("Pero no te ha servido de nada");
                         return;
                     }else{
                         danoIngfligido+=ataqueC;
                         enemigoActual.Vida-=ataqueC;
-                        System.out.println("Daño infligido: "+ataqueC+ "\n");
+                        System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueC+ "\n"+ColoresConsola.RESET);
 
                     }
 
@@ -112,25 +114,25 @@ public class Guerrero extends Jugador {
 
                 if(attack <= 0.2){
                     int ataqueP = Ataque/3;
-                    System.out.println("Has realizado un ataque penoso (fallo) \n");
+                    System.out.println(ColoresConsola.AZUL+"Has realizado un ataque penoso (fallo) \n"+ColoresConsola.RESET);
                     danoIngfligido+=ataqueP;
                     enemigoActual.Vida-=ataqueP;
-                    System.out.println("Daño infligido: "+ataqueP+ "\n");
+                    System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueP+ "\n"+ColoresConsola.RESET);
                 }else if(attack > 0.2 && attack <= 0.8){
-                    System.out.println("Has realizado un ataque normal \n");
+                    System.out.println(ColoresConsola.AZUL+"Has realizado un ataque normal \n"+ColoresConsola.RESET);
                     danoIngfligido+=Ataque;
                     enemigoActual.Vida-=Ataque;
-                    System.out.println("Daño infligido: "+Ataque+ "\n");
-                }else if (attack > 0.8){
+                    System.out.println(ColoresConsola.VERDE+"Daño infligido: "+Ataque+ "\n"+ColoresConsola.RESET);
+                }else {
                     int ataqueC = Ataque*2;
-                    System.out.println("¡Has realizado un ataque critico! (Suerte) \n");
+                    System.out.println(ColoresConsola.VERDE+"¡Has realizado un ataque critico! (Suerte) \n"+ColoresConsola.RESET);
                     if(enemigoActual.defenderse && defense >0.8){
                         System.out.println("Pero no te ha servido de nada");
                         return;
                     }else{
                         danoIngfligido+=ataqueC;
                         enemigoActual.Vida-=ataqueC;
-                        System.out.println("Daño infligido: "+ataqueC+ "\n");
+                        System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueC+ "\n"+ColoresConsola.RESET);
                     }
 
                 }
@@ -141,23 +143,25 @@ public class Guerrero extends Jugador {
 
                 if(attack <= 0.3){
                     int ataqueP = Ataque/3;
-                    System.out.println("Has realizado un ataque penoso (fallo) \nDaño: " +ataqueP+"\n");
+                    System.out.println(ColoresConsola.AZUL+"Has realizado un ataque penoso (fallo) " );
                     danoIngfligido+=ataqueP;
                     enemigoActual.Vida-=ataqueP;
-                }else if(attack > 0.3 && attack <= 0.9){
-                    System.out.println("Has realizado un ataque normal \nDaño: " +Ataque+"\n");
+                    System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueP));
+                }else if(attack <= 0.9){
+                    System.out.println(ColoresConsola.enAzul("Has realizado un ataque normal "));
                     danoIngfligido+=Ataque;
                     enemigoActual.Vida-=Ataque;
-                }else if (attack > 0.9){
+                    System.out.println(ColoresConsola.enVerde("Daño infligido: "+Ataque));
+                }else {
                     int ataqueC = Ataque*2;
-                    System.out.println("¡Has realizado un ataque critico! (Suerte) \n");
+                    System.out.println(ColoresConsola.VERDE+"¡Has realizado un ataque critico! (Suerte) \n"+ColoresConsola.RESET);
                     if(enemigoActual.defenderse && defense > 0.8){
                         System.out.println("Pero no te ha servido de nada");
                         return;
                     }else{
                         danoIngfligido+=ataqueC;
                         enemigoActual.Vida-=ataqueC;
-                        System.out.println("Dañi infligido: "+ataqueC+ "\n");
+                        System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueC+ "\n"+ColoresConsola.RESET);
                     }
 
                 }
@@ -176,6 +180,8 @@ public class Guerrero extends Jugador {
     @Override
     public void Defender(){
 
+        System.out.println("Has escogido defenderte \n ");
+
         defenderse=true;
 
     }
@@ -193,11 +199,11 @@ public class Guerrero extends Jugador {
         if(Curation < 0.8){
             double Curacion=VIDA_BASE_GUERRERO*0.2;
             Vida+=Curacion;
-            System.out.println("Has aumentado la vida en: "+Curacion+" puntos");
+            System.out.println(ColoresConsola.enVerde("Has aumentado la vida en: "+Curacion+" puntos"));
         }else {
             double Kuracion=VIDA_BASE_GUERRERO*0.45;
             Vida+=Kuracion;
-            System.out.println("Has aumentado la vida en "+Kuracion+" puntos");
+            System.out.println(ColoresConsola.enVerde("Has aumentado la vida en "+Kuracion+" puntos"));
         }
 
         defenderse=false;
@@ -206,7 +212,7 @@ public class Guerrero extends Jugador {
     @Override
     public void SuperAtaque(){
 
-        System.out.println("¡Has escogido el SuperAtaque! \n");
+        System.out.println("¡Has usado el SuperCorte! \n");
 
         switch (dificultad){
             case 1:{
@@ -227,14 +233,14 @@ public class Guerrero extends Jugador {
 
         if(SuperA > 0.85){
             int SuperC = ATAQUE_GUERRERO*5;
-            System.out.println("¡¡Y ademas has realizado un ataque critico!!");
+            System.out.println(ColoresConsola.enVerde("¡¡Y ademas has realizado un ataque critico!!"));
             enemigoActual.Vida-=SuperC;
-            System.out.println("Daño: "+SuperC+"\n");
+            System.out.println(ColoresConsola.enVerde("Daño: "+SuperC+"\n"));
             danoIngfligido+=SuperC;
         }else {
             int Super = ATAQUE_GUERRERO*3;
             enemigoActual.Vida-=Super;
-            System.out.println("Daño: "+Super+"\n");
+            System.out.println(ColoresConsola.enVerde("Daño: "+Super+"\n"));
             danoIngfligido+=Super;
         }
 
@@ -243,11 +249,11 @@ public class Guerrero extends Jugador {
 
     @Override
     public String toString() {
-        return " (( Guerrero: " +
+        return ColoresConsola.AZUL+ " (( Guerrero: " +
                 " Vida=" + Vida +
                 " || Ataque=" + Ataque +
                 " || Estamina=" + Estamina +
-        " || Daño total: " +danoIngfligido+" )) \n";
+        " || Daño total: " +danoIngfligido+" )) \n"+ColoresConsola.RESET;
     }
 
 
