@@ -6,10 +6,11 @@ import static Videojuego.Juego.dificultad;
 
 public class Bruja extends Enemigo {
 
+    int apuntado;
 
     public Bruja() {
         Vida=125;
-        Ataque=15;
+        Ataque=20;
     }
 
 
@@ -59,16 +60,28 @@ public class Bruja extends Enemigo {
 
         System.out.println(("El enemigo va a atacar \n "));
 
+        double input;
+
+        input=Math.random();
+
+        if(input > 0.5){
+            apuntado=1;
+            System.out.println(ColoresConsola.enAmarillo("El enemigo va a por el jugador 2 (("+jugadorActual[1].Vida+"))"));
+        }else{
+            apuntado=0;
+            System.out.println(ColoresConsola.enAmarillo("El enemigo va a por el jugador 1 (("+jugadorActual[0].Vida+"))"));
+        }
+
         int ataqueBase = Ataque;
 
-        if(jugadorActual.defenderse){
+        if(jugadorActual[apuntado].defenderse){
             double defense;
 
             defense=Math.random();
 
             if(defense < 0.2 ){
                 System.out.println(ColoresConsola.enAzul("Tu defensa ha resultado fallida \n ") );
-            }else if(defense >= 0.2 && defense <=0.8){
+            }else if(defense <=0.8){
                 Ataque-=Ataque*0.25;
                 System.out.println(ColoresConsola.enAzul("Has realizado una defensa normal \n "));
             }else{
@@ -83,13 +96,13 @@ public class Bruja extends Enemigo {
 
         if(attack < 0.7){
             System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal \n"));
-            jugadorActual.Vida-=Ataque;
+            jugadorActual[apuntado].Vida-=Ataque;
             System.out.println(ColoresConsola.enRojo("Daño recibido: "+Ataque));
             danoIngfligido+=Ataque;
         }else{
             System.out.println(ColoresConsola.enAmarillo("El enemigo ha realizado un ataque critico \n"));
             int ataqueC=Ataque*2;
-            jugadorActual.Vida-=ataqueC;
+            jugadorActual[apuntado].Vida-=ataqueC;
             System.out.println(ColoresConsola.enRojo("Daño recibido: "+ataqueC));
             danoIngfligido+=Ataque;
         }

@@ -8,14 +8,15 @@ import Videojuego.Personaje;
 public abstract class Jugador extends Personaje implements AccionesJugador {
 
     public int Estamina;
-    public Enemigo enemigoActual;
+    public Enemigo[] enemigoActual;
 
 
     public Jugador() {
     }
 
-    public void asignarEnemigo(Enemigo enemigo){
+    public void asignarEnemigo(Enemigo[] enemigo){
         this.enemigoActual=enemigo;
+
     }
 
     public boolean defenderse;

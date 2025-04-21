@@ -6,16 +6,18 @@ import static Videojuego.Juego.dificultad;
 
 public class Duende extends Enemigo {
 
+    int apuntado;
+
     public Duende() {
         Vida=150;
-        Ataque=10;
+        Ataque=15;
     }
 
 
     @Override
     public void Atacar(){
 
-        //puedes perder el turno de ataque si te defiendes
+        //El enemigo puede perder el turno de ataque si se defiende
         if(defenderse){
             double probabilidad=Math.random();
 
@@ -60,9 +62,21 @@ public class Duende extends Enemigo {
 
         int ataqueBase = Ataque;
 
+        double input;
+
+        input=Math.random();
+
+        if(input > 0.5){
+            apuntado=1;
+            System.out.println(ColoresConsola.enAmarillo("El enemigo va a por el jugador 2 (("+jugadorActual[1].Vida+"))"));
+        }else{
+            apuntado=0;
+            System.out.println(ColoresConsola.enAmarillo("El enemigo va a por el jugador 1 (("+jugadorActual[0].Vida+"))"));
+        }
+
 
             //Sub-metodo para defender:
-        if (jugadorActual.defenderse){
+        if (jugadorActual[apuntado].defenderse){
 
             double defense=Math.random();
 
@@ -85,13 +99,13 @@ public class Duende extends Enemigo {
         //Sub-metodo para atacar:
         if(attack < 0.7){
             System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal \n"));
-            jugadorActual.Vida-=Ataque;
+            jugadorActual[apuntado].Vida-=Ataque;
             System.out.println(ColoresConsola.enRojo("Daño recibido: "+Ataque));
             danoIngfligido+=Ataque;
         }else{
             System.out.println(ColoresConsola.enAmarillo("El enemigo ha realizado un ataque critico \n"));
             int ataqueC= Ataque*2;
-            jugadorActual.Vida-=ataqueC;
+            jugadorActual[apuntado].Vida-=ataqueC;
             System.out.println(ColoresConsola.enRojo("Daño recibido: "+ataqueC));
             danoIngfligido+=Ataque;
         }

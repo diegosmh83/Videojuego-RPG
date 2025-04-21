@@ -6,13 +6,13 @@ import Videojuego.Personaje;
 
 public  abstract class Enemigo extends Personaje implements AccionesBasicas {
 
-    public Jugador jugadorActual;
+    public Jugador[] jugadorActual;
 
 
     public Enemigo() {
     }
 
-    public void asignarJugador(Jugador jugador){
+    public void asignarJugador(Jugador[] jugador){
         this.jugadorActual=jugador;
     }
 
