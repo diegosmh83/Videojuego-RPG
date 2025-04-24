@@ -10,6 +10,9 @@ public abstract class Jugador extends Personaje implements AccionesJugador {
     public int Estamina;
     public Enemigo[] enemigoActual;
 
+    public boolean paralizado;
+    public boolean desangrado;
+    public boolean envenenado;
 
     public Jugador() {
     }

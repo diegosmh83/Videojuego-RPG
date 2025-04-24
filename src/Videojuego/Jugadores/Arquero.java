@@ -14,6 +14,7 @@ public class Arquero extends Jugador {
         Vida=VIDA_BASE_ARQUERO;
         Ataque=ATAQUE_ARQUERO;
         Estamina=15;
+        nombre="Arquero";
     }
 
 
@@ -66,7 +67,7 @@ public class Arquero extends Jugador {
 
         do{
 
-            System.out.println("Elige un enemigo al que atacar: (1)  "+enemigoActual[0]+" (2)  "+enemigoActual[1]);
+            System.out.println("Elige un enemigo al que atacar: \n (1)  "+enemigoActual[0]+" (2)  "+enemigoActual[1]);
             input=sc.nextInt();
             apuntar=input-1;
 
@@ -75,16 +76,16 @@ public class Arquero extends Jugador {
         double defense=Math.random();
 
         if(enemigoActual[apuntar].defenderse){
-            System.out.println(("El enemigo se esta defendiendo... \n "));
+            System.out.println(("El" +enemigoActual[apuntar].nombre+ "se esta defendiendo... \n "));
 
             if(defense < 0.2){
-                System.out.println(ColoresConsola.enAmarillo("La defensa del enemigo ha resultado fallida \n "));
+                System.out.println(ColoresConsola.enAmarillo("La defensa del" +enemigoActual[apuntar].nombre+ "ha resultado fallida \n "));
             }else if (defense <= 0.8){
                 Ataque-=Ataque*0.25;
-                System.out.println(ColoresConsola.enAmarillo("El enemigo se ha defendido \n ") );
+                System.out.println(ColoresConsola.enAmarillo("El" +enemigoActual[apuntar].nombre+ "se ha defendido \n ") );
             }else{
                 Ataque=0;
-                System.out.println(ColoresConsola.enAmarillo("El enemigo ha realizado una defensa impecable \n "));
+                System.out.println(ColoresConsola.enAmarillo("El" +enemigoActual[apuntar].nombre+ "ha realizado una defensa impecable \n "));
             }
         }
 
@@ -225,7 +226,7 @@ public class Arquero extends Jugador {
 
         do{
 
-            System.out.println("Elige un enemigo al que atacar: (1) "+enemigoActual[0]+" | (2) "+enemigoActual[1]);
+            System.out.println("Elige un enemigo al que atacar: \n (1) "+enemigoActual[0]+" | (2) "+enemigoActual[1]);
             input=sc.nextInt();
             apuntar=input-1;
 

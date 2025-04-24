@@ -11,6 +11,7 @@ public abstract class Personaje  {
     public static final int ATAQUE_MAGO=30;
     public int Ataque;
     public int danoIngfligido = 0;
+    public String nombre;
 
 
     public Personaje() {

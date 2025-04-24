@@ -13,10 +13,10 @@ import java.util.*;
 public class Juego {
     public static Scanner sc=new Scanner(System.in);
 
-    //Capacidad de cada grupo (Jugadores y Enemigos)
+    //Capacidad de cada grupo que se va a enfrentar (Jugadores y Enemigos)
     public static  final int EQUIPO=2;
 
-    //Objetos version anterior
+    //Cementerio Objetos version anterior
     Jugador player;
     Enemigo NPC;
 
@@ -42,7 +42,7 @@ public class Juego {
         CrearEnemigos();
 
         //Les asignamos sus rivales correspondientes
-        for( Jugador j: Jugadores){
+        for(Jugador j: Jugadores){
             j.asignarEnemigo(NPCs);
         }
 
@@ -55,25 +55,22 @@ public class Juego {
 
         while ((Jugadores[0].Vida > 0 || Jugadores[1].Vida > 0) && (NPCs[0].Vida > 0 || NPCs[1].Vida > 0)) {
 
-            //Turno del primer jugador
-            if (Jugadores[n].Vida > 0){
+            //Turno del primer jugador solo se ejecuta si esta vivo y no esta paralizado
+            if (Jugadores[n].Vida > 0 && !Jugadores[n].paralizado){
                 System.out.println(Jugadores[n]);
                 turnoJugador();
-            }else if (jugador0muerto) {
+            }else if (Jugadores[n].paralizado) {
+                aplicarParalizacion();
+            }else if(jugador0muerto){
                 System.out.println();
             }
             n++;
 
-            //Comprobamos si enemigos mueren (3 comprobaciones)
-            if(NPCs[0].Vida <= 0 && !enemigo0muerto){
-                System.out.println(ColoresConsola.enVerde("Has matado al enemigo 1"));
-                enemigo0muerto=true;
-            }
+            limitarEstamina();
+            limitarVida();
 
-            if(NPCs[1].Vida <= 0 && !enemigo1muerto){
-                System.out.println(ColoresConsola.enVerde("Has matado al enemigo 2"));
-                enemigo1muerto=true;
-            }
+            //Comprobamos si enemigos mueren
+            comprobarMuertesEnemigo();
 
             if(NPCs[0].Vida <= 0 && NPCs[1].Vida <= 0){
                 System.out.println("Has matado a todos los enemigos \n");
@@ -89,16 +86,11 @@ public class Juego {
                 System.out.println();
             n--;
 
-            //Coprobamos si enemigos mueren
-            if(NPCs[0].Vida <= 0 && !enemigo0muerto){
-                System.out.println(ColoresConsola.enVerde("Has matado al enemigo 1"));
-                enemigo0muerto=true;
-            }
+            limitarEstamina();
+            limitarVida();
 
-            if(NPCs[1].Vida <= 0 && !enemigo1muerto){
-                System.out.println(ColoresConsola.enVerde("Has matado al enemigo 2"));
-                enemigo1muerto=true;
-            }
+            //Coprobamos si enemigos mueren
+            comprobarMuertesEnemigo();
 
             if(NPCs[0].Vida <= 0 && NPCs[1].Vida <= 0){
                 System.out.println("Has matado a todos los enemigos \n");
@@ -117,14 +109,7 @@ public class Juego {
 
 
             //Comprobamos si jugadores mueren
-            if(Jugadores[0].Vida <= 0 && !jugador0muerto){
-                System.out.println(ColoresConsola.enRojo("El jugador 1 ha sido eliminado"));
-                jugador0muerto=true;
-            }
-            if(Jugadores[1].Vida <= 0 && !jugador1muerto){
-                System.out.println(ColoresConsola.enRojo("El jugador 2 ha sido eliminado"));
-                jugador1muerto=true;
-            }
+            comprobarMuertesJugador();
 
             //Turno segundo enemigo
             if(NPCs[n].Vida > 0) {
@@ -135,16 +120,8 @@ public class Juego {
             }
             n--;
 
-
             //Coprobamos si jugadores mueren
-            if(Jugadores[0].Vida <= 0 && !jugador0muerto){
-                System.out.println(ColoresConsola.enRojo("El jugador 1 ha sido eliminado"));
-                jugador0muerto=true;
-            }
-            if(Jugadores[1].Vida <= 0 && !jugador1muerto){
-                System.out.println(ColoresConsola.enRojo("El jugador 2 ha sido eliminado"));
-                jugador1muerto=true;
-            }
+            comprobarMuertesJugador();
 
             if(Jugadores[0].Vida <= 0 && Jugadores[1].Vida <= 0){
                 System.out.println("Los enemigos te han derrotado \n");
@@ -153,25 +130,13 @@ public class Juego {
             }
 
             //Dependiendo del nivel de dificultad recargamos mas o menos estamina al final de cada turno
-            if(dificultad==1){
-                Jugadores[0].Estamina+=15;
-                Jugadores[1].Estamina+=15;
-            }else if(dificultad==2){
-                Jugadores[0].Estamina+=10;
-                Jugadores[1].Estamina+=10;
-            }else{
-                Jugadores[0].Estamina+=5;
-                Jugadores[1].Estamina+=5;
-            }
+            recargarEstamina();
 
+            aplicarSangrado();
+            aplicarVeneno();
 
             //Limitamos siempre la estamina a 100
-            while(Jugadores[0].Estamina > 100 ){
-                --Jugadores[0].Estamina;
-            }
-            while (Jugadores[1].Estamina > 100){
-                --Jugadores[1].Estamina;
-            }
+            limitarEstamina();
 
         }
 
@@ -405,6 +370,188 @@ public class Juego {
         }else{
             NPCs[n].Defender();
         }
+    }
+
+    public void comprobarMuertesJugador(){
+
+        if(Jugadores[0].Vida <= 0 && !jugador0muerto){
+            System.out.println(ColoresConsola.enRojo("El "+Jugadores[0].nombre+" ha sido eliminado"));
+            jugador0muerto=true;
+        }
+        if(Jugadores[1].Vida <= 0 && !jugador1muerto){
+            System.out.println(ColoresConsola.enRojo("El "+Jugadores[1].nombre+" ha sido eliminado"));
+            jugador1muerto=true;
+        }
+
+    }
+
+    public void comprobarMuertesEnemigo(){
+
+        if(NPCs[0].Vida <= 0 && !enemigo0muerto){
+            System.out.println(ColoresConsola.enVerde("Has matado al "+NPCs[0].nombre));
+            enemigo0muerto=true;
+        }
+
+        if(NPCs[1].Vida <= 0 && !enemigo1muerto){
+            System.out.println(ColoresConsola.enVerde("Has matado al "+NPCs[1].nombre));
+            enemigo1muerto=true;
+        }
+
+    }
+
+    public void recargarEstamina(){
+        if(dificultad==1){
+            Jugadores[0].Estamina+=15;
+            Jugadores[1].Estamina+=15;
+        }else if(dificultad==2){
+            Jugadores[0].Estamina+=10;
+            Jugadores[1].Estamina+=10;
+        }else{
+            Jugadores[0].Estamina+=5;
+            Jugadores[1].Estamina+=5;
+        }
+    }
+
+    public void limitarEstamina(){
+
+        while(Jugadores[0].Estamina > 100 ){
+            --Jugadores[0].Estamina;
+        }
+        while (Jugadores[1].Estamina > 100){
+            --Jugadores[1].Estamina;
+        }
+
+    }
+
+    public void limitarVida(){
+
+        while(Jugadores[0].Vida > 100){
+            --Jugadores[0].Vida;
+        }
+        while(Jugadores[1].Vida > 100){
+            --Jugadores[1].Vida;
+        }
+
+    }
+
+    int turnoJ1des=2;
+    int turnoJ2des=2;
+    int sangrado=10;
+
+    public void aplicarSangrado(){
+
+        if(Jugadores[0].desangrado){
+
+            if(turnoJ1des > 0){
+                System.out.println(ColoresConsola.enAmarillo("El "+Jugadores[0].nombre+" esta desangrado"));
+                Jugadores[0].Vida-=sangrado;
+                System.out.println(ColoresConsola.enRojo("Se reduce la vida en "+sangrado+"puntos"));
+                --turnoJ1des;
+            }else{
+                System.out.println(ColoresConsola.enVerde("El "+Jugadores[0].nombre+" se ha curado del sangrado"));
+                Jugadores[0].desangrado=false;
+                turnoJ1des=2;
+            }
+
+        }else{
+            System.out.println();
+        }
+
+        if(Jugadores[1].desangrado){
+
+            if(turnoJ2des > 0){
+                System.out.println(ColoresConsola.enAmarillo("El "+Jugadores[1].nombre+" esta desangrado"));
+                Jugadores[1].Vida-=sangrado;
+                System.out.println(ColoresConsola.enRojo("Se reduce la vida en "+sangrado+" puntos"));
+                --turnoJ2des;
+            }else{
+                System.out.println(ColoresConsola.enVerde("El "+Jugadores[1].nombre+" se ha curado del sangrado"));
+                Jugadores[1].desangrado=false;
+                turnoJ2des=2;
+            }
+
+        }else{
+            System.out.println();
+        }
+
+    }
+
+    int turnoJ1ven=6;
+    int turnoJ2ven=6;
+    int veneno=2;
+
+    public void aplicarVeneno(){
+
+        if(Jugadores[0].envenenado){
+
+            if(turnoJ1ven > 0){
+                System.out.println(ColoresConsola.enAmarillo("El "+Jugadores[0].nombre+" esta envenenado"));
+                Jugadores[0].Vida-=veneno;
+                System.out.println(ColoresConsola.enRojo("Se reduce la vida en "+veneno+" puntos"));
+                --turnoJ1ven;
+            }else{
+                System.out.println(ColoresConsola.enVerde("El "+Jugadores[0].nombre+ "se ha des-envenenado"));
+                Jugadores[0].envenenado=false;
+                turnoJ1ven=6;
+            }
+
+        }else{
+            System.out.println();
+        }
+
+        if(Jugadores[1].envenenado){
+            if(turnoJ2ven > 0){
+                System.out.println(ColoresConsola.enAmarillo("El "+Jugadores[1].nombre+ "esta envenenado"));
+                Jugadores[1].Vida-=veneno;
+                System.out.println(ColoresConsola.enRojo("Se reduce la vida en "+veneno+" puntos"));
+                --turnoJ2ven;
+            }else{
+                System.out.println(ColoresConsola.enVerde("El "+Jugadores[1].nombre+ "se ha des-envenenado"));
+                Jugadores[1].envenenado=false;
+                turnoJ2ven=6;
+            }
+
+        }else{
+            System.out.println();
+        }
+
+    }
+
+    int turnosJ1par=2;
+    int turnosJ2par=2;
+
+    public void aplicarParalizacion(){
+
+        if(Jugadores[0].paralizado){
+
+            if(turnosJ1par > 0){
+                System.out.println(ColoresConsola.AMARILLO+"El "+Jugadores[0].nombre+ "esta paralizado "+ColoresConsola.ROJO+" (pierde el turno)"+ColoresConsola.RESET);
+                turnosJ1par-=1;
+            }else{
+                System.out.println(ColoresConsola.enVerde("El "+Jugadores[0].nombre+ "se ha decongelado"));
+                Jugadores[0].paralizado=false;
+                turnosJ1par=2;
+            }
+
+        }else{
+            System.out.println();
+        }
+
+        if(Jugadores[1].paralizado){
+
+            if(turnosJ2par > 0){
+                System.out.println(ColoresConsola.AMARILLO+"EL "+Jugadores[1].nombre+ "esta paralizado "+ColoresConsola.ROJO+"(pierde el turno)"+ColoresConsola.RESET);
+                turnosJ2par--;
+            }else{
+                System.out.println(ColoresConsola.enVerde("El "+Jugadores[1].nombre+ "se ha descongelado"));
+                Jugadores[1].paralizado=false;
+                turnosJ2par=2;
+            }
+
+        }else{
+            System.out.println();
+        }
+
     }
 
 

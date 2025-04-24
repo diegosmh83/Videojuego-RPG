@@ -11,6 +11,7 @@ public class Bruja extends Enemigo {
     public Bruja() {
         Vida=125;
         Ataque=20;
+        nombre="Bruja";
     }
 
 
@@ -58,7 +59,7 @@ public class Bruja extends Enemigo {
 
         }
 
-        System.out.println(("El enemigo va a atacar \n "));
+        System.out.println(("La bruja va a atacar \n "));
 
         double input;
 
@@ -66,10 +67,10 @@ public class Bruja extends Enemigo {
 
         if(input > 0.5){
             apuntado=1;
-            System.out.println(ColoresConsola.enAmarillo("El enemigo va a por el jugador 2 (("+jugadorActual[1].Vida+"))"));
+            System.out.println(ColoresConsola.enAmarillo("va a por el jugador 2 (("+jugadorActual[1].Vida+"))"));
         }else{
             apuntado=0;
-            System.out.println(ColoresConsola.enAmarillo("El enemigo va a por el jugador 1 (("+jugadorActual[0].Vida+"))"));
+            System.out.println(ColoresConsola.enAmarillo("va a por el jugador 1 (("+jugadorActual[0].Vida+"))"));
         }
 
         int ataqueBase = Ataque;
@@ -94,13 +95,60 @@ public class Bruja extends Enemigo {
 
         attack=Math.random();
 
+        double estado=Math.random();
+        double elegir=Math.random();
+
+        switch (dificultad){
+
+            case 1:{
+                if(estado > 0.95){
+                    if(elegir < 0.5){
+                        jugadorActual[apuntado].envenenado=true;
+                    }else if(elegir < 0.9){
+                        jugadorActual[apuntado].paralizado=true;
+                    }else{
+                        jugadorActual[apuntado].envenenado=true;
+                        jugadorActual[apuntado].paralizado=true;
+                    }
+                }
+            }
+
+            case 2:{
+                if(estado > 0.9){
+                    if(elegir < 0.5){
+                        jugadorActual[apuntado].envenenado=true;
+                    }else if(elegir < 0.9){
+                        jugadorActual[apuntado].paralizado=true;
+                    }else{
+                        jugadorActual[apuntado].envenenado=true;
+                        jugadorActual[apuntado].paralizado=true;
+                    }
+
+                }
+            }
+
+            case 3:{
+                if(estado > 0.85){
+                    if(elegir < 0.45){
+                        jugadorActual[apuntado].envenenado=true;
+                    }else if(elegir < 0.9){
+                        jugadorActual[apuntado].paralizado=true;
+                    }else{
+                        jugadorActual[apuntado].envenenado=true;
+                        jugadorActual[apuntado].paralizado=true;
+                    }
+                }
+            }
+
+        }
+
         if(attack < 0.7){
             System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal \n"));
             jugadorActual[apuntado].Vida-=Ataque;
             System.out.println(ColoresConsola.enRojo("Daño recibido: "+Ataque));
             danoIngfligido+=Ataque;
         }else{
-            System.out.println(ColoresConsola.enAmarillo("El enemigo ha realizado un ataque critico \n"));
+            System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque critico \n"));
             int ataqueC=Ataque*2;
             jugadorActual[apuntado].Vida-=ataqueC;
             System.out.println(ColoresConsola.enRojo("Daño recibido: "+ataqueC));
@@ -109,7 +157,6 @@ public class Bruja extends Enemigo {
         Ataque = ataqueBase;
 
         defenderse=false;
-
 
     }
 
