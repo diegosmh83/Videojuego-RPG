@@ -11,6 +11,7 @@ public class Duende extends Enemigo {
     public Duende() {
         Vida = 150;
         Ataque = 15;
+        Defensa=5;
         nombre = "Duende";
     }
 
@@ -83,8 +84,8 @@ public class Duende extends Enemigo {
 
             if (defense < 0.2) {
                 System.out.println(ColoresConsola.enAzul("Tu defensa ha resultado fallida \n "));
-            } else if (defense >= 0.2 && defense <= 0.8) {
-                Ataque -=  Ataque * 0.25;
+            } else if ( defense <= 0.8) {
+                Ataque-=Ataque * 0.25;
                 System.out.println(ColoresConsola.enAzul("Defensa Normal \n "));
             } else {
                 Ataque = 0;
@@ -145,6 +146,7 @@ public class Duende extends Enemigo {
             //Sub-metodo para atacar:
             if (attack < 0.7) {
                 System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal \n"));
+                Ataque-=jugadorActual[apuntado].Defensa;
                 jugadorActual[apuntado].Vida -= Ataque;
                 System.out.println(ColoresConsola.enRojo("Daño recibido: " + Ataque));
                 danoIngfligido += Ataque;
@@ -174,7 +176,7 @@ public class Duende extends Enemigo {
 
         @Override
         public String toString () {
-            return ColoresConsola.ROJO + "(( Vida Duende: " + Vida + "))\n" + ColoresConsola.RESET;
+            return ColoresConsola.ROJO + "(( DUENDE:  Vida:" + Vida + " || Ataque: "+Ataque+ " || Defensa: "+Defensa+ " || Daño Total: "+danoIngfligido+" ))\n" + ColoresConsola.RESET;
         }
 
     }

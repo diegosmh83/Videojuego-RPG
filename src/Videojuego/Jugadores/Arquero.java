@@ -13,6 +13,7 @@ public class Arquero extends Jugador {
     public Arquero() {
         Vida=VIDA_BASE_ARQUERO;
         Ataque=ATAQUE_ARQUERO;
+        Defensa=10;
         Estamina=15;
         nombre="Arquero";
     }
@@ -67,7 +68,7 @@ public class Arquero extends Jugador {
 
         do{
 
-            System.out.println("Elige un enemigo al que atacar: \n (1)  "+enemigoActual[0]+" (2)  "+enemigoActual[1]);
+            System.out.println("Elige un enemigo al que atacar: \n (1)  "+enemigoActual[0]+" || (2)  "+enemigoActual[1]);
             input=sc.nextInt();
             apuntar=input-1;
 
@@ -85,7 +86,7 @@ public class Arquero extends Jugador {
                 System.out.println(ColoresConsola.enAmarillo("El" +enemigoActual[apuntar].nombre+ "se ha defendido \n ") );
             }else{
                 Ataque=0;
-                System.out.println(ColoresConsola.enAmarillo("El" +enemigoActual[apuntar].nombre+ "ha realizado una defensa impecable \n "));
+                System.out.println(ColoresConsola.enAmarillo("El" +enemigoActual[apuntar].nombre+ "ha realizado una defensa perfecta y ha bloqueado tu ataque \n "));
             }
         }
 
@@ -97,12 +98,14 @@ public class Arquero extends Jugador {
 
             case 1:{
                 if(attack <= 0.1){
+                    Ataque-=enemigoActual[apuntar].Defensa;
                     double ataqueP = Ataque/2.5;
                     System.out.println(ColoresConsola.enAzul("Has realizado un ataque penoso (fallo) \n"));
                     danoIngfligido+=ataqueP;
                     enemigoActual[apuntar].Vida-=ataqueP;
                     System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueP+ "\n"));
                 }else if( attack <= 0.7){
+                    Ataque-=enemigoActual[apuntar].Defensa;
                     System.out.println(ColoresConsola.enAzul("Has realizado un ataque normal \n"));
                     danoIngfligido+=Ataque;
                     enemigoActual[apuntar].Vida-=Ataque;
@@ -111,7 +114,7 @@ public class Arquero extends Jugador {
                     int ataqueC = Ataque*3;
                     System.out.println(ColoresConsola.enVerde("¡Has realizado un ataque critico! (suerte) \n"));
                     if(enemigoActual[apuntar].defenderse && defense > 0.8){
-                        System.out.println(ColoresConsola.enAzul("Pero no te ha servido de nada \n "));
+                        System.out.println(ColoresConsola.enAmarillo("Pero no te ha servido de nada \n "));
                         return;
                     }else{
                         danoIngfligido+=ataqueC;
@@ -125,21 +128,23 @@ public class Arquero extends Jugador {
 
             case 2:{
                 if(attack <= 0.2){
+                    Ataque-=enemigoActual[apuntar].Defensa;
                     double ataqueP = Ataque/2.5;
                     System.out.println(ColoresConsola.enAzul("Has realizado un ataque penoso (fallo) \n"));
                     danoIngfligido+=ataqueP;
                     enemigoActual[apuntar].Vida-=ataqueP;
                     System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueP+ "\n"));
                 }else if(attack <= 0.8){
+                    Ataque-=enemigoActual[apuntar].Defensa;
                     System.out.println(ColoresConsola.enAzul("Has realizado un ataque normal \n"));
                     danoIngfligido+=Ataque;
                     enemigoActual[apuntar].Vida-=Ataque;
                     System.out.println(ColoresConsola.enVerde("Daño infligido: "+Ataque+ "\n"));
                 }else {
                     int ataqueC = Ataque*3;
-                    System.out.println(ColoresConsola.enVerde("¡Has realizado un ataque critico! (suerte) \n"));
+                    System.out.println(ColoresConsola.enVerde("¡Has realizado un ataque critico! (suerte) "));
                     if(defense > 0.8 ){
-                        System.out.println(ColoresConsola.enAzul("Pero no te ha servido de nada \n "));
+                        System.out.println(ColoresConsola.enAmarillo("Pero no te ha servido de nada \n "));
                         return;
                     }
                     danoIngfligido+=ataqueC;
@@ -165,7 +170,7 @@ public class Arquero extends Jugador {
                     int ataqueC = Ataque*3;
                     System.out.println(ColoresConsola.enVerde("¡Has realizado un ataque critico! (suerte) \n"));
                     if(defense > 0.8 ){
-                        System.out.println(ColoresConsola.enAzul("Pero no te ha servido de nada \n "));
+                        System.out.println(ColoresConsola.enAzul(ColoresConsola.enAmarillo("Pero no te ha servido de nada \n ")));
                         return;
                     }
                     danoIngfligido+=ataqueC;
@@ -250,12 +255,14 @@ public class Arquero extends Jugador {
 
         if(SuperA > 0.85){
             int SuperC = ATAQUE_ARQUERO;
+            SuperC-=enemigoActual[apuntar].Defensa;
             System.out.println(ColoresConsola.enVerde("¡¡Y ademas has realizado un ataque ciritico!!"));
             enemigoActual[apuntar].Vida-=SuperC;
             System.out.println(ColoresConsola.enVerde("Daño: "+SuperC+"\n"));
             danoIngfligido+=SuperC;
         }else{
             int Super = ATAQUE_ARQUERO*3;
+            Super-=enemigoActual[apuntar].Defensa;
             enemigoActual[apuntar].Vida-=Super;
             System.out.println(ColoresConsola.enVerde("Daño: "+Super+"\n"));
             danoIngfligido+=Super;
@@ -267,7 +274,7 @@ public class Arquero extends Jugador {
 
     @Override
     public String toString() {
-        return ColoresConsola.AZUL+ " (( Arquero: " +
+        return ColoresConsola.AZUL+ " (( ARQUERO: " +
                 " Vida=" + Vida +
                 " || Ataque=" + Ataque +
                 " || Estamina=" + Estamina+

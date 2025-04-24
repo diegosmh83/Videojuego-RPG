@@ -13,6 +13,7 @@ public class Mago extends Jugador {
     public Mago() {
         Vida=VIDA_BASE_MAGO;
         Ataque=ATAQUE_MAGO;
+        Defensa=7;
         Estamina=25;
         nombre="Mago";
     }
@@ -69,7 +70,7 @@ public class Mago extends Jugador {
 
         do{
 
-            System.out.println("Elige un enemigo al que atacar: \n (1) "+enemigoActual[0]+" | (2) "+enemigoActual[1]);
+            System.out.println("Elige un enemigo al que atacar: \n (1) "+enemigoActual[0]+" || (2) "+enemigoActual[1]);
             input=sc.nextInt();
             apuntar=input-1;
 
@@ -89,7 +90,7 @@ public class Mago extends Jugador {
                 System.out.println(ColoresConsola.enAmarillo("El "+enemigoActual[apuntar].nombre+ "se ha defendido \n ") );
             }else{
                 Ataque=0;
-                System.out.println(ColoresConsola.enAmarillo("El "+enemigoActual[apuntar].nombre+ "ha realizado una defensa impecable \n "));
+                System.out.println(ColoresConsola.enAmarillo("El "+enemigoActual[apuntar].nombre+ "ha realizado una defensa perfecta y ha bloqueado tu ataque \n "));
             }
 
         }
@@ -102,6 +103,7 @@ public class Mago extends Jugador {
             case 1:{
 
                 if(attack < 0.1){
+                    Ataque-=enemigoActual[apuntar].Defensa;
                     int ataqueP = Ataque/2;
                     System.out.println(ColoresConsola.enAzul("Has realizado un ataque penoso (fallo) "));
                     danoIngfligido+=ataqueP;
@@ -109,6 +111,7 @@ public class Mago extends Jugador {
                     System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueP+ "\n"));
                     Estamina++;
                 }else if(attack <= 0.7){
+                    Ataque-=enemigoActual[apuntar].Defensa;
                     System.out.println(ColoresConsola.enAzul("Has realizado un ataque normal  "));
                     danoIngfligido+=Ataque;
                     enemigoActual[apuntar].Vida-=Ataque;
@@ -117,7 +120,7 @@ public class Mago extends Jugador {
                 }else {
                     double ataqueC = Ataque*1.5;
                     System.out.println(ColoresConsola.enVerde("¡Has realizado un ataque critico! (Suerte)  "));
-                    if(enemigoActual[apuntar].defenderse && defense >0.8) {
+                    if(enemigoActual[apuntar].defenderse && defense > 0.8) {
                         System.out.println("Pero no te ha servido para nada \n ");
                         return;
                     }else{
@@ -134,6 +137,7 @@ public class Mago extends Jugador {
             case 2:{
 
                 if(attack < 0.2){
+                    Ataque-=enemigoActual[apuntar].Defensa;
                     int ataqueP = Ataque/2;
                     System.out.println(ColoresConsola.AZUL+"Has realizado un ataque penoso (fallo)  "+ColoresConsola.RESET);
                     danoIngfligido+=ataqueP;
@@ -141,6 +145,7 @@ public class Mago extends Jugador {
                     System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueP + ColoresConsola.RESET);
                     Estamina++;
                 }else if(attack <= 0.8){
+                    Ataque-=enemigoActual[apuntar].Defensa;
                     System.out.println(ColoresConsola.AZUL+"Has realizado un ataque normal "+ColoresConsola.RESET);
                     danoIngfligido+=Ataque;
                     enemigoActual[apuntar].Vida-=Ataque;
@@ -166,6 +171,7 @@ public class Mago extends Jugador {
             case 3:{
 
                 if(attack < 0.3){
+                    Ataque-=enemigoActual[apuntar].Defensa;
                     int ataqueP = Ataque/2;
                     System.out.println(ColoresConsola.enAzul("Has realizado un ataque penoso (fallo)") );
                     danoIngfligido+=ataqueP;
@@ -173,6 +179,7 @@ public class Mago extends Jugador {
                     System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueP));
                     Estamina++;
                 }else if(attack <= 0.9){
+                    Ataque-=enemigoActual[apuntar].Defensa;
                     System.out.println(ColoresConsola.AZUL+"Has realizado un ataque normal \n" +ColoresConsola.RESET);
                     danoIngfligido+=Ataque;
                     enemigoActual[apuntar].Vida-=Ataque;
@@ -269,17 +276,18 @@ public class Mago extends Jugador {
         }
 
 
-
         double SuperA = Math.random();
 
         if(SuperA > 0.85){
             int SuperC = ATAQUE_MAGO*5;
+            SuperC-=enemigoActual[apuntar].Defensa;
             System.out.println(ColoresConsola.VERDE+"¡¡Y ademas has realizado un ataque critico!! \n  ");
             enemigoActual[apuntar].Vida-=SuperC;
             System.out.println(ColoresConsola.enVerde("Daño infligido: "+SuperC+"\n"));
             danoIngfligido+=SuperC;
         }else {
             int Super = ATAQUE_MAGO*3;
+            Super-=enemigoActual[apuntar].Defensa;
             enemigoActual[apuntar].Vida-=Super;
             System.out.println(ColoresConsola.enVerde("Daño infligido: "+Super+"\n"));
             danoIngfligido+=Super;
@@ -290,7 +298,7 @@ public class Mago extends Jugador {
 
     @Override
     public String toString() {
-        return ColoresConsola.AZUL+" (( Mago: " +
+        return ColoresConsola.AZUL+" (( MAGO: " +
                 " Vida=" + Vida +
                 " || Ataque=" + Ataque +
                 " || Estamina=" + Estamina +

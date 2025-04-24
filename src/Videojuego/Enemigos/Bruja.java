@@ -11,6 +11,7 @@ public class Bruja extends Enemigo {
     public Bruja() {
         Vida=125;
         Ataque=20;
+        Defensa=8;
         nombre="Bruja";
     }
 
@@ -144,6 +145,7 @@ public class Bruja extends Enemigo {
 
         if(attack < 0.7){
             System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal \n"));
+            Ataque-=jugadorActual[apuntado].Defensa;
             jugadorActual[apuntado].Vida-=Ataque;
             System.out.println(ColoresConsola.enRojo("Daño recibido: "+Ataque));
             danoIngfligido+=Ataque;
@@ -171,7 +173,7 @@ public class Bruja extends Enemigo {
 
     @Override
     public String toString() {
-        return ColoresConsola.ROJO+ "(( Vida Bruja:" + Vida+" ))\n"+ColoresConsola.RESET;
+        return ColoresConsola.ROJO+ "(( BRUJA: Vida:" + Vida+" || Ataque:"+Ataque+" || Defensa: "+Defensa+" || Daño total: "+danoIngfligido+"))\n"+ColoresConsola.RESET;
     }
 
 
