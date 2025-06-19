@@ -14,7 +14,7 @@ public class Juego {
     public static Scanner sc=new Scanner(System.in);
 
     //Capacidad de cada grupo que se va a enfrentar (Jugadores y Enemigos)
-    public static  final int EQUIPO=2;
+    public static final int EQUIPO=2;
 
     //Cementerio Objetos version anterior
     Jugador player;
@@ -27,6 +27,7 @@ public class Juego {
     //variable que recoge el nivel de dificultad del juego
     public static int dificultad;
 
+    //variable que indica la posicion del jugador/enemigo de cada equipo que le toque ejecutar su turno (0/1)
     public static int n=0;
 
     public static boolean enemigo0muerto=false;
@@ -34,6 +35,26 @@ public class Juego {
 
     public static boolean jugador0muerto=false;
     public static boolean jugador1muerto=false;
+
+    public boolean turno1Hecho=false;
+    public boolean turno2Hecho=false;
+    public boolean turnoJ1Hecho=false;
+    public boolean turnoJ2Hecho=false;
+
+    public boolean Bturno1Hecho=false;
+    public boolean Bturno2Hecho=false;
+    public boolean BturnoJ1Hecho=false;
+    public boolean BturnoJ2Hecho=false;
+
+    int N1=3;
+    int N2=3;
+    int N3=3;
+    int N4=3;
+
+    int N5=3;
+    int N6=3;
+    int N7=3;
+    int N8=3;
 
     public void controldelJuego(){
 
@@ -59,11 +80,14 @@ public class Juego {
             if (Jugadores[n].Vida > 0 && !Jugadores[n].paralizado){
                 System.out.println(Jugadores[n]);
                 turnoJugador();
-            }else if (Jugadores[n].paralizado) {
+                if(NPCs[Jugadores[n].EnemigoNerffeado].Nerffeado){
+                    gestionarNerffeoEnemigo();
+                }
+                if(Jugadores[n].Buffeado){
+                    gestionarBuffeoJugador();
+                }
+            }else if (Jugadores[n].paralizado)
                 aplicarParalizacion();
-            }else if(jugador0muerto){
-                System.out.println();
-            }
             n++;
 
             limitarEstamina();
@@ -79,11 +103,17 @@ public class Juego {
             }
 
             //Turno del segundo jugador
-            if (Jugadores[n].Vida > 0){
+            if (Jugadores[n].Vida > 0 && !Jugadores[n].paralizado){
                 System.out.println(Jugadores[n]);
                 turnoJugador();
-            }else if (jugador1muerto)
-                System.out.println();
+                if(NPCs[Jugadores[n].EnemigoNerffeado].Nerffeado){
+                    gestionarNerffeoEnemigo();
+                }
+                if(Jugadores[n].Buffeado){
+                    gestionarBuffeoJugador();
+                }
+            }else if (Jugadores[n].paralizado)
+                aplicarParalizacion();
             n--;
 
             limitarEstamina();
@@ -102,7 +132,12 @@ public class Juego {
             if(NPCs[n].Vida > 0){
                 System.out.println(NPCs[n]);
                 turnoEnemigo();
-
+                if(Jugadores[NPCs[n].JugadorNerffeado].Nerffeado){
+                    gestionarNerffeoJugador();
+                }
+                if(NPCs[n].Buffeado){
+                    gestionarBuffeoEnemigo();
+                }
             }else if(enemigo0muerto)
                 System.out.println();
             n++;
@@ -112,15 +147,21 @@ public class Juego {
             comprobarMuertesJugador();
 
             //Turno segundo enemigo
-            if(NPCs[n].Vida > 0) {
+            if(NPCs[n].Vida > 0){
                 System.out.println(NPCs[n]);
                 turnoEnemigo();
+                if(Jugadores[NPCs[n].JugadorNerffeado].Nerffeado){
+                    gestionarNerffeoJugador();
+                }
+                if(NPCs[n].Buffeado){
+                    gestionarBuffeoEnemigo();
+                }
             }else if (enemigo1muerto){
                 System.out.println();
             }
             n--;
 
-            //Coprobamos si jugadores mueren
+            //Comprobamos si jugadores mueren
             comprobarMuertesJugador();
 
             if(Jugadores[0].Vida <= 0 && Jugadores[1].Vida <= 0){
@@ -197,7 +238,7 @@ public class Juego {
     public Jugador[] CrearPersonajes(){
 
         System.out.println("Bienvenido a mi Videojuego, para comenzar a jugar, elige un Personaje:" +
-                " \n 1-guerrero \n 2-arquero \n 3-mago");
+                " \n 1-guerrero (Vida: 100, Ataque:25, Defensa: 5) \n 2-arquero \n 3-mago");
 
         Jugadores=new Jugador[EQUIPO];
 
@@ -528,13 +569,11 @@ public class Juego {
                 System.out.println(ColoresConsola.AMARILLO+"El "+Jugadores[0].nombre+ "esta paralizado "+ColoresConsola.ROJO+" (pierde el turno)"+ColoresConsola.RESET);
                 turnosJ1par-=1;
             }else{
-                System.out.println(ColoresConsola.enVerde("El "+Jugadores[0].nombre+ "se ha decongelado"));
+                System.out.println(ColoresConsola.enVerde("El "+Jugadores[0].nombre+ "se ha descongelado"));
                 Jugadores[0].paralizado=false;
                 turnosJ1par=2;
             }
 
-        }else{
-            System.out.println();
         }
 
         if(Jugadores[1].paralizado){
@@ -548,8 +587,169 @@ public class Juego {
                 turnosJ2par=2;
             }
 
-        }else{
-            System.out.println();
+        }
+
+    }
+
+    public void gestionarNerffeoEnemigo(){
+
+        if(Jugadores[n].EnemigoNerffeado==0){
+            NPCs[Jugadores[n].EnemigoNerffeado].aplicarNerffeo();
+            if(turno1Hecho){
+                turno1Hecho=false;
+            }else{
+                --N1;
+                turno1Hecho=true;
+            }
+            if(N1==0){
+                NPCs[Jugadores[n].EnemigoNerffeado].Nerffeado=false;
+                if(NPCs[Jugadores[n].EnemigoNerffeado].nombre.equals("Duende")){
+                    NPCs[Jugadores[n].EnemigoNerffeado].Defensa=Enemigo.DEFENSA_DUENDE_BASE;
+                }else{
+                    NPCs[Jugadores[n].EnemigoNerffeado].Defensa=Enemigo.DEFENSA_BRUJA_BASE;
+                }
+                N1=3;
+            }
+        }else if(Jugadores[n].EnemigoNerffeado==1){
+            NPCs[Jugadores[n].EnemigoNerffeado].aplicarNerffeo();
+            if(turno2Hecho){
+                turno2Hecho=false;
+            }else{
+                --N2;
+                turno2Hecho=true;
+            }
+            if(N2==0){
+                NPCs[Jugadores[n].EnemigoNerffeado].Nerffeado=false;
+                if(NPCs[Jugadores[n].EnemigoNerffeado].nombre.equals("Duende")){
+                    NPCs[Jugadores[n].EnemigoNerffeado].Defensa=Enemigo.DEFENSA_DUENDE_BASE;
+                }else{
+                    NPCs[Jugadores[n].EnemigoNerffeado].Defensa=Enemigo.DEFENSA_BRUJA_BASE;
+                }
+                N2=3;
+            }
+
+        }
+
+    }
+
+    public void gestionarNerffeoJugador(){
+
+        if(NPCs[n].JugadorNerffeado==0){
+            Jugadores[NPCs[n].JugadorNerffeado].aplicarNerffeo();
+            if(turnoJ1Hecho){
+                turnoJ1Hecho=false;
+            }else{
+                --N3;
+                turnoJ1Hecho=true;
+            }
+            if(N3==0){
+                Jugadores[NPCs[n].JugadorNerffeado].Nerffeado=false;
+                if(Jugadores[NPCs[n].JugadorNerffeado].nombre.equals("Mago")){
+                    Jugadores[NPCs[n].JugadorNerffeado].Defensa=Jugador.DEFENSA_MAGO_BASE;
+                }else if(Jugadores[NPCs[n].JugadorNerffeado].nombre.equals("Arquero")){
+                    Jugadores[NPCs[n].JugadorNerffeado].Defensa=Jugador.DEFENSA_ARQUERO_BASE;
+                }else{
+                    Jugadores[NPCs[n].JugadorNerffeado].Defensa=Jugador.DEFENSA_GUERRERO_BASE;
+                }
+                N3=3;
+            }
+        }else if(NPCs[n].JugadorNerffeado==1){
+            Jugadores[NPCs[n].JugadorNerffeado].aplicarNerffeo();
+            if(turnoJ2Hecho){
+                turnoJ2Hecho=false;
+            }else{
+                --N4;
+                turnoJ2Hecho=true;
+            }
+            if(N4==0){
+                Jugadores[NPCs[n].JugadorNerffeado].Nerffeado=false;
+                if(Jugadores[NPCs[n].JugadorNerffeado].nombre.equals("Mago")){
+                    Jugadores[NPCs[n].JugadorNerffeado].Defensa=Jugador.DEFENSA_MAGO_BASE;
+                }else if(Jugadores[NPCs[n].JugadorNerffeado].nombre.equals("Arquero")){
+                    Jugadores[NPCs[n].JugadorNerffeado].Defensa=Jugador.DEFENSA_ARQUERO_BASE;
+                }else{
+                    Jugadores[NPCs[n].JugadorNerffeado].Defensa=Jugador.DEFENSA_GUERRERO_BASE;
+                }
+                N4=3;
+            }
+        }
+
+    }
+
+    public void gestionarBuffeoJugador(){
+
+        if(Jugadores[0].Buffeado){
+            Jugadores[0].aplicarBuffeo();
+            if(BturnoJ1Hecho){
+                BturnoJ1Hecho=false;
+            }else{
+                --N5;
+                BturnoJ1Hecho=true;
+            }
+            if(N5==0){
+                Jugadores[0].Buffeado=false;
+                if(Jugadores[0].nombre.equals("Mago")){
+                    Jugadores[0].Ataque=Jugador.ATAQUE_MAGO;
+                }else if(Jugadores[0].nombre.equals("Guerrero")){
+                    Jugadores[0].Ataque=Jugador.ATAQUE_GUERRERO;
+                }else{
+                    Jugadores[0].Ataque=Jugador.ATAQUE_ARQUERO;
+                }
+            }
+        }else if(Jugadores[1].Buffeado){
+            Jugadores[1].aplicarBuffeo();
+            if(BturnoJ2Hecho){
+                BturnoJ2Hecho=false;
+            }else{
+                --N6;
+                BturnoJ2Hecho=true;
+            }
+            if(N6==0){
+                Jugadores[1].Buffeado=false;
+                if(Jugadores[1].nombre.equals("Mago")){
+                    Jugadores[1].Ataque=Jugador.ATAQUE_MAGO;
+                }else if(Jugadores[1].nombre.equals("Guerrero")){
+                    Jugadores[1].Ataque=Jugador.ATAQUE_GUERRERO;
+                }else{
+                    Jugadores[1].Ataque=Jugador.ATAQUE_ARQUERO;
+                }
+            }
+        }
+
+    }
+
+    public void gestionarBuffeoEnemigo(){
+
+        if(NPCs[0].Buffeado){
+            NPCs[0].aplicarBuffeo();
+            if(Bturno1Hecho){
+                Bturno1Hecho=false;
+            }else{
+                --N7;
+                Bturno1Hecho=true;
+            }
+            if(N7==0){
+                if(NPCs[0].nombre.equals("Duende")){
+                    NPCs[0].Ataque=Enemigo.ATAQUE_DUENDE;
+                }else{
+                    NPCs[0].Ataque=Enemigo.ATAQUE_BRUJA;
+                }
+            }
+        }else if(NPCs[1].Buffeado){
+            NPCs[1].aplicarBuffeo();
+            if(Bturno2Hecho){
+                Bturno2Hecho=false;
+            }else{
+                --N8;
+                Bturno2Hecho=true;
+            }
+            if(N8==0){
+                if(NPCs[1].nombre.equals("Duende")){
+                    NPCs[1].Ataque=Enemigo.ATAQUE_DUENDE;
+                }else{
+                    NPCs[1].Ataque=Enemigo.ATAQUE_BRUJA;
+                }
+            }
         }
 
     }

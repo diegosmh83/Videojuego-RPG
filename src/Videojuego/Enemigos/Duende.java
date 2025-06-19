@@ -13,11 +13,16 @@ public class Duende extends Enemigo {
         Ataque = 15;
         Defensa=5;
         nombre = "Duende";
+        Nerffeado=false;
     }
+
+    double defensa_base=DEFENSA_DUENDE_BASE;
 
 
     @Override
     public void Atacar() {
+
+        double defense = Math.random();
 
         //El enemigo puede perder el turno de ataque si se defiende
         if (defenderse) {
@@ -59,10 +64,9 @@ public class Duende extends Enemigo {
 
         }
 
-
         System.out.println(("El Duende va a atacar \n "));
 
-        int ataqueBase = Ataque;
+        double ataqueBase = Ataque;
 
         double input;
 
@@ -80,8 +84,6 @@ public class Duende extends Enemigo {
         //Sub-metodo para defender:
         if (jugadorActual[apuntado].defenderse) {
 
-            double defense = Math.random();
-
             if (defense < 0.2) {
                 System.out.println(ColoresConsola.enAzul("Tu defensa ha resultado fallida \n "));
             } else if ( defense <= 0.8) {
@@ -93,7 +95,6 @@ public class Duende extends Enemigo {
             }
 
         }
-
 
         double attack = Math.random();
 
@@ -142,6 +143,9 @@ public class Duende extends Enemigo {
                 }
             }
 
+            double buffeo=Math.random();
+            double nerffeo=Math.random();
+
 
             //Sub-metodo para atacar:
             if (attack < 0.7) {
@@ -152,10 +156,23 @@ public class Duende extends Enemigo {
                 danoIngfligido += Ataque;
             } else {
                 System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque critico \n"));
-                int ataqueC = Ataque * 2;
+                if(jugadorActual[apuntado].defenderse && defense>0.8){
+                    System.out.println(ColoresConsola.enVerde("Pero no le ha servido de nada"));
+                    return;
+                }
+                double ataqueC = Ataque * 2;
                 jugadorActual[apuntado].Vida -= ataqueC;
                 System.out.println(ColoresConsola.enRojo("Daño recibido: " + ataqueC));
                 danoIngfligido += Ataque;
+                if(nerffeo > 0.7){
+                    System.out.println(ColoresConsola.enAmarillo("Se reduce temporalmente la defensa de "+jugadorActual[apuntado].nombre+" en un 20%"));
+                    jugadorActual[apuntado].Nerffeado=true;
+                    JugadorNerffeado=apuntado;
+                }
+                if(buffeo > 0.7){
+                    System.out.println(ColoresConsola.enAmarillo("Aumenta temporalmente el ataque de "+nombre+ "en un 15%"));
+                    Buffeado=true;
+                }
             }
 
             Ataque = ataqueBase;
@@ -173,6 +190,18 @@ public class Duende extends Enemigo {
             defenderse = true;
 
         }
+
+    public void aplicarNerffeo(){
+
+        Defensa=DEFENSA_DUENDE_BASE*0.8;
+
+    }
+
+    public void aplicarBuffeo(){
+
+        Ataque=ATAQUE_DUENDE*1.15;
+
+    }
 
         @Override
         public String toString () {

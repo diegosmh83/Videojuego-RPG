@@ -14,9 +14,12 @@ public class Guerrero extends Jugador {
         Defensa=5;
         Estamina=0;
         nombre="Guerrero";
+        Nerffeado=false;
     }
 
     int apuntar;
+    final double DEFENSA_BASE=Defensa;
+    final double ATAQUE_BASE=Ataque;
 
 
     @Override
@@ -93,13 +96,16 @@ public class Guerrero extends Jugador {
 
         double attack=Math.random();
 
+        double buffeo=Math.random();
+        double nerffeo=Math.random();
+
         switch (dificultad){
 
             case 1:{
 
                 if(attack <= 0.1){
                     Ataque-=enemigoActual[apuntar].Defensa;
-                    int ataqueP = Ataque/3;
+                    double ataqueP = Ataque/3;
                     System.out.println(ColoresConsola.AZUL+"Has realizado un ataque penoso (fallo) \n"+ColoresConsola.RESET);
                     danoIngfligido+=ataqueP;
                     enemigoActual[apuntar].Vida-=ataqueP;
@@ -111,7 +117,7 @@ public class Guerrero extends Jugador {
                     enemigoActual[apuntar].Vida-=Ataque;
                     System.out.println(ColoresConsola.VERDE+"Daño infligido: "+Ataque+ "\n"+ColoresConsola.RESET);
                 }else {
-                    int ataqueC = Ataque*2;
+                   double ataqueC = Ataque*2;
                     System.out.println(ColoresConsola.VERDE+"¡Has realizado un ataque critico! (Suerte) \n"+ColoresConsola.VERDE);
                     if(enemigoActual[apuntar].defenderse && defense > 0.8){
                         System.out.println(ColoresConsola.enAmarillo(ColoresConsola.enAmarillo("Pero no te ha servido de nada")));
@@ -122,6 +128,15 @@ public class Guerrero extends Jugador {
                         System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueC+ "\n"+ColoresConsola.RESET);
 
                     }
+                    if(nerffeo > 0.7){
+                        System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de "+enemigoActual[apuntar].nombre+" en un 20%"));
+                        enemigoActual[apuntar].Nerffeado=true;
+                        EnemigoNerffeado=apuntar;
+                    }
+                    if(buffeo > 0.7){
+                        System.out.println(ColoresConsola.enVerde("Aumenta el ataque de "+nombre+" en un 15%"));
+                        Buffeado=true;
+                    }
 
                 }
                 break;
@@ -131,7 +146,7 @@ public class Guerrero extends Jugador {
 
                 if(attack <= 0.2){
                     Ataque-=enemigoActual[apuntar].Defensa;
-                    int ataqueP = Ataque/3;
+                    double ataqueP = Ataque/3;
                     System.out.println(ColoresConsola.AZUL+"Has realizado un ataque penoso (fallo) \n"+ColoresConsola.RESET);
                     danoIngfligido+=ataqueP;
                     enemigoActual[apuntar].Vida-=ataqueP;
@@ -143,7 +158,7 @@ public class Guerrero extends Jugador {
                     enemigoActual[apuntar].Vida-=Ataque;
                     System.out.println(ColoresConsola.VERDE+"Daño infligido: "+Ataque+ "\n"+ColoresConsola.RESET);
                 }else {
-                    int ataqueC = Ataque*2;
+                    double ataqueC = Ataque*2;
                     System.out.println(ColoresConsola.VERDE+"¡Has realizado un ataque critico! (Suerte) \n"+ColoresConsola.RESET);
                     if(enemigoActual[apuntar].defenderse && defense >0.8){
                         System.out.println(ColoresConsola.enAmarillo("Pero no te ha servido de nada"));
@@ -153,7 +168,15 @@ public class Guerrero extends Jugador {
                         enemigoActual[apuntar].Vida-=ataqueC;
                         System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueC+ "\n"+ColoresConsola.RESET);
                     }
-
+                    if(nerffeo > 0.7){
+                        System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de "+enemigoActual[apuntar].nombre+" en un 20%"));
+                        enemigoActual[apuntar].Nerffeado=true;
+                        EnemigoNerffeado=apuntar;
+                    }
+                    if(buffeo > 0.7){
+                        System.out.println(ColoresConsola.enVerde("Aumenta el ataque de "+nombre+" en un 15%"));
+                        Buffeado=true;
+                    }
                 }
                 break;
             }
@@ -162,7 +185,7 @@ public class Guerrero extends Jugador {
 
                 if(attack <= 0.3){
                     Ataque-=enemigoActual[apuntar].Defensa;
-                    int ataqueP = Ataque/3;
+                    double ataqueP = Ataque/3;
                     System.out.println(ColoresConsola.AZUL+"Has realizado un ataque penoso (fallo) " );
                     danoIngfligido+=ataqueP;
                     enemigoActual[apuntar].Vida-=ataqueP;
@@ -174,7 +197,7 @@ public class Guerrero extends Jugador {
                     enemigoActual[apuntar].Vida-=Ataque;
                     System.out.println(ColoresConsola.enVerde("Daño infligido: "+Ataque));
                 }else {
-                    int ataqueC = Ataque*2;
+                    double ataqueC = Ataque*2;
                     System.out.println(ColoresConsola.VERDE+"¡Has realizado un ataque critico! (Suerte) \n"+ColoresConsola.RESET);
                     if(enemigoActual[apuntar].defenderse && defense > 0.8){
                         System.out.println(ColoresConsola.enAmarillo("Pero no te ha servido de nada"));
@@ -184,7 +207,15 @@ public class Guerrero extends Jugador {
                         enemigoActual[apuntar].Vida-=ataqueC;
                         System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueC+ "\n"+ColoresConsola.RESET);
                     }
-
+                    if(nerffeo > 0.7){
+                        System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de "+enemigoActual[apuntar].nombre+" en un 20%"));
+                        enemigoActual[apuntar].Nerffeado=true;
+                        EnemigoNerffeado=apuntar;
+                    }
+                    if(buffeo > 0.7){
+                        System.out.println(ColoresConsola.enVerde("Aumenta el ataque de "+nombre+" en un 15%"));
+                        Buffeado=true;
+                    }
                 }
                 break;
             }
@@ -278,6 +309,18 @@ public class Guerrero extends Jugador {
         }
 
         defenderse=false;
+    }
+
+    public void aplicarNerffeo(){
+
+        Defensa=DEFENSA_BASE*0.8;
+
+    }
+
+    public void aplicarBuffeo(){
+
+        Ataque=ATAQUE_BASE*1.15;
+
     }
 
     @Override

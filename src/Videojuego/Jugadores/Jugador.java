@@ -10,6 +10,13 @@ public abstract class Jugador extends Personaje implements AccionesJugador {
     public int Estamina;
     public Enemigo[] enemigoActual;
 
+    public int EnemigoNerffeado;
+
+    public static final int DEFENSA_MAGO_BASE=7;
+    public static final int DEFENSA_GUERRERO_BASE=5;
+    public static final int DEFENSA_ARQUERO_BASE=10;
+
+
     public boolean paralizado;
     public boolean desangrado;
     public boolean envenenado;

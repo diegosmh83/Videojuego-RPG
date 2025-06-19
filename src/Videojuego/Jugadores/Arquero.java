@@ -9,6 +9,8 @@ import static Videojuego.Juego.sc;
 public class Arquero extends Jugador {
 
     int apuntar;
+    final double DEFENSA_BASE=Defensa;
+    final double ATAQUE_BASE=Ataque;
 
     public Arquero() {
         Vida=VIDA_BASE_ARQUERO;
@@ -16,6 +18,7 @@ public class Arquero extends Jugador {
         Defensa=10;
         Estamina=15;
         nombre="Arquero";
+        Nerffeado=false;
     }
 
 
@@ -94,6 +97,9 @@ public class Arquero extends Jugador {
 
         attack=Math.random();
 
+        double buffeo=Math.random();
+        double nerffeo=Math.random();
+
         switch(dificultad){
 
             case 1:{
@@ -111,7 +117,7 @@ public class Arquero extends Jugador {
                     enemigoActual[apuntar].Vida-=Ataque;
                     System.out.println(ColoresConsola.enVerde("Daño infligido: "+Ataque+ "\n"));
                 }else {
-                    int ataqueC = Ataque*3;
+                    double ataqueC = Ataque*3;
                     System.out.println(ColoresConsola.enVerde("¡Has realizado un ataque critico! (suerte) \n"));
                     if(enemigoActual[apuntar].defenderse && defense > 0.8){
                         System.out.println(ColoresConsola.enAmarillo("Pero no te ha servido de nada \n "));
@@ -120,6 +126,15 @@ public class Arquero extends Jugador {
                         danoIngfligido+=ataqueC;
                         enemigoActual[apuntar].Vida-=ataqueC;
                         System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueC+ "\n"));
+                    }
+                    if(nerffeo > 0.7){
+                        System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de "+enemigoActual[apuntar].nombre+" en un 20%"));
+                        enemigoActual[apuntar].Nerffeado=true;
+                        EnemigoNerffeado=apuntar;
+                    }
+                    if(buffeo > 0.7){
+                        System.out.println(ColoresConsola.enVerde("Aumenta el ataque de "+nombre+" en un 15%"));
+                        Buffeado=true;
                     }
 
                 }
@@ -141,15 +156,26 @@ public class Arquero extends Jugador {
                     enemigoActual[apuntar].Vida-=Ataque;
                     System.out.println(ColoresConsola.enVerde("Daño infligido: "+Ataque+ "\n"));
                 }else {
-                    int ataqueC = Ataque*3;
+                    double ataqueC = Ataque*3;
                     System.out.println(ColoresConsola.enVerde("¡Has realizado un ataque critico! (suerte) "));
-                    if(defense > 0.8 ){
+                    if(enemigoActual[apuntar].defenderse && defense > 0.8 ){
                         System.out.println(ColoresConsola.enAmarillo("Pero no te ha servido de nada \n "));
                         return;
+                    }else{
+                        danoIngfligido+=ataqueC;
+                        enemigoActual[apuntar].Vida-=ataqueC;
+                        System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueC+ "\n"));
                     }
-                    danoIngfligido+=ataqueC;
-                    enemigoActual[apuntar].Vida-=ataqueC;
-                    System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueC+ "\n"));
+                    if(nerffeo > 0.7){
+                        System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de "+enemigoActual[apuntar].nombre+" en un 20%"));
+                        enemigoActual[apuntar].Nerffeado=true;
+                        EnemigoNerffeado=apuntar;
+                    }
+                    if(buffeo > 0.7){
+                        System.out.println(ColoresConsola.enVerde("Aumenta el ataque de "+nombre+" en un 15%"));
+                        Buffeado=true;
+                    }
+
                 }
                 break;
             }
@@ -167,7 +193,7 @@ public class Arquero extends Jugador {
                     enemigoActual[apuntar].Vida-=Ataque;
                     System.out.println(ColoresConsola.enVerde("Daño infligido: "+Ataque+ "\n"));
                 }else {
-                    int ataqueC = Ataque*3;
+                    double ataqueC = Ataque*3;
                     System.out.println(ColoresConsola.enVerde("¡Has realizado un ataque critico! (suerte) \n"));
                     if(defense > 0.8 ){
                         System.out.println(ColoresConsola.enAzul(ColoresConsola.enAmarillo("Pero no te ha servido de nada \n ")));
@@ -176,7 +202,15 @@ public class Arquero extends Jugador {
                     danoIngfligido+=ataqueC;
                     enemigoActual[apuntar].Vida-=ataqueC;
                     System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueC+ "\n"));
-
+                    if(nerffeo > 0.7){
+                        System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de "+enemigoActual[apuntar].nombre+" en un 20%"));
+                        enemigoActual[apuntar].Nerffeado=true;
+                        EnemigoNerffeado=apuntar;
+                    }
+                    if(buffeo > 0.7){
+                        System.out.println(ColoresConsola.enVerde("Aumenta el ataque de "+nombre+" en un 15%"));
+                        Buffeado=true;
+                    }
                 }
                 break;
             }
@@ -254,14 +288,14 @@ public class Arquero extends Jugador {
         double SuperA = Math.random();
 
         if(SuperA > 0.85){
-            int SuperC = ATAQUE_ARQUERO;
+            double SuperC = ATAQUE_ARQUERO;
             SuperC-=enemigoActual[apuntar].Defensa;
             System.out.println(ColoresConsola.enVerde("¡¡Y ademas has realizado un ataque ciritico!!"));
             enemigoActual[apuntar].Vida-=SuperC;
             System.out.println(ColoresConsola.enVerde("Daño: "+SuperC+"\n"));
             danoIngfligido+=SuperC;
         }else{
-            int Super = ATAQUE_ARQUERO*3;
+            double Super = ATAQUE_ARQUERO*3;
             Super-=enemigoActual[apuntar].Defensa;
             enemigoActual[apuntar].Vida-=Super;
             System.out.println(ColoresConsola.enVerde("Daño: "+Super+"\n"));
@@ -270,6 +304,18 @@ public class Arquero extends Jugador {
         }
 
         defenderse=false;
+    }
+
+    public void aplicarNerffeo(){
+
+        Defensa=DEFENSA_BASE*0.8;
+
+    }
+
+    public void aplicarBuffeo(){
+
+        Ataque=ATAQUE_BASE*1.15;
+
     }
 
     @Override
