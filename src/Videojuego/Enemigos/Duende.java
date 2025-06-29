@@ -74,10 +74,10 @@ public class Duende extends Enemigo {
 
         if (input > 0.5) {
             apuntado = 1;
-            System.out.println(ColoresConsola.enAmarillo("va a por el jugador 2 ((" + jugadorActual[1].Vida + "))"));
+            System.out.println(ColoresConsola.enAmarillo("va a por el J2 "+jugadorActual[1].nombre+ "((" + jugadorActual[1].Vida + "))"));
         } else {
             apuntado = 0;
-            System.out.println(ColoresConsola.enAmarillo("va a por el jugador 1 ((" + jugadorActual[0].Vida + "))"));
+            System.out.println(ColoresConsola.enAmarillo("va a por el J1 "+jugadorActual[0].nombre+ "((" + jugadorActual[0].Vida + "))"));
         }
 
 
@@ -170,7 +170,7 @@ public class Duende extends Enemigo {
                     JugadorNerffeado=apuntado;
                 }
                 if(buffeo > 0.7){
-                    System.out.println(ColoresConsola.enAmarillo("Aumenta temporalmente el ataque de "+nombre+ "en un 15%"));
+                    System.out.println(ColoresConsola.enAmarillo("Aumenta temporalmente el ataque de "+nombre+ " en un 15%"));
                     Buffeado=true;
                 }
             }

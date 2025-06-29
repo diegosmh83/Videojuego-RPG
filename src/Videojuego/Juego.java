@@ -21,7 +21,7 @@ public class Juego {
     Enemigo NPC;
 
     //Equipos que se enfrentaran
-    Jugador[] Jugadores;
+    public static Jugador[] Jugadores;
     Enemigo[] NPCs;
 
     //variable que recoge el nivel de dificultad del juego
@@ -29,6 +29,13 @@ public class Juego {
 
     //variable que indica la posicion del jugador/enemigo de cada equipo que le toque ejecutar su turno (0/1)
     public static int n=0;
+
+    public static int coolDownDevastadorJ1=2;
+    public static int coolDownDevastadorJ2=2;
+    public static int coolDownSuperAtaqueJ1=3;
+    public static int coolDownSuperAtaqueJ2=3;
+    public static int coolDownInvocacion=3;
+    public static boolean espirituInvocado=false;
 
     public static boolean enemigo0muerto=false;
     public static boolean enemigo1muerto=false;
@@ -58,7 +65,7 @@ public class Juego {
 
     public void controldelJuego(){
 
-        //Creamos Personajes
+        //Creamos todos los personajes
         CrearPersonajes();
         CrearEnemigos();
 
@@ -122,7 +129,7 @@ public class Juego {
             //Coprobamos si enemigos mueren
             comprobarMuertesEnemigo();
 
-            if(NPCs[0].Vida <= 0 && NPCs[1].Vida <= 0){
+            if(enemigo1muerto && enemigo0muerto){
                 System.out.println("Has matado a todos los enemigos \n");
                 System.out.println(ColoresConsola.enVerde("¡Has ganado!"));
                 break;
@@ -164,7 +171,7 @@ public class Juego {
             //Comprobamos si jugadores mueren
             comprobarMuertesJugador();
 
-            if(Jugadores[0].Vida <= 0 && Jugadores[1].Vida <= 0){
+            if(jugador0muerto && jugador1muerto){
                 System.out.println("Los enemigos te han derrotado \n");
                 System.out.println(ColoresConsola.enRojo("Has perdido..."));
                 break;
@@ -173,11 +180,20 @@ public class Juego {
             //Dependiendo del nivel de dificultad recargamos mas o menos estamina al final de cada turno
             recargarEstamina();
 
+            //Una vez finalizado el turno se aplican los daños en caso de que haya sangrado o envenenado
             aplicarSangrado();
             aplicarVeneno();
 
+            //cada final de turno se reduce una unidad en las variables que manejan las habilidades que van por turnos
+            manejarCoolDown();
+
             //Limitamos siempre la estamina a 100
             limitarEstamina();
+
+            if(espirituInvocado){
+                Jugadores[n].atacarEspiritu();
+            }
+
 
         }
 
@@ -238,7 +254,7 @@ public class Juego {
     public Jugador[] CrearPersonajes(){
 
         System.out.println("Bienvenido a mi Videojuego, para comenzar a jugar, elige un Personaje:" +
-                " \n 1-guerrero (Vida: 100, Ataque:25, Defensa: 5) \n 2-arquero \n 3-mago");
+                " \n 1-guerrero (Vida: 100, Ataque:25, Defensa: 5) \n 2-arquero (Vida:85, Ataque:20, Defensa:10) \n 3-mago (Vida:75, Ataque:30, Defensa: 7)");
 
         Jugadores=new Jugador[EQUIPO];
 
@@ -263,7 +279,7 @@ public class Juego {
         }
 
         int escoger2;
-        System.out.println("Ahora elige un segundo personaje:  \n 1-guerrero \n 2-arquero \n 3-mago");
+        System.out.println("Ahora elige un segundo personaje:  \n 1-guerrero (Vida: 100, Ataque:25, Defensa: 5) \n 2-arquero (Vida:85, Ataque:20, Defensa:10) \n 3-mago (Vida:75, Ataque:30, Defensa: 7) ");
 
         do{
             escoger2=sc.nextInt();
@@ -322,18 +338,33 @@ public class Juego {
 
         switch (dificultad){
             case 1:{
-                System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Curacion (20 Estamina) " +
-                        "\n 4-Habilidad Especial (65 Estamina)");
+                if(n==0){
+                    System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador (CoolDown: "+coolDownDevastadorJ1+
+                            " ) \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (65 Estamina) (CoolDown: "+coolDownSuperAtaqueJ1+" ) \n 6-Invocacion (CoolDown: "+coolDownInvocacion+ ")");
+                }else{
+                    System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador (CoolDown: "+coolDownDevastadorJ2+
+                            " ) \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (65 Estamina) (CoolDown: "+coolDownSuperAtaqueJ2+" ) \n 6-Invocacion (CoolDown: "+coolDownInvocacion+ ")");
+                }
                 break;
             }
             case 2:{
-                System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Curacion (20 Estamina)" +
-                        " \n 4-Habilidad Especial (75 Estamina)");
+                if(n==0){
+                    System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador (CoolDown: "+coolDownDevastadorJ1+
+                            " ) \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) (CoolDown: "+coolDownSuperAtaqueJ1+" ) \n 6-Invocacion (CoolDown: "+coolDownInvocacion+ ")");
+                }else{
+                    System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador (CoolDown: "+coolDownDevastadorJ2+
+                            " ) \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) (CoolDown: "+coolDownSuperAtaqueJ2+" ) \n 6-Invocacion (CoolDown: "+coolDownInvocacion+ ")");
+                }
                 break;
             }
             case 3:{
-                System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Curacion (20 Estamina)" +
-                        " \n 4-Habilidad Especial (85 Estamina)");
+                if(n==0){
+                    System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador (CoolDown: "+coolDownDevastadorJ1+
+                            " ) \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (85 Estamina) (CoolDown: "+coolDownSuperAtaqueJ1+" ) \n 6-Invocacion (CoolDown: "+coolDownInvocacion+ ")");
+                }else{
+                    System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador (CoolDown: "+coolDownDevastadorJ2+
+                            " ) \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (85 Estamina) (CoolDown: "+coolDownSuperAtaqueJ2+" ) \n 6-Invocacion (CoolDown: "+coolDownInvocacion+ ")");
+                }
                 break;
             }
 
@@ -349,6 +380,26 @@ public class Juego {
                 Jugadores[n].Defender();
                 break;
             case 3:
+                if(n==0){
+                    if(coolDownDevastadorJ1==0){
+                        Jugadores[n].golpeDevastador();
+                        coolDownDevastadorJ1=5;
+                    }else{
+                        System.out.println("Debes esperar a que reactive el turno");
+                        turnoJugador();
+                    }
+                    break;
+                }else{
+                    if(coolDownDevastadorJ2==0){
+                        Jugadores[n].golpeDevastador();
+                        coolDownDevastadorJ2=5;
+                    }else{
+                        System.out.println("Debes esperar a que reactive el turno");
+                        turnoJugador();
+                    }
+                    break;
+                }
+            case 4:
                 if(Jugadores[n].Estamina >= 20){
                     Jugadores[n].Curarse();
                     break;
@@ -357,35 +408,65 @@ public class Juego {
                     turnoJugador();
                     break;
                 }
-            case 4:{
+            case 5:{
                 switch(dificultad){
                     case 1:{
-                        if(Jugadores[n].Estamina >= 65){
-                            Jugadores[n].SuperAtaque();
-                            break;
+                        if(n==0){
+                            if(Jugadores[n].Estamina >= 65 && coolDownSuperAtaqueJ1==0){
+                                Jugadores[n].SuperAtaque();
+                                coolDownSuperAtaqueJ1=5;
+                            }else{
+                                System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
+                                turnoJugador();
+                            }
                         }else{
-                            System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
-                            turnoJugador();
+                            if(Jugadores[n].Estamina >= 65 && coolDownSuperAtaqueJ2==0){
+                                Jugadores[n].SuperAtaque();
+                                coolDownSuperAtaqueJ2=5;
+                            }else{
+                                System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
+                                turnoJugador();
+                            }
                         }
                         break;
                     }
                     case 2:{
-                        if(Jugadores[n].Estamina >= 75){
-                            Jugadores[n].SuperAtaque();
-                            break;
+                        if(n==0){
+                            if(Jugadores[n].Estamina >= 75 && coolDownSuperAtaqueJ1==0){
+                                Jugadores[n].SuperAtaque();
+                                coolDownSuperAtaqueJ1=5;
+                            }else{
+                                System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
+                                turnoJugador();
+                            }
                         }else{
-                            System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
-                            turnoJugador();
+                            if(Jugadores[n].Estamina >= 75 && coolDownSuperAtaqueJ2==0){
+                                Jugadores[n].SuperAtaque();
+                                coolDownSuperAtaqueJ2=5;
+                            }else{
+                                System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
+                                turnoJugador();
+                            }
                         }
                         break;
                     }
                     case 3:{
-                        if(Jugadores[n].Estamina >= 85){
-                            Jugadores[n].SuperAtaque();
-                            break;
+                        if(n==0){
+                            if(Jugadores[n].Estamina >= 85 && coolDownSuperAtaqueJ1==0){
+                                Jugadores[n].SuperAtaque();
+                                coolDownSuperAtaqueJ1=5;
+                            }else{
+                                System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
+                                turnoJugador();
+                            }
                         }else{
-                            System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
-                            turnoJugador();
+                            if(Jugadores[n].Estamina >= 85 && coolDownSuperAtaqueJ2==0){
+                                Jugadores[n].SuperAtaque();
+                                coolDownSuperAtaqueJ2=5;
+                            }else{
+                                System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
+                                turnoJugador();
+                            }
                         }
                         break;
                     }
@@ -393,9 +474,17 @@ public class Juego {
                 }
                 break;
             }
-
+            case 6:
+                if (!espirituInvocado && coolDownInvocacion == 0) {
+                    Jugadores[n].invocarEspiritu();
+                    coolDownInvocacion=7;
+                }else{
+                    System.out.println("El espiritu ya ha sido invocado");
+                    turnoJugador();
+                }
+                break;
             default:
-                System.out.println("No puedes huir en este juego, elige una accion valida \n ");
+                System.out.println("No puedes huir en este juego, elige una interaccion valida \n ");
                 turnoJugador();
                 break;
         }
@@ -404,6 +493,7 @@ public class Juego {
 
 
     public void turnoEnemigo(){
+
         double iadeUltimaGeneracion=Math.random();
 
         if(iadeUltimaGeneracion > 0.25){
@@ -411,6 +501,7 @@ public class Juego {
         }else{
             NPCs[n].Defender();
         }
+
     }
 
     public void comprobarMuertesJugador(){
@@ -481,7 +572,7 @@ public class Juego {
 
     public void aplicarSangrado(){
 
-        if(Jugadores[0].desangrado){
+        if(Jugadores[0].desangrado && Jugadores[0].Vida > 0){
 
             if(turnoJ1des > 0){
                 System.out.println(ColoresConsola.enAmarillo("El "+Jugadores[0].nombre+" esta desangrado"));
@@ -498,7 +589,7 @@ public class Juego {
             System.out.println();
         }
 
-        if(Jugadores[1].desangrado){
+        if(Jugadores[1].desangrado && Jugadores[1].Vida > 0){
 
             if(turnoJ2des > 0){
                 System.out.println(ColoresConsola.enAmarillo("El "+Jugadores[1].nombre+" esta desangrado"));
@@ -523,7 +614,7 @@ public class Juego {
 
     public void aplicarVeneno(){
 
-        if(Jugadores[0].envenenado){
+        if(Jugadores[0].envenenado && Jugadores[0].Vida > 0 ){
 
             if(turnoJ1ven > 0){
                 System.out.println(ColoresConsola.enAmarillo("El "+Jugadores[0].nombre+" esta envenenado"));
@@ -531,7 +622,7 @@ public class Juego {
                 System.out.println(ColoresConsola.enRojo("Se reduce la vida en "+veneno+" puntos"));
                 --turnoJ1ven;
             }else{
-                System.out.println(ColoresConsola.enVerde("El "+Jugadores[0].nombre+ "se ha des-envenenado"));
+                System.out.println(ColoresConsola.enVerde("El "+Jugadores[0].nombre+ " se ha des-envenenado"));
                 Jugadores[0].envenenado=false;
                 turnoJ1ven=6;
             }
@@ -540,14 +631,14 @@ public class Juego {
             System.out.println();
         }
 
-        if(Jugadores[1].envenenado){
+        if(Jugadores[1].envenenado && Jugadores[1].Vida > 0 ){
             if(turnoJ2ven > 0){
-                System.out.println(ColoresConsola.enAmarillo("El "+Jugadores[1].nombre+ "esta envenenado"));
+                System.out.println(ColoresConsola.enAmarillo("El "+Jugadores[1].nombre+ " esta envenenado"));
                 Jugadores[1].Vida-=veneno;
                 System.out.println(ColoresConsola.enRojo("Se reduce la vida en "+veneno+" puntos"));
                 --turnoJ2ven;
             }else{
-                System.out.println(ColoresConsola.enVerde("El "+Jugadores[1].nombre+ "se ha des-envenenado"));
+                System.out.println(ColoresConsola.enVerde("El "+Jugadores[1].nombre+ " se ha des-envenenado"));
                 Jugadores[1].envenenado=false;
                 turnoJ2ven=6;
             }
@@ -563,26 +654,26 @@ public class Juego {
 
     public void aplicarParalizacion(){
 
-        if(Jugadores[0].paralizado){
+        if(Jugadores[0].paralizado && Jugadores[0].Vida > 0 ){
 
             if(turnosJ1par > 0){
-                System.out.println(ColoresConsola.AMARILLO+"El "+Jugadores[0].nombre+ "esta paralizado "+ColoresConsola.ROJO+" (pierde el turno)"+ColoresConsola.RESET);
+                System.out.println(ColoresConsola.AMARILLO +Jugadores[0].nombre+ " esta paralizado "+ColoresConsola.ROJO+" (pierde el turno)"+ColoresConsola.RESET);
                 turnosJ1par-=1;
             }else{
-                System.out.println(ColoresConsola.enVerde("El "+Jugadores[0].nombre+ "se ha descongelado"));
+                System.out.println(ColoresConsola.enVerde(Jugadores[0].nombre+ " se ha descongelado"));
                 Jugadores[0].paralizado=false;
                 turnosJ1par=2;
             }
 
         }
 
-        if(Jugadores[1].paralizado){
+        if(Jugadores[1].paralizado && Jugadores[1].Vida > 0 ){
 
             if(turnosJ2par > 0){
-                System.out.println(ColoresConsola.AMARILLO+"EL "+Jugadores[1].nombre+ "esta paralizado "+ColoresConsola.ROJO+"(pierde el turno)"+ColoresConsola.RESET);
+                System.out.println(ColoresConsola.AMARILLO+ Jugadores[1].nombre+ " esta paralizado "+ColoresConsola.ROJO+"(pierde el turno)"+ColoresConsola.RESET);
                 turnosJ2par--;
             }else{
-                System.out.println(ColoresConsola.enVerde("El "+Jugadores[1].nombre+ "se ha descongelado"));
+                System.out.println(ColoresConsola.enVerde(Jugadores[1].nombre+ " se ha descongelado"));
                 Jugadores[1].paralizado=false;
                 turnosJ2par=2;
             }
@@ -751,6 +842,33 @@ public class Juego {
                 }
             }
         }
+
+    }
+
+    public void manejarCoolDown(){
+
+        if(coolDownDevastadorJ1>0){
+            --coolDownDevastadorJ1;
+        }
+        if(coolDownDevastadorJ2>0){
+            --coolDownDevastadorJ2;
+        }
+
+
+        if(coolDownSuperAtaqueJ1>0){
+            --coolDownSuperAtaqueJ1;
+        }
+        if(coolDownSuperAtaqueJ2>0){
+            --coolDownSuperAtaqueJ2;
+        }
+
+        if(coolDownInvocacion>0){
+            --coolDownInvocacion;
+        }
+        if(coolDownInvocacion<4){
+            espirituInvocado=false;
+        }
+
 
     }
 

@@ -2,8 +2,8 @@ package Videojuego.Jugadores;
 
 import Videojuego.Interfaces.ColoresConsola;
 
-import static Videojuego.Juego.dificultad;
-import static Videojuego.Juego.sc;
+import static Videojuego.Juego.*;
+import static Videojuego.Juego.enemigo1muerto;
 
 public class Guerrero extends Jugador {
 
@@ -18,8 +18,8 @@ public class Guerrero extends Jugador {
     }
 
     int apuntar;
-    final double DEFENSA_BASE=Defensa;
-    final double ATAQUE_BASE=Ataque;
+    final double DEFENSA_BASE=5;
+    final double ATAQUE_BASE=25;
 
 
     @Override
@@ -67,30 +67,44 @@ public class Guerrero extends Jugador {
 
         System.out.println(("Has escogido Atacar \n "));
 
-        int input;
+        if(!enemigo0muerto && !enemigo1muerto){
+            int input=0;
 
-        do{
+            do{
 
-            System.out.println("Elige un enemigo al que atacar: \n (1)  "+enemigoActual[0]+" | (2)  "+enemigoActual[1]);
-            input=sc.nextInt();
-            apuntar=input-1;
+                System.out.println("Elige un enemigo al que atacar: "+enemigoActual[0].nombre+
+                        enemigoActual[0].Vida+" || (2) "+enemigoActual[1].nombre+
+                        enemigoActual[1].Vida);
+                input=sc.nextInt();
+                apuntar=input-1;
 
-        }while(input!=1 && input!=2);
+
+            }while(input!=1 && input!=2);
+
+        }else{
+
+            if(enemigo1muerto){
+                System.out.println(ColoresConsola.enAzul("Vas a por el enemigo 1 "+enemigoActual[0].nombre));
+            }else{
+                System.out.println(ColoresConsola.enAzul("Vas a por el enemigo 2 "+enemigoActual[1].nombre));
+            }
+
+        }
 
         double defense=Math.random();
 
         if(enemigoActual[apuntar].defenderse){
-            System.out.println("El "+enemigoActual[apuntar].nombre+ "se esta defendiendo... \n ");
+            System.out.println(enemigoActual[apuntar].nombre+ " se esta defendiendo... \n ");
 
 
             if(defense < 0.2){
-                System.out.println(ColoresConsola.enAmarillo("La defensa del" +enemigoActual[apuntar].nombre+ "ha resultado fallida \n "));
+                System.out.println(ColoresConsola.enAmarillo("La defensa del" +enemigoActual[apuntar].nombre+ " ha resultado fallida \n "));
             }else if (defense <= 0.8){
                 Ataque-=Ataque*0.25;
                 System.out.println(ColoresConsola.enAmarillo("El "+enemigoActual[apuntar].nombre+ " se ha defendido \n ") );
             }else{
                 Ataque=0;
-                System.out.println(ColoresConsola.enAmarillo("El "+enemigoActual[apuntar].nombre+ "ha realizado una defensa perfecta y ha bloqueado tu ataque \n "));
+                System.out.println(ColoresConsola.enAmarillo("El "+enemigoActual[apuntar].nombre+ " ha realizado una defensa perfecta y ha bloqueado tu ataque \n "));
             }
         }
 
@@ -120,7 +134,7 @@ public class Guerrero extends Jugador {
                    double ataqueC = Ataque*2;
                     System.out.println(ColoresConsola.VERDE+"¡Has realizado un ataque critico! (Suerte) \n"+ColoresConsola.VERDE);
                     if(enemigoActual[apuntar].defenderse && defense > 0.8){
-                        System.out.println(ColoresConsola.enAmarillo(ColoresConsola.enAmarillo("Pero no te ha servido de nada")));
+                        System.out.println((ColoresConsola.enAmarillo("Pero no te ha servido de nada")));
                         return;
                     }else{
                         danoIngfligido+=ataqueC;
@@ -248,14 +262,38 @@ public class Guerrero extends Jugador {
 
         double Curation=Math.random();
 
-        if(Curation < 0.8){
-            double Curacion=VIDA_BASE_GUERRERO*0.2;
-            Vida+=Curacion;
-            System.out.println(ColoresConsola.enVerde("Has aumentado la vida en: "+Curacion+" puntos"));
-        }else {
-            double Kuracion=VIDA_BASE_GUERRERO*0.45;
-            Vida+=Kuracion;
-            System.out.println(ColoresConsola.enVerde("Has aumentado la vida en "+Kuracion+" puntos"));
+        int input=0;
+
+        if(!jugador0muerto && !jugador1muerto){
+
+            do{
+                System.out.println("Elige un jugador al que curar: (1) "+Jugadores[0].nombre + Jugadores[0].Vida+ " || (2) "+Jugadores[1].nombre + Jugadores[1].Vida);
+
+                input=sc.nextInt();
+                apuntar=input-1;
+
+            }while(input!=1 && input!=2);
+
+            if(Curation < 0.8){
+                double Curacion=VIDA_BASE_GUERRERO*0.2;
+                Jugadores[apuntar].Vida+=Curacion;
+                System.out.println(ColoresConsola.enVerde("Has aumentado la vida en: "+Curacion+" puntos"));
+            }else {
+                double Kuracion=VIDA_BASE_GUERRERO*0.45;
+                Jugadores[apuntar].Vida+=Kuracion;
+                System.out.println(ColoresConsola.enVerde("Has aumentado la vida en "+Kuracion+" puntos"));
+            }
+
+        }else{
+            if(Curation < 0.8){
+                double Curacion=VIDA_BASE_GUERRERO*0.2;
+                Vida+=Curacion;
+                System.out.println(ColoresConsola.enVerde("Has aumentado la vida en: "+Curacion+" puntos"));
+            }else {
+                double Kuracion=VIDA_BASE_GUERRERO*0.45;
+                Vida+=Kuracion;
+                System.out.println(ColoresConsola.enVerde("Has aumentado la vida en "+Kuracion+" puntos"));
+            }
         }
 
         defenderse=false;
@@ -268,7 +306,9 @@ public class Guerrero extends Jugador {
 
         do{
 
-            System.out.println("Elige un enemigo al que atacar: \n (1) "+enemigoActual[0]+" || (2) "+enemigoActual[1]);
+            System.out.println("Elige un enemigo al que atacar: \n (1) "+enemigoActual[0].nombre+
+                     enemigoActual[0].Vida+" || (2) "+enemigoActual[1].nombre+
+                     enemigoActual[1].Vida);
             input=sc.nextInt();
             apuntar=input-1;
 
@@ -309,6 +349,167 @@ public class Guerrero extends Jugador {
         }
 
         defenderse=false;
+    }
+
+    @Override
+    public void golpeDevastador(){
+
+        System.out.println("Has escogido el golpe devastador \n");
+
+        Ataque=ATAQUE_BASE*2;
+
+        int input;
+
+        double defense=Math.random();
+
+        if(!enemigo0muerto && !enemigo1muerto){
+
+            do{
+
+                System.out.println("Elige un enemigo al que atacar: \n (1) "+enemigoActual[0].nombre+
+                        " " +enemigoActual[0].Vida+" || (2) "+enemigoActual[1].nombre+
+                        " " +enemigoActual[1].Vida);
+                input=sc.nextInt();
+                apuntar=input-1;
+
+            }while(input!=1 && input!=2);
+
+            if(enemigoActual[apuntar].defenderse){
+
+
+                System.out.println((enemigoActual[apuntar].nombre+ "se esta defendiendo... \n "));
+
+                if(defense < 0.2){
+                    System.out.println(ColoresConsola.enAmarillo("La defensa de " +enemigoActual[apuntar].nombre+ " ha resultado fallida \n "));
+                    enemigoActual[apuntar].Vida-=Ataque;
+                    System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
+                }else if (defense <= 0.8){
+                    Ataque-=Ataque*0.25;
+                    System.out.println(ColoresConsola.enAmarillo(enemigoActual[apuntar].nombre+ " se ha defendido del golpe devastador\n "));
+                    enemigoActual[apuntar].Vida-=Ataque;
+                    System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
+                }else{
+                    Ataque=ATAQUE_BASE;
+                    System.out.println(ColoresConsola.enAmarillo(enemigoActual[apuntar].nombre+ " ha realizado una defensa perfecta y ha mermado tu golpe devastador \n "));
+                    enemigoActual[apuntar].Vida-=Ataque;
+                    System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
+                }
+
+            }else{
+                enemigoActual[apuntar].Vida-=Ataque;
+                System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
+            }
+
+        }else{
+
+            if(enemigo1muerto){
+                apuntar=0;
+
+                System.out.println("Vas a por el enemigo 1 "+enemigoActual[apuntar].nombre);
+
+                if(enemigoActual[apuntar].defenderse){
+
+                    System.out.println((enemigoActual[apuntar].nombre+ "se esta defendiendo... \n "));
+
+                    if(defense < 0.2){
+                        System.out.println(ColoresConsola.enAmarillo("La defensa de " +enemigoActual[apuntar].nombre+ " ha resultado fallida \n "));
+                        enemigoActual[apuntar].Vida-=Ataque;
+                        System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
+                    }else if (defense <= 0.8){
+                        Ataque-=Ataque*0.25;
+                        System.out.println(ColoresConsola.enAmarillo(enemigoActual[apuntar].nombre+ " se ha defendido del golpe devastador\n "));
+                        enemigoActual[apuntar].Vida-=Ataque;
+                        System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
+                    }else{
+                        Ataque=ATAQUE_BASE;
+                        System.out.println(ColoresConsola.enAmarillo(enemigoActual[apuntar].nombre+ " ha realizado una defensa perfecta y ha mermado tu golpe devastador \n "));
+                        enemigoActual[apuntar].Vida-=Ataque;
+                        System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
+                    }
+
+                }else{
+                    enemigoActual[apuntar].Vida-=Ataque;
+                    System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
+                }
+
+            }else{
+                apuntar=1;
+
+                System.out.println("Vas a por el enemigo 2 "+enemigoActual[apuntar].nombre);
+
+                if(enemigoActual[apuntar].defenderse){
+
+                    System.out.println((enemigoActual[apuntar].nombre+ "se esta defendiendo... \n "));
+
+                    if(defense < 0.2){
+                        System.out.println(ColoresConsola.enAmarillo("La defensa de " +enemigoActual[apuntar].nombre+ " ha resultado fallida \n "));
+                        enemigoActual[apuntar].Vida-=Ataque;
+                        System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
+                    }else if (defense <= 0.8){
+                        Ataque-=Ataque*0.25;
+                        System.out.println(ColoresConsola.enAmarillo(enemigoActual[apuntar].nombre+ " se ha defendido del golpe devastador\n "));
+                        enemigoActual[apuntar].Vida-=Ataque;
+                        System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
+                    }else{
+                        Ataque=ATAQUE_BASE;
+                        System.out.println(ColoresConsola.enAmarillo(enemigoActual[apuntar].nombre+ " ha realizado una defensa perfecta y ha mermado tu golpe devastador \n "));
+                        enemigoActual[apuntar].Vida-=Ataque;
+                        System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
+                    }
+
+                }else{
+                    enemigoActual[apuntar].Vida-=Ataque;
+                    System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
+                }
+
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+
+        Ataque=ATAQUE_BASE;
+
+        defenderse=false;
+
+    }
+
+    @Override
+    public void invocarEspiritu(){
+
+        System.out.println(ColoresConsola.enMorado("Has invocado al Espiritu Ancestral"));
+
+        espirituInvocado=true;
+
+    }
+
+    @Override
+    public void atacarEspiritu(){
+
+        int punt;
+        double elegir=Math.random();
+
+        int ataqueEspiritu=7;
+
+        if(elegir > 0.5){
+            punt=1;
+            System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 2 "+ enemigoActual[punt].nombre + enemigoActual[punt].Vida));
+        }else{
+            punt=0;
+            System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 1 "+ enemigoActual[punt].nombre + enemigoActual[punt].Vida));
+        }
+
+        enemigoActual[punt].Vida-=ataqueEspiritu;
+
+        System.out.println(ColoresConsola.enMorado("El espiritu ha infligido "+ataqueEspiritu+ " puntos de daño"));
+
     }
 
     public void aplicarNerffeo(){

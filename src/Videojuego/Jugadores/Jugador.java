@@ -39,6 +39,12 @@ public abstract class Jugador extends Personaje implements AccionesJugador {
 
     public abstract void SuperAtaque();
 
+    public abstract void golpeDevastador();
+
+    public abstract void invocarEspiritu();
+
+    public abstract void atacarEspiritu();
+
 
 
 }
