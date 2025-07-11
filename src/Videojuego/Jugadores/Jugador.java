@@ -10,6 +10,12 @@ public abstract class Jugador extends Personaje implements AccionesJugador {
     public int Estamina;
     public Enemigo[] enemigoActual;
 
+    public static int[] inventario;
+
+    public boolean sinPoc1=false;
+    public boolean sinPoc2=false;
+    public boolean sinPoc3=false;
+
     public int EnemigoNerffeado;
 
     public static final int DEFENSA_MAGO_BASE=7;
@@ -31,19 +37,9 @@ public abstract class Jugador extends Personaje implements AccionesJugador {
 
     public boolean defenderse;
 
-    public abstract void Atacar();
 
-    public abstract void Defender();
 
-    public abstract void Curarse();
 
-    public abstract void SuperAtaque();
-
-    public abstract void golpeDevastador();
-
-    public abstract void invocarEspiritu();
-
-    public abstract void atacarEspiritu();
 
 
 

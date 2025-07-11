@@ -195,12 +195,14 @@ public class Bruja extends Enemigo {
     public void aplicarNerffeo(){
 
         Defensa=DEFENSA_BRUJA_BASE*0.8;
+        System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de " +nombre+ " en un 20%"));
 
     }
 
     public void aplicarBuffeo(){
 
         Ataque=ATAQUE_BRUJA*1.15;
+        System.out.println(ColoresConsola.enAmarillo("Aumenta temporalmente el ataque de "+nombre+ " en un 15%"));
 
     }
 

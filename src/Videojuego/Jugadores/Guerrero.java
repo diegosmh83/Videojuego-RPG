@@ -1,11 +1,12 @@
 package Videojuego.Jugadores;
 
+import Videojuego.Interfaces.AccionesJugador;
 import Videojuego.Interfaces.ColoresConsola;
 
 import static Videojuego.Juego.*;
 import static Videojuego.Juego.enemigo1muerto;
 
-public class Guerrero extends Jugador {
+public class Guerrero extends Jugador implements AccionesJugador {
 
 
     public Guerrero() {
@@ -18,6 +19,7 @@ public class Guerrero extends Jugador {
     }
 
     int apuntar;
+    final double VIDA_BASE=100;
     final double DEFENSA_BASE=5;
     final double ATAQUE_BASE=25;
 
@@ -509,6 +511,55 @@ public class Guerrero extends Jugador {
         enemigoActual[punt].Vida-=ataqueEspiritu;
 
         System.out.println(ColoresConsola.enMorado("El espiritu ha infligido "+ataqueEspiritu+ " puntos de daño"));
+
+    }
+
+    @Override
+    public void regeneracionRapida(){
+
+        Vida+=VIDA_BASE*0.25;
+        System.out.println(ColoresConsola.enVerde("Has regenerado el 25% de tu vida"));
+
+    }
+
+    @Override
+    public void danoColateral(){
+
+
+        int danoPocion=20;
+        int input;
+
+        if(!enemigo0muerto && !enemigo1muerto){
+
+            do {
+
+                System.out.println("Elige un enemigo al que atacar: " + enemigoActual[0].nombre +
+                        enemigoActual[0].Vida + " || (2) " + enemigoActual[1].nombre +
+                        enemigoActual[1].Vida);
+                input = sc.nextInt();
+                apuntar = input - 1;
+
+            }while(input!=1 && input!=2);
+
+
+        }else{
+
+            if(enemigo1muerto){
+                apuntar=0;
+                System.out.println("Vas a por el enemigo 1 "+enemigoActual[apuntar].nombre);
+
+
+            }else{
+                apuntar=1;
+
+                System.out.println("Vas a por el enemigo 2 "+enemigoActual[apuntar].nombre);
+
+            }
+
+        }
+
+        enemigoActual[apuntar].Vida-=danoPocion;
+        System.out.println("Daño infligido: "+danoPocion);
 
     }
 

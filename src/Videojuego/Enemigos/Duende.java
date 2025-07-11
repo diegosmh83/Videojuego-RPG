@@ -165,12 +165,10 @@ public class Duende extends Enemigo {
                 System.out.println(ColoresConsola.enRojo("Daño recibido: " + ataqueC));
                 danoIngfligido += Ataque;
                 if(nerffeo > 0.7){
-                    System.out.println(ColoresConsola.enAmarillo("Se reduce temporalmente la defensa de "+jugadorActual[apuntado].nombre+" en un 20%"));
                     jugadorActual[apuntado].Nerffeado=true;
                     JugadorNerffeado=apuntado;
                 }
                 if(buffeo > 0.7){
-                    System.out.println(ColoresConsola.enAmarillo("Aumenta temporalmente el ataque de "+nombre+ " en un 15%"));
                     Buffeado=true;
                 }
             }
@@ -194,12 +192,14 @@ public class Duende extends Enemigo {
     public void aplicarNerffeo(){
 
         Defensa=DEFENSA_DUENDE_BASE*0.8;
+        System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de " +nombre+ " en un 20%"));
 
     }
 
     public void aplicarBuffeo(){
 
         Ataque=ATAQUE_DUENDE*1.15;
+        System.out.println(ColoresConsola.enAmarillo("Aumenta temporalmente el ataque de "+nombre+ " en un 15%"));
 
     }
 

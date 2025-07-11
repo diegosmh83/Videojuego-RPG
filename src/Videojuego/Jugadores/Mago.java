@@ -1,13 +1,17 @@
 package Videojuego.Jugadores;
 
+import Videojuego.Interfaces.AccionesJugador;
 import Videojuego.Interfaces.ColoresConsola;
 import Videojuego.Juego;
 
+import java.util.Arrays;
+
 import static Videojuego.Juego.*;
 
-public class Mago extends Jugador {
+public class Mago extends Jugador implements AccionesJugador {
 
     int apuntar;
+
 
     public Mago() {
         Vida=VIDA_BASE_MAGO;
@@ -18,8 +22,10 @@ public class Mago extends Jugador {
         Nerffeado=false;
     }
 
+    final double VIDA_BASE=75;
     final double DEFENSA_BASE=7;
     final double ATAQUE_BASE=30;
+    public static final int TAM_INVENTARIO=3;
 
     @Override
     public void Atacar(){
@@ -152,12 +158,10 @@ public class Mago extends Jugador {
                         Estamina+=15;
                     }
                     if(nerffeo > 0.7){
-                        System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de "+enemigoActual[apuntar].nombre+" en un 20%"));
                         enemigoActual[apuntar].Nerffeado=true;
                         EnemigoNerffeado=apuntar;
                     }
                     if(buffeo > 0.7){
-                        System.out.println("Aumenta temporalmente el ataque de"+nombre+" en un 15%");
                         Buffeado=true;
                     }
 
@@ -195,12 +199,10 @@ public class Mago extends Jugador {
                         Estamina+=15;
                     }
                     if(nerffeo > 0.7){
-                        System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de " +enemigoActual[apuntar].nombre+ " en un 20%"));
                         enemigoActual[apuntar].Nerffeado=true;
                         EnemigoNerffeado=apuntar;
                     }
                     if(buffeo > 0.7){
-                        System.out.println("Aumenta temporalmente el ataque de"+nombre+" en un 15%");
                         Buffeado=true;
                     }
                 }
@@ -237,12 +239,10 @@ public class Mago extends Jugador {
                         Estamina+=15;
                     }
                     if(nerffeo > 0.7){
-                        System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de " +enemigoActual[apuntar].nombre+ " en un 15%"));
                         enemigoActual[apuntar].Nerffeado=true;
                         EnemigoNerffeado=apuntar;
                     }
                     if(buffeo > 0.7){
-                        System.out.println("Aumenta temporalmente el ataque de " +nombre+ " en un 15%");
                         Buffeado=true;
                     }
                 }
@@ -521,9 +521,59 @@ public class Mago extends Jugador {
     }
 
     @Override
+    public void regeneracionRapida(){
+
+        Vida+=VIDA_BASE*0.25;
+        System.out.println(ColoresConsola.enVerde("Has regenerado el 25% de tu vida"));
+
+    }
+
+    @Override
+    public void danoColateral(){
+
+
+        int danoPocion=20;
+        int input;
+
+        if(!enemigo0muerto && !enemigo1muerto){
+
+            do {
+
+                System.out.println("Elige un enemigo al que atacar: " + enemigoActual[0].nombre +
+                        enemigoActual[0].Vida + " || (2) " + enemigoActual[1].nombre +
+                        enemigoActual[1].Vida);
+                input = sc.nextInt();
+                apuntar = input - 1;
+
+            }while(input!=1 && input!=2);
+
+
+        }else{
+
+            if(enemigo1muerto){
+                apuntar=0;
+                System.out.println("Vas a por el enemigo 1 "+enemigoActual[apuntar].nombre);
+
+
+            }else{
+                apuntar=1;
+
+                System.out.println("Vas a por el enemigo 2 "+enemigoActual[apuntar].nombre);
+
+            }
+
+        }
+
+        enemigoActual[apuntar].Vida-=danoPocion;
+        System.out.println("Daño infligido: "+danoPocion);
+
+    }
+
+    @Override
     public void aplicarNerffeo(){
 
         Defensa=DEFENSA_BASE*0.8;
+        System.out.println(ColoresConsola.enAmarillo("Se reduce temporalmente la defensa de "+nombre+" en un 20%"));
 
     }
 
@@ -531,6 +581,7 @@ public class Mago extends Jugador {
     public void aplicarBuffeo(){
 
         Ataque=ATAQUE_BASE*1.15;
+        System.out.println("Aumenta temporalmente el ataque de " +nombre+ " en un 15%");
 
     }
 
