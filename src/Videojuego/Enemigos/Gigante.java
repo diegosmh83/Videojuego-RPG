@@ -5,19 +5,17 @@ import Videojuego.Interfaces.ColoresConsola;
 
 import static Videojuego.Juego.dificultad;
 
-public class Bruja extends Enemigo implements AccionesBasicas {
+public class Gigante extends Enemigo implements AccionesBasicas {
 
-    int apuntado;
-
-    public Bruja() {
-        Vida=125;
-        Ataque=20;
-        Defensa=8;
-        nombre="Bruja";
+    public Gigante(){
+        Vida=175;
+        Ataque=15;
+        Defensa=4;
+        nombre="Gigante";
         Nerffeado=false;
     }
 
-    double defensa_Base=DEFENSA_BRUJA_BASE;
+    int apuntado;
 
     @Override
     public void Atacar(){
@@ -32,7 +30,7 @@ public class Bruja extends Enemigo implements AccionesBasicas {
 
                 case 1:{
                     if(probabilidad > 0.7){
-                        System.out.println(("La bruja perdio el turno de ataque por tardar en reincorporarte tras la " +
+                        System.out.println(("El Gigante perdio el turno de ataque por tardar en reincorporarte tras la " +
                                 "defensa \n "));
                         defenderse=false;
                         return;
@@ -42,7 +40,7 @@ public class Bruja extends Enemigo implements AccionesBasicas {
 
                 case 2:{
                     if(probabilidad > 0.8){
-                        System.out.println(("La bruja perdio el turno de ataque por tardar en reincorporarte tras la " +
+                        System.out.println(("El Gigante perdio el turno de ataque por tardar en reincorporarte tras la " +
                                 "defensa \n"));
                         defenderse=false;
                         return;
@@ -52,7 +50,7 @@ public class Bruja extends Enemigo implements AccionesBasicas {
 
                 case 3:{
                     if(probabilidad > 0.9){
-                        System.out.println(("La bruja perdio el turno de ataque por tardar en reincorporarte tras la " +
+                        System.out.println(("El Gigante perdio el turno de ataque por tardar en reincorporarte tras la " +
                                 "defensa \n"));
                         defenderse=false;
                         return;
@@ -65,7 +63,7 @@ public class Bruja extends Enemigo implements AccionesBasicas {
 
         }
 
-        System.out.println(("La bruja va a atacar \n "));
+        System.out.println(("El Gigante va a atacar \n "));
 
         double ataqueBase = Ataque;
 
@@ -114,8 +112,8 @@ public class Bruja extends Enemigo implements AccionesBasicas {
         switch (dificultad){
 
             case 1:{
-                if(estado > 0.95){
-                    if(elegir < 0.5){
+                if(estado > 0.9){
+                    if(elegir < 0.01){
                         jugadorActual[apuntado].envenenado=true;
                     }else if(elegir < 0.9){
                         jugadorActual[apuntado].paralizado=true;
@@ -127,8 +125,8 @@ public class Bruja extends Enemigo implements AccionesBasicas {
             }
 
             case 2:{
-                if(estado > 0.9){
-                    if(elegir < 0.5){
+                if(estado > 0.85){
+                    if(elegir < 0.01){
                         jugadorActual[apuntado].envenenado=true;
                     }else if(elegir < 0.9){
                         jugadorActual[apuntado].paralizado=true;
@@ -141,8 +139,8 @@ public class Bruja extends Enemigo implements AccionesBasicas {
             }
 
             case 3:{
-                if(estado > 0.85){
-                    if(elegir < 0.45){
+                if(estado > 0.8){
+                    if(elegir < 0.01){
                         jugadorActual[apuntado].envenenado=true;
                     }else if(elegir < 0.9){
                         jugadorActual[apuntado].paralizado=true;
@@ -205,22 +203,21 @@ public class Bruja extends Enemigo implements AccionesBasicas {
 
     public void aplicarNerffeo(){
 
-        Defensa=DEFENSA_BRUJA_BASE*0.8;
+        Defensa=DEFENSA_GIGANTE_BASE*0.8;
         System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de " +nombre+ " en un 20%"));
 
     }
 
     public void aplicarBuffeo(){
 
-        Ataque=ATAQUE_BRUJA*1.15;
+        Ataque=ATAQUE_GIGANTE*1.15;
         System.out.println(ColoresConsola.enAmarillo("Aumenta temporalmente el ataque de "+nombre+ " en un 15%"));
 
     }
 
     @Override
     public String toString() {
-        return ColoresConsola.ROJO+ "(( BRUJA: Vida:" + Vida+" || Ataque:"+Ataque+" || Defensa: "+Defensa+" || Daño total: "+danoIngfligido+")) "+ColoresConsola.RESET;
+        return ColoresConsola.ROJO+ "(( GIGANTE: Vida:" + Vida+" || Ataque:"+Ataque+" || Defensa: "+Defensa+" || Daño total: "+danoIngfligido+"))  "+ColoresConsola.RESET;
     }
-
 
 }

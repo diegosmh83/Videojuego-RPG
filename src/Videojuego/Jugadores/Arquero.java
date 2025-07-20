@@ -9,7 +9,6 @@ import static Videojuego.Juego.enemigo1muerto;
 
 public class Arquero extends Jugador implements AccionesJugador {
 
-
     public Arquero() {
         Vida=VIDA_BASE_ARQUERO;
         Ataque=ATAQUE_ARQUERO;
@@ -20,6 +19,7 @@ public class Arquero extends Jugador implements AccionesJugador {
     }
 
     int apuntar;
+
     final double VIDA_BASE=85;
     final double DEFENSA_BASE=10;
     final double ATAQUE_BASE=20;

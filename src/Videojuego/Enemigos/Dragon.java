@@ -5,19 +5,17 @@ import Videojuego.Interfaces.ColoresConsola;
 
 import static Videojuego.Juego.dificultad;
 
-public class Bruja extends Enemigo implements AccionesBasicas {
+public class Dragon extends Enemigo implements AccionesBasicas {
 
-    int apuntado;
-
-    public Bruja() {
-        Vida=125;
-        Ataque=20;
-        Defensa=8;
-        nombre="Bruja";
+    public Dragon(){
+        Vida=160;
+        Ataque=18;
+        Defensa=11;
+        nombre="Dragon";
         Nerffeado=false;
     }
 
-    double defensa_Base=DEFENSA_BRUJA_BASE;
+    int apuntado;
 
     @Override
     public void Atacar(){
@@ -32,7 +30,7 @@ public class Bruja extends Enemigo implements AccionesBasicas {
 
                 case 1:{
                     if(probabilidad > 0.7){
-                        System.out.println(("La bruja perdio el turno de ataque por tardar en reincorporarte tras la " +
+                        System.out.println(("El Dragon perdio el turno de ataque por tardar en reincorporarte tras la " +
                                 "defensa \n "));
                         defenderse=false;
                         return;
@@ -42,7 +40,7 @@ public class Bruja extends Enemigo implements AccionesBasicas {
 
                 case 2:{
                     if(probabilidad > 0.8){
-                        System.out.println(("La bruja perdio el turno de ataque por tardar en reincorporarte tras la " +
+                        System.out.println(("El Dragon perdio el turno de ataque por tardar en reincorporarte tras la " +
                                 "defensa \n"));
                         defenderse=false;
                         return;
@@ -52,7 +50,7 @@ public class Bruja extends Enemigo implements AccionesBasicas {
 
                 case 3:{
                     if(probabilidad > 0.9){
-                        System.out.println(("La bruja perdio el turno de ataque por tardar en reincorporarte tras la " +
+                        System.out.println(("El Dragon perdio el turno de ataque por tardar en reincorporarte tras la " +
                                 "defensa \n"));
                         defenderse=false;
                         return;
@@ -65,7 +63,7 @@ public class Bruja extends Enemigo implements AccionesBasicas {
 
         }
 
-        System.out.println(("La bruja va a atacar \n "));
+        System.out.println(("El Dragon va a atacar \n "));
 
         double ataqueBase = Ataque;
 
@@ -205,22 +203,20 @@ public class Bruja extends Enemigo implements AccionesBasicas {
 
     public void aplicarNerffeo(){
 
-        Defensa=DEFENSA_BRUJA_BASE*0.8;
+        Defensa=DEFENSA_DRAGON_BASE*0.8;
         System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de " +nombre+ " en un 20%"));
 
     }
 
     public void aplicarBuffeo(){
 
-        Ataque=ATAQUE_BRUJA*1.15;
+        Ataque=ATAQUE_DRAGON*1.15;
         System.out.println(ColoresConsola.enAmarillo("Aumenta temporalmente el ataque de "+nombre+ " en un 15%"));
 
     }
 
     @Override
     public String toString() {
-        return ColoresConsola.ROJO+ "(( BRUJA: Vida:" + Vida+" || Ataque:"+Ataque+" || Defensa: "+Defensa+" || Daño total: "+danoIngfligido+")) "+ColoresConsola.RESET;
+        return ColoresConsola.ROJO+ "(( DRAGON: Vida:" + Vida+" || Ataque:"+Ataque+" || Defensa: "+Defensa+" || Daño total: "+danoIngfligido+")) "+ColoresConsola.RESET;
     }
-
-
 }

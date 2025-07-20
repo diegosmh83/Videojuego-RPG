@@ -22,6 +22,7 @@ public abstract class Jugador extends Personaje implements AccionesJugador {
     public static final int DEFENSA_GUERRERO_BASE=5;
     public static final int DEFENSA_ARQUERO_BASE=10;
 
+    public static final int TAM_INVENTARIO=3;
 
     public boolean paralizado;
     public boolean desangrado;

@@ -1,17 +1,18 @@
 package Videojuego.Enemigos;
 
+import Videojuego.Interfaces.AccionesBasicas;
 import Videojuego.Interfaces.ColoresConsola;
 
 import static Videojuego.Juego.dificultad;
 
-public class Duende extends Enemigo {
+public class Duende extends Enemigo implements AccionesBasicas {
 
     int apuntado;
 
     public Duende() {
         Vida = 150;
         Ataque = 15;
-        Defensa=5;
+        Defensa= 5;
         nombre = "Duende";
         Nerffeado=false;
     }
@@ -70,14 +71,22 @@ public class Duende extends Enemigo {
 
         double input;
 
-        input = Math.random();
+        if(jugadorActual[0].Vida > 0 && jugadorActual[1].Vida > 0){
+            input = Math.random();
 
-        if (input > 0.5) {
-            apuntado = 1;
-            System.out.println(ColoresConsola.enAmarillo("va a por el J2 "+jugadorActual[1].nombre+ "((" + jugadorActual[1].Vida + "))"));
-        } else {
-            apuntado = 0;
-            System.out.println(ColoresConsola.enAmarillo("va a por el J1 "+jugadorActual[0].nombre+ "((" + jugadorActual[0].Vida + "))"));
+            if (input > 0.5) {
+                apuntado = 1;
+                System.out.println(ColoresConsola.enAmarillo("va a por el J2 "+jugadorActual[1].nombre+ "((" + jugadorActual[1].Vida + "))"));
+            } else {
+                apuntado = 0;
+                System.out.println(ColoresConsola.enAmarillo("va a por el J1 "+jugadorActual[0].nombre+ "((" + jugadorActual[0].Vida + "))"));
+            }
+        }else{
+            if(jugadorActual[0].Vida > 0){
+                apuntado=0;
+            }else{
+                apuntado=1;
+            }
         }
 
 
@@ -105,7 +114,7 @@ public class Duende extends Enemigo {
 
             case 1: {
                 if (estado > 0.95) {
-                    if (elegir < 0.5) {
+                    if (elegir < 0.45) {
                         jugadorActual[apuntado].desangrado = true;
                     } else if (elegir < 0.9) {
                         jugadorActual[apuntado].paralizado = true;
@@ -118,7 +127,7 @@ public class Duende extends Enemigo {
 
             case 2: {
                 if (estado > 0.9) {
-                    if (elegir < 0.5) {
+                    if (elegir < 0.45) {
                         jugadorActual[apuntado].desangrado = true;
                     } else if (elegir < 0.9) {
                         jugadorActual[apuntado].paralizado = true;
@@ -150,7 +159,7 @@ public class Duende extends Enemigo {
             //Sub-metodo para atacar:
             if (attack < 0.7) {
                 System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal \n"));
-                Ataque-=jugadorActual[apuntado].Defensa;
+                Ataque -= jugadorActual[apuntado].Defensa;
                 jugadorActual[apuntado].Vida -= Ataque;
                 System.out.println(ColoresConsola.enRojo("Daño recibido: " + Ataque));
                 danoIngfligido += Ataque;
@@ -205,7 +214,7 @@ public class Duende extends Enemigo {
 
         @Override
         public String toString () {
-            return ColoresConsola.ROJO + "(( DUENDE:  Vida:" + Vida + " || Ataque: "+Ataque+ " || Defensa: "+Defensa+ " || Daño Total: "+danoIngfligido+" ))\n" + ColoresConsola.RESET;
+            return ColoresConsola.ROJO + "(( DUENDE:  Vida:" + Vida + " || Ataque: "+Ataque+ " || Defensa: "+Defensa+ " || Daño Total: "+danoIngfligido+" )) " + ColoresConsola.RESET;
         }
 
     }

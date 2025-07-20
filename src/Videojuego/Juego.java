@@ -1,12 +1,7 @@
 package Videojuego;
-import Videojuego.Enemigos.Bruja;
-import Videojuego.Enemigos.Duende;
-import Videojuego.Enemigos.Enemigo;
+import Videojuego.Enemigos.*;
 import Videojuego.Interfaces.ColoresConsola;
-import Videojuego.Jugadores.Arquero;
-import Videojuego.Jugadores.Guerrero;
-import Videojuego.Jugadores.Jugador;
-import Videojuego.Jugadores.Mago;
+import Videojuego.Jugadores.*;
 
 import java.util.*;
 
@@ -269,8 +264,11 @@ public class Juego {
 
     public Jugador[] CrearPersonajes(){
 
-        System.out.println("Bienvenido a mi Videojuego, para comenzar a jugar, elige un Personaje:" +
-                " \n 1-guerrero (Vida: 100, Ataque:25, Defensa: 5) \n 2-arquero (Vida:85, Ataque:20, Defensa:10) \n 3-mago (Vida:75, Ataque:30, Defensa: 7)");
+        System.out.println("Bienvenido a mi Juego, para comenzar a jugar elige un Personaje:" +
+                " \n 1-guerrero (Vida: 100, Ataque: 25, Defensa: 5) \n 2-arquero (Vida: 85, Ataque: 20, Defensa: 10) \n 3-mago (Vida: 75, Ataque: 30, Defensa: 7) \n " +
+                "4-Caballero (Vida: 90, Ataque: 24, Defensa: 8) \n 5-Guardian (Vida: 125, Ataque: 17, Defensa: 15) \n 6-Valkyria (Vida: 80, Ataque: 27 Defensa: 6) \n " +
+                "7-Escudero (Vida: 110, Ataque: 15, Defensa: 20) \n 8-Ninja (Vida: 70, Ataque: 28, Defensa: 4) \n 9-Samurai (Vida: 95, Ataque: 22, Defensa: 12) \n " +
+                "10-Paladin (Vida: 120, Ataque: 29, Defensa: 12) ");
 
         Jugadores=new Jugador[EQUIPO];
 
@@ -289,13 +287,44 @@ public class Juego {
                 Jugadores[0]=new Mago();
                 System.out.println("Has escogido el Mago \n ");
                 break;
+            case 4:
+                Jugadores[0]=new Caballero();
+                System.out.println("Has escogido el Caballero \n ");
+                break;
+            case 5:
+                Jugadores[0]=new Guardian();
+                System.out.println("Has escogido al Guardian \n ");
+                break;
+            case 6:
+                Jugadores[0]=new Valkyria();
+                System.out.println("Has escogido a la Valkyria \n ");
+                break;
+            case 7:
+                Jugadores[0]=new Escudero();
+                System.out.println("Has escogido al Escudero \n ");
+                break;
+            case 8:
+                Jugadores[0]=new Ninja();
+                System.out.println("Has escogido al Ninja \n ");
+                break;
+            case 9:
+                Jugadores[0]=new Samurai();
+                System.out.println("Has escogido al Samurai \n ");
+                break;
+            case 10:
+                Jugadores[0]=new Paladin();
+                System.out.println("Has escogido al Paladin \n ");
+                break;
             default:
                 CrearPersonajes();
                 break;
         }
 
         int escoger2;
-        System.out.println("Ahora elige un segundo personaje:  \n 1-guerrero (Vida: 100, Ataque:25, Defensa: 5) \n 2-arquero (Vida:85, Ataque:20, Defensa:10) \n 3-mago (Vida:75, Ataque:30, Defensa: 7) ");
+        System.out.println("Ahora elige un segundo personaje:  \n 1-guerrero (Vida: 100, Ataque:25, Defensa: 5) \n 2-arquero (Vida:85, Ataque:20, Defensa:10) \n 3-mago (Vida:75, Ataque:30, Defensa: 7) \n " +
+                " 4-Caballero (Vida:90, Ataque: 24, Defensa: 8) \n 5-Guardian (Vida: 125, Ataque: 17, Defensa: 15) \n 6-Valkyria (Vida: 80, Ataque: 27 Defensa: 6) \n  " +
+                " 7-Escudero (Vida: 110, Ataque: 15, Defensa: 20) \n 8-Ninja (Vida: 70, Ataque: 28, Defensa: 4) \n 9-Samurai (Vida: 95, Ataque: 22, Defensa: 12) \n " +
+                " 10-Paladin (Vida: 120, Ataque: 29, Defensa: 12) ");
 
         do{
             escoger2=sc.nextInt();
@@ -312,10 +341,38 @@ public class Juego {
                     Jugadores[1]=new Mago();
                     System.out.println("Has escogido el Mago \n ");
                     break;
+                case 4:
+                    Jugadores[1]=new Caballero();
+                    System.out.println("Has escogido el Caballero \n ");
+                    break;
+                case 5:
+                    Jugadores[1]=new Guardian();
+                    System.out.println("Has escogido al Guardian \n ");
+                    break;
+                case 6:
+                    Jugadores[1]=new Valkyria();
+                    System.out.println("Has escogido a la Valkyria \n ");
+                    break;
+                case 7:
+                    Jugadores[1]=new Escudero();
+                    System.out.println("Has escogido al Escudero \n ");
+                    break;
+                case 8:
+                    Jugadores[1]=new Ninja();
+                    System.out.println("Has escogido al Ninja \n ");
+                    break;
+                case 9:
+                    Jugadores[1]=new Samurai();
+                    System.out.println("Has escogido al Samurai \n ");
+                    break;
+                case 10:
+                    Jugadores[1]=new Paladin();
+                    System.out.println("Has escogido al Paladin \n ");
+                    break;
                 default:
                     System.out.println("Elige una opcion valida.");
             }
-        }while(escoger2 > 3);
+        }while(escoger2 > 10);
 
 
         return Jugadores;
@@ -324,24 +381,66 @@ public class Juego {
     public Enemigo[] CrearEnemigos(){
         NPCs=new Enemigo[EQUIPO];
 
-        double num=Math.random()*2;
+        double num=Math.random()*10;
 
-        if(num > 1){
+        if(num < 1){
             NPCs[0]=new Duende();
             System.out.println("Tu 1º rival es un Duende (Vida inicial: 150) \n");
-        }else {
+        }else if(num > 1 && num < 2){
             NPCs[0]=new Bruja();
             System.out.println("Tu 1º rival es una Bruja (Vida inicial: 125) \n");
+        }else if(num > 3 && num < 4){
+            NPCs[0]=new Zombi();
+            System.out.println("Tu 1º rival es un Zombi (Vida inicial: 115)");
+        }else if(num > 4 && num < 5){
+            NPCs[0]=new Araña();
+            System.out.println("Tu 1º rival es una Araña (Vida inicial: 80)");
+        }else if(num > 5 && num < 6){
+            NPCs[0]=new Gigante();
+            System.out.println("Tu 1º rival es un Gigante (Vida inicial: 175)");
+        }else if(num > 6 && num < 7){
+            NPCs[0]=new Fantasma();
+            System.out.println("Tu 1º rival es un Fantasma (Vida inicial: 75)");
+        }else if(num > 7 && num < 8){
+            NPCs[0]=new Espectro();
+            System.out.println("Tu 1º rival es un Espectro (Vida inicial: 85)");
+        }else if(num > 8 && num < 9){
+            NPCs[0]=new Sombra();
+            System.out.println("Tu 1º rival es una Sombra (Vida inicial: 90)");
+        }else if(num > 9 && num < 10){
+            NPCs[0]=new Dragon();
+            System.out.println("Tu 1º rival es un Dragon (Vida inicial: 160)");
         }
 
-        double mum=Math.random()*2;
+        double mum=Math.random()*10;
 
-        if(mum > 1){
+        if(mum < 1){
             NPCs[1]=new Duende();
             System.out.println("Tu 2º rival es un Duende (Vida inicial: 150) \n");
-        }else {
+        }else if(mum > 1 && mum < 2){
             NPCs[1]=new Bruja();
             System.out.println("Tu 2º rival es una Bruja (Vida inicial: 125) \n");
+        }else if(mum > 3 && mum < 4){
+            NPCs[1]=new Zombi();
+            System.out.println("Tu 2º rival es un Zombi (Vida inicial: 115)");
+        }else if(mum > 4 && mum < 5){
+            NPCs[1]=new Araña();
+            System.out.println("Tu 2º rival es una Araña (Vida inicial: 80)");
+        }else if(mum > 5 && mum < 6){
+            NPCs[1]=new Gigante();
+            System.out.println("Tu 2º rival es un Gigante (Vida inicial: 175)");
+        }else if(mum > 6 && mum < 7){
+            NPCs[1]=new Fantasma();
+            System.out.println("Tu 2º rival es un Fantasma (Vida inicial: 75)");
+        }else if(mum > 7 && mum < 8){
+            NPCs[1]=new Espectro();
+            System.out.println("Tu 2º rival es un Espectro (Vida inicial: 85)");
+        }else if(mum > 8 && mum < 9){
+            NPCs[1]=new Sombra();
+            System.out.println("Tu 2º rival es una Sombra (Vida inicial: 90)");
+        }else if(mum > 9 && mum < 10){
+            NPCs[1]=new Dragon();
+            System.out.println("Tu 2º rival es un Dragon (Vida inicial: 160)");
         }
 
         return NPCs;
@@ -706,8 +805,6 @@ public class Juego {
                 turnoJ2ven=6;
             }
 
-        }else{
-            System.out.println();
         }
 
     }

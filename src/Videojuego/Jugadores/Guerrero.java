@@ -19,6 +19,7 @@ public class Guerrero extends Jugador implements AccionesJugador {
     }
 
     int apuntar;
+
     final double VIDA_BASE=100;
     final double DEFENSA_BASE=5;
     final double ATAQUE_BASE=25;
@@ -74,7 +75,7 @@ public class Guerrero extends Jugador implements AccionesJugador {
 
             do{
 
-                System.out.println("Elige un enemigo al que atacar: "+enemigoActual[0].nombre+
+                System.out.println("Elige un enemigo al que atacar: (1) "+enemigoActual[0].nombre+
                         enemigoActual[0].Vida+" || (2) "+enemigoActual[1].nombre+
                         enemigoActual[1].Vida);
                 input=sc.nextInt();
@@ -316,7 +317,7 @@ public class Guerrero extends Jugador implements AccionesJugador {
 
         }while(input!=1 && input!=2);
 
-        System.out.println("¡Has usado el SuperCorte! \n");
+        System.out.println("¡Has usado el Super Corte! \n");
 
         switch (dificultad) {
             case 1:{
