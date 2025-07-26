@@ -5,6 +5,7 @@ public abstract class Personaje {
     public double Vida;
     public double Ataque;
     public double Defensa;
+    public int Velocidad;
     public double danoIngfligido = 0;
     public String nombre;
     public boolean Nerffeado=false;

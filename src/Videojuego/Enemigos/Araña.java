@@ -11,6 +11,7 @@ public class Araña extends Enemigo implements AccionesBasicas {
         Vida=80;
         Ataque=20;
         Defensa=6;
+        Velocidad=23;
         nombre="Araña";
         Nerffeado=false;
     }
@@ -112,7 +113,7 @@ public class Araña extends Enemigo implements AccionesBasicas {
         switch (dificultad){
 
             case 1:{
-                if(estado > 0.70){
+                if(estado > 0.85){
                     if(elegir < 0.9){
                         jugadorActual[apuntado].envenenado=true;
                     }else if(elegir < 0.95){
@@ -125,7 +126,7 @@ public class Araña extends Enemigo implements AccionesBasicas {
             }
 
             case 2:{
-                if(estado > 0.65){
+                if(estado > 0.75){
                     if(elegir < 0.9){
                         jugadorActual[apuntado].envenenado=true;
                     }else if(elegir < 0.95){
@@ -139,7 +140,7 @@ public class Araña extends Enemigo implements AccionesBasicas {
             }
 
             case 3:{
-                if(estado > 0.6){
+                if(estado > 0.65){
                     if(elegir < 0.9){
                         jugadorActual[apuntado].envenenado=true;
                     }else if(elegir < 0.95){
@@ -158,35 +159,102 @@ public class Araña extends Enemigo implements AccionesBasicas {
 
         if(jugadorActual[apuntado].Vida > 0){
 
-            if(attack < 0.7){
-                System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal \n"));
-                Ataque-=jugadorActual[apuntado].Defensa;
-                jugadorActual[apuntado].Vida-=Ataque;
-                System.out.println(ColoresConsola.enRojo("Daño recibido: "+Ataque));
-                danoIngfligido+=Ataque;
-            }else{
-                System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque critico \n"));
-                if(jugadorActual[apuntado].defenderse && defense > 0.8){
-                    System.out.println(ColoresConsola.enVerde("Pero no le ha servido de nada"));
-                    return;
+            switch(dificultad){
+
+                case 1:{
+                    if(attack < 0.9){
+                        System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal \n"));
+                        Ataque-=jugadorActual[apuntado].Defensa;
+                        jugadorActual[apuntado].Vida-=Ataque;
+                        System.out.println(ColoresConsola.enRojo("Daño recibido: "+Ataque));
+                        danoIngfligido+=Ataque;
+                    }else{
+                        System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque critico \n"));
+                        if(jugadorActual[apuntado].defenderse && defense > 0.8){
+                            System.out.println(ColoresConsola.enVerde("Pero no le ha servido de nada"));
+                            return;
+                        }
+                        double ataqueC=Ataque*2;
+                        jugadorActual[apuntado].Vida-=ataqueC;
+                        System.out.println(ColoresConsola.enRojo("Daño recibido: "+ataqueC));
+                        danoIngfligido+=Ataque;
+                        if(nerffeo > 0.9){
+                            System.out.println(ColoresConsola.enAmarillo("Se reduce temporalmente la defensa de "+jugadorActual[apuntado].nombre+" en un 20%"));
+                            jugadorActual[apuntado].Nerffeado=true;
+                            JugadorNerffeado=apuntado;
+                        }
+                        if(buffeo > 0.9){
+                            System.out.println(ColoresConsola.enAmarillo("Aumenta temporalmente el ataque de "+nombre+ " en un 15%"));
+                            Buffeado=true;
+                        }
+
+                    }
+                    break;
                 }
-                double ataqueC=Ataque*2;
-                jugadorActual[apuntado].Vida-=ataqueC;
-                System.out.println(ColoresConsola.enRojo("Daño recibido: "+ataqueC));
-                danoIngfligido+=Ataque;
-                if(nerffeo > 0.7){
-                    System.out.println(ColoresConsola.enAmarillo("Se reduce temporalmente la defensa de "+jugadorActual[apuntado].nombre+" en un 20%"));
-                    jugadorActual[apuntado].Nerffeado=true;
-                    JugadorNerffeado=apuntado;
+                case 2:{
+                    if(attack < 0.8){
+                        System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal \n"));
+                        Ataque-=jugadorActual[apuntado].Defensa;
+                        jugadorActual[apuntado].Vida-=Ataque;
+                        System.out.println(ColoresConsola.enRojo("Daño recibido: "+Ataque));
+                        danoIngfligido+=Ataque;
+                    }else{
+                        System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque critico \n"));
+                        if(jugadorActual[apuntado].defenderse && defense > 0.8){
+                            System.out.println(ColoresConsola.enVerde("Pero no le ha servido de nada"));
+                            return;
+                        }
+                        double ataqueC=Ataque*2;
+                        jugadorActual[apuntado].Vida-=ataqueC;
+                        System.out.println(ColoresConsola.enRojo("Daño recibido: "+ataqueC));
+                        danoIngfligido+=Ataque;
+                        if(nerffeo > 0.8){
+                            System.out.println(ColoresConsola.enAmarillo("Se reduce temporalmente la defensa de "+jugadorActual[apuntado].nombre+" en un 20%"));
+                            jugadorActual[apuntado].Nerffeado=true;
+                            JugadorNerffeado=apuntado;
+                        }
+                        if(buffeo > 0.8){
+                            System.out.println(ColoresConsola.enAmarillo("Aumenta temporalmente el ataque de "+nombre+ " en un 15%"));
+                            Buffeado=true;
+                        }
+                    }
+                    break;
                 }
-                if(buffeo > 0.7){
-                    System.out.println(ColoresConsola.enAmarillo("Aumenta temporalmente el ataque de "+nombre+ " en un 15%"));
-                    Buffeado=true;
+                case 3:{
+                    if(attack < 0.7){
+                        System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal \n"));
+                        Ataque-=jugadorActual[apuntado].Defensa;
+                        jugadorActual[apuntado].Vida-=Ataque;
+                        System.out.println(ColoresConsola.enRojo("Daño recibido: "+Ataque));
+                        danoIngfligido+=Ataque;
+                    }else{
+                        System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque critico \n"));
+                        if(jugadorActual[apuntado].defenderse && defense > 0.8){
+                            System.out.println(ColoresConsola.enVerde("Pero no le ha servido de nada"));
+                            return;
+                        }
+                        double ataqueC=Ataque*2;
+                        jugadorActual[apuntado].Vida-=ataqueC;
+                        System.out.println(ColoresConsola.enRojo("Daño recibido: "+ataqueC));
+                        danoIngfligido+=Ataque;
+                        if(nerffeo > 0.7){
+                            System.out.println(ColoresConsola.enAmarillo("Se reduce temporalmente la defensa de "+jugadorActual[apuntado].nombre+" en un 20%"));
+                            jugadorActual[apuntado].Nerffeado=true;
+                            JugadorNerffeado=apuntado;
+                        }
+                        if(buffeo > 0.7){
+                            System.out.println(ColoresConsola.enAmarillo("Aumenta temporalmente el ataque de "+nombre+ " en un 15%"));
+                            Buffeado=true;
+                        }
+                    }
+                    break;
                 }
+
             }
 
-            Ataque = ataqueBase;
         }
+
+        Ataque = ataqueBase;
 
         defenderse=false;
 

@@ -13,6 +13,7 @@ public class Arquero extends Jugador implements AccionesJugador {
         Vida=VIDA_BASE_ARQUERO;
         Ataque=ATAQUE_ARQUERO;
         Defensa=10;
+        Velocidad=23;
         Estamina=15;
         nombre="Arquero";
         Nerffeado=false;
@@ -74,9 +75,9 @@ public class Arquero extends Jugador implements AccionesJugador {
 
             do{
 
-                System.out.println("Elige un enemigo al que atacar: "+enemigoActual[0].nombre+
-                        enemigoActual[0].Vida+" || (2) "+enemigoActual[1].nombre+
-                        enemigoActual[1].Vida);
+                System.out.println("Elige un enemigo al que atacar: (1) "+enemigoActual[0].nombre+
+                        " (("+enemigoActual[0].Vida+")) || (2) "+enemigoActual[1].nombre+
+                        " (("+enemigoActual[1].Vida+"))");
                 input=sc.nextInt();
                 apuntar=input-1;
 
@@ -95,6 +96,7 @@ public class Arquero extends Jugador implements AccionesJugador {
 
         double defense=Math.random();
 
+        //Sub-metodo para que el enemigo se defienda
         if(enemigoActual[apuntar].defenderse){
             System.out.println(("El" +enemigoActual[apuntar].nombre+ " se esta defendiendo... \n "));
 
@@ -104,8 +106,8 @@ public class Arquero extends Jugador implements AccionesJugador {
                 Ataque-=Ataque*0.25;
                 System.out.println(ColoresConsola.enAmarillo(enemigoActual[apuntar].nombre+ " se ha defendido \n ") );
             }else{
-                Ataque=0;
                 System.out.println(ColoresConsola.enAmarillo(enemigoActual[apuntar].nombre+ " ha realizado una defensa perfecta y ha bloqueado tu ataque \n "));
+                return;
             }
         }
 
@@ -135,14 +137,9 @@ public class Arquero extends Jugador implements AccionesJugador {
                 }else {
                     double ataqueC = Ataque*3;
                     System.out.println(ColoresConsola.enVerde("¡Has realizado un ataque critico! (suerte) \n"));
-                    if(enemigoActual[apuntar].defenderse && defense > 0.8){
-                        System.out.println(ColoresConsola.enAmarillo("Pero no te ha servido de nada \n "));
-                        return;
-                    }else{
                         danoIngfligido+=ataqueC;
                         enemigoActual[apuntar].Vida-=ataqueC;
                         System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueC+ "\n"));
-                    }
                     if(nerffeo > 0.7){
                         System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de "+enemigoActual[apuntar].nombre+" en un 20%"));
                         enemigoActual[apuntar].Nerffeado=true;
@@ -174,20 +171,15 @@ public class Arquero extends Jugador implements AccionesJugador {
                 }else {
                     double ataqueC = Ataque*3;
                     System.out.println(ColoresConsola.enVerde("¡Has realizado un ataque critico! (suerte) "));
-                    if(enemigoActual[apuntar].defenderse && defense > 0.8 ){
-                        System.out.println(ColoresConsola.enAmarillo("Pero no te ha servido de nada \n "));
-                        return;
-                    }else{
                         danoIngfligido+=ataqueC;
                         enemigoActual[apuntar].Vida-=ataqueC;
                         System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueC+ "\n"));
-                    }
-                    if(nerffeo > 0.7){
+                    if(nerffeo > 0.8){
                         System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de "+enemigoActual[apuntar].nombre+" en un 20%"));
                         enemigoActual[apuntar].Nerffeado=true;
                         EnemigoNerffeado=apuntar;
                     }
-                    if(buffeo > 0.7){
+                    if(buffeo > 0.8){
                         System.out.println(ColoresConsola.enVerde("Aumenta el ataque de "+nombre+" en un 15%"));
                         Buffeado=true;
                     }
@@ -203,7 +195,7 @@ public class Arquero extends Jugador implements AccionesJugador {
                     danoIngfligido+=ataqueP;
                     enemigoActual[apuntar].Vida-=ataqueP;
                     System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueP+ "\n"));
-                }else if(attack <= 0.7){
+                }else if(attack <= 0.9){
                     System.out.println(ColoresConsola.enAzul("Has realizado un ataque normal \n"));
                     danoIngfligido+=Ataque;
                     enemigoActual[apuntar].Vida-=Ataque;
@@ -211,19 +203,15 @@ public class Arquero extends Jugador implements AccionesJugador {
                 }else {
                     double ataqueC = Ataque*3;
                     System.out.println(ColoresConsola.enVerde("¡Has realizado un ataque critico! (suerte) \n"));
-                    if(defense > 0.8 ){
-                        System.out.println((ColoresConsola.enAmarillo("Pero no te ha servido de nada \n ")));
-                        return;
-                    }
                     danoIngfligido+=ataqueC;
                     enemigoActual[apuntar].Vida-=ataqueC;
                     System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueC+ "\n"));
-                    if(nerffeo > 0.7){
+                    if(nerffeo > 0.9){
                         System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de "+enemigoActual[apuntar].nombre+" en un 20%"));
                         enemigoActual[apuntar].Nerffeado=true;
                         EnemigoNerffeado=apuntar;
                     }
-                    if(buffeo > 0.7){
+                    if(buffeo > 0.9){
                         System.out.println(ColoresConsola.enVerde("Aumenta el ataque de "+nombre+" en un 15%"));
                         Buffeado=true;
                     }
@@ -265,14 +253,14 @@ public class Arquero extends Jugador implements AccionesJugador {
         if(!jugador0muerto && !jugador1muerto){
 
             do{
-                System.out.println("Elige un jugador al que curar");
+                System.out.println("Elige un jugador al que curar: (1) "+ Jugadores[0].nombre + "(("+Jugadores[0].Vida+")) || (2) "+ Jugadores[1].nombre + "(("+Jugadores[1].Vida+"))");
 
                 input=sc.nextInt();
                 apuntar=input-1;
 
             }while(input!=1 && input!=2);
 
-            if(Curation > 0.8){
+            if(Curation < 0.8){
                 double Curacion=VIDA_BASE_ARQUERO*0.25;
                 Jugadores[apuntar].Vida+=Curacion;
                 System.out.println(ColoresConsola.enVerde("Has aumentado la vida en: "+Curacion+" puntos"));
@@ -283,7 +271,7 @@ public class Arquero extends Jugador implements AccionesJugador {
             }
 
         }else{
-            if(Curation > 0.8){
+            if(Curation < 0.8){
                 double Curacion=VIDA_BASE_ARQUERO*0.25;
                 Vida+=Curacion;
                 System.out.println(ColoresConsola.enVerde("Has aumentado la vida en: "+Curacion+" puntos"));
@@ -304,41 +292,28 @@ public class Arquero extends Jugador implements AccionesJugador {
 
         int input;
 
-        do{
+        if(!enemigo0muerto && !enemigo1muerto){
 
-            if(!enemigo0muerto && !enemigo1muerto){
-                System.out.println("Elige un enemigo al que atacar: "+enemigoActual[0].nombre+
-                        enemigoActual[0].Vida+" || (2) "+enemigoActual[1].nombre+
-                        enemigoActual[1].Vida);
-                input=sc.nextInt();
-                apuntar=input-1;
-            }else if(enemigo1muerto){
-                System.out.println("Elige un enemigo al que atacar: "+enemigoActual[0].nombre+
-                        enemigoActual[0].Vida);
-                input=sc.nextInt();
-                apuntar=input-1;
-            }else{
-                System.out.println("Elige un enemigo al que atacar: (2) "+enemigoActual[1].nombre+
-                        enemigoActual[1].Vida);
-                input=sc.nextInt();
-                apuntar=input-1;
-            }
+            do{
 
-        }while(input!=1 && input!=2);
+                System.out.println("Elige un enemigo al que atacar: (1)"+enemigoActual[0].nombre+
+                        "(("+enemigoActual[0].Vida+")) || (2) "+enemigoActual[1].nombre+
+                        "(("+enemigoActual[1].Vida+"))");
+                input=sc.nextInt();
+                apuntar=input-1;
+
+            }while(input!=1 && input!=2);
+
+        }else if(enemigo1muerto){
+            apuntar=0;
+        }else{
+            apuntar=1;
+        }
+
 
         System.out.println(("¡Has usado la lluvia de flechas!"));
 
-        switch (dificultad){
-            case 1:{
-                Estamina-=65;
-            }
-            case 2:{
-                Estamina-=75;
-            }
-            case 3:{
-                Estamina-=85;
-            }
-        }
+        Estamina-=75;
 
         double SuperA = Math.random();
 
@@ -361,6 +336,8 @@ public class Arquero extends Jugador implements AccionesJugador {
         defenderse=false;
     }
 
+
+
     @Override
     public void golpeDevastador(){
 
@@ -370,28 +347,23 @@ public class Arquero extends Jugador implements AccionesJugador {
 
         int input;
 
-        do{
+        if(!enemigo0muerto && !enemigo1muerto){
 
-            if(!enemigo0muerto && !enemigo1muerto){
-                System.out.println("Elige un enemigo al que atacar: "+enemigoActual[0].nombre+
-                        enemigoActual[0].Vida+" || (2) "+enemigoActual[1].nombre+
-                        enemigoActual[1].Vida);
+            do{
+
+                System.out.println("Elige un enemigo al que atacar: (1)"+enemigoActual[0].nombre+
+                        "(("+enemigoActual[0].Vida+")) || (2) "+enemigoActual[1].nombre+
+                        "(("+enemigoActual[1].Vida+"))");
                 input=sc.nextInt();
                 apuntar=input-1;
-            }else if(enemigoActual[0].Vida > 0){
-                System.out.println("Elige un enemigo al que atacar: "+enemigoActual[0].nombre+
-                        enemigoActual[0].Vida);
-                input=sc.nextInt();
-                apuntar=input-1;
-            }else{
-                System.out.println("Elige un enemigo al que atacar: (2) "+enemigoActual[1].nombre+
-                        enemigoActual[1].Vida);
-                input=sc.nextInt();
-                apuntar=input-1;
-            }
 
-        }while(input!=1 && input!=2);
+            }while(input!=1 && input!=2);
 
+        }else if(enemigoActual[0].Vida > 0){
+            apuntar=0;
+        }else{
+            apuntar=1;
+        }
 
         double defense=Math.random();
 
@@ -435,6 +407,7 @@ public class Arquero extends Jugador implements AccionesJugador {
 
         espirituInvocado=true;
 
+        defenderse=false;
     }
 
     @Override
@@ -463,8 +436,9 @@ public class Arquero extends Jugador implements AccionesJugador {
     public void regeneracionRapida(){
 
         Vida+=VIDA_BASE*0.25;
-        System.out.println(ColoresConsola.enVerde("Has regenerado el 25% de tu vida"));
+        System.out.println(ColoresConsola.enVerde( nombre+  " ha regenerado el 25% de su vida"));
 
+        defenderse=false;
     }
 
     @Override
@@ -478,7 +452,7 @@ public class Arquero extends Jugador implements AccionesJugador {
 
             do {
 
-                System.out.println("Elige un enemigo al que atacar: " + enemigoActual[0].nombre +
+                System.out.println("Elige un enemigo al que atacar: (1)" + enemigoActual[0].nombre +
                         enemigoActual[0].Vida + " || (2) " + enemigoActual[1].nombre +
                         enemigoActual[1].Vida);
                 input = sc.nextInt();
@@ -506,6 +480,7 @@ public class Arquero extends Jugador implements AccionesJugador {
         enemigoActual[apuntar].Vida-=danoPocion;
         System.out.println("Daño infligido: "+danoPocion);
 
+        defenderse=false;
     }
 
     public void aplicarNerffeo(){

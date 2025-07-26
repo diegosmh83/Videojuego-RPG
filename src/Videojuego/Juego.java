@@ -17,13 +17,15 @@ public class Juego {
 
     //Equipos que se enfrentaran
     public static Jugador[] Jugadores;
-    Enemigo[] NPCs;
+    public static Enemigo[] NPCs;
 
     //variable que recoge el nivel de dificultad del juego
     public static int dificultad;
 
     //variable que indica la posicion del jugador/enemigo de cada equipo que le toque ejecutar su turno (0/1)
     public static int n=0;
+
+    int escoger;
 
     public static int coolDownDevastadorJ1=2;
     public static int coolDownDevastadorJ2=2;
@@ -51,6 +53,17 @@ public class Juego {
     public boolean inventarioVacio=false;
     public static int turnosInventario;
 
+    int turnoJ1des=2;
+    int turnoJ2des=2;
+    int sangrado=10;
+
+    int turnosJ1par=2;
+    int turnosJ2par=2;
+
+    int turnoJ1ven=6;
+    int turnoJ2ven=6;
+    int veneno=2;
+
     int N1=3;
     int N2=3;
     int N3=3;
@@ -60,6 +73,11 @@ public class Juego {
     int N6=3;
     int N7=3;
     int N8=3;
+
+    double velJ1;
+    double velJ2;
+    double velE1;
+    double velE2;
 
     public void controldelJuego(){
 
@@ -85,56 +103,47 @@ public class Juego {
             Jugador.inventario[i]=2;
         }
 
-
+        //Mientras uno de los personajes de cada equipo este vivo continuara la partida
         while ((!jugador0muerto || !jugador1muerto) && (!enemigo0muerto || !enemigo1muerto)) {
 
-            //Turno del primer jugador solo se ejecuta si esta vivo y no esta paralizado
-            if (!jugador0muerto && !Jugadores[n].paralizado){
-                System.out.println(Jugadores[n]);
-                turnoJugador();
-                if(NPCs[Jugadores[n].EnemigoNerffeado].Nerffeado){
-                    gestionarNerffeoEnemigo();
-                }
-                if(Jugadores[n].Buffeado){
-                    gestionarBuffeoJugador();
-                }
-            }else if (Jugadores[n].paralizado)
-                aplicarParalizacion();
-            n++;
+            //Establecemos el orden en que los personajes ejecutararn sus respectiuvos turnos al principio de cada ronda utilizando sus velocidades
+            ordenarRonda();
 
+            //primer turno
+            siguienteTurno();
+
+            //Comprobamos is el inventario esta vacio o no
             inventarioVacio=validarInventario();
-            limitarEstamina();
-            limitarVida();
+            limitarEstamina(); //Limitamos Estamina a 100
+            limitarVida(); //Limitamos Vida tambien a 100
 
-            //Comprobamos si enemigos mueren despues de cada turno jugador
+            //Comprobamos muertes induviduales
             comprobarMuertesEnemigo();
+            comprobarMuertesJugador();
 
+            //Comprobamos muertes de equipo enemigo
             if(NPCs[0].Vida <= 0 && NPCs[1].Vida <= 0){
                 System.out.println("Has matado a todos los enemigos \n");
                 System.out.println(ColoresConsola.enVerde("¡Has ganado!"));
                 break;
             }
 
-            //Turno del segundo jugador
-            if (!jugador1muerto && !Jugadores[n].paralizado){
-                System.out.println(Jugadores[n]);
-                turnoJugador();
-                if(NPCs[Jugadores[n].EnemigoNerffeado].Nerffeado){
-                    gestionarNerffeoEnemigo();
-                }
-                if(Jugadores[n].Buffeado){
-                    gestionarBuffeoJugador();
-                }
-            }else if (Jugadores[n].paralizado)
-                aplicarParalizacion();
-            n--;
+            //Comprobamos muertes de equipo jugador
+            if(jugador0muerto && jugador1muerto){
+                System.out.println("Los enemigos te han derrotado \n");
+                System.out.println(ColoresConsola.enRojo("Has perdido..."));
+                break;
+            }
+
+            //Segundo turno
+            siguienteTurno();
 
             inventarioVacio=validarInventario();
             limitarEstamina();
             limitarVida();
 
-            //Coprobamos si enemigos mueren
             comprobarMuertesEnemigo();
+            comprobarMuertesJugador();
 
             if(enemigo1muerto && enemigo0muerto){
                 System.out.println("Has matado a todos los enemigos \n");
@@ -142,41 +151,49 @@ public class Juego {
                 break;
             }
 
-            //Turno primer enemigo
-            if(!enemigo0muerto ){
-                System.out.println(NPCs[n]);
-                turnoEnemigo();
-                if(Jugadores[NPCs[n].JugadorNerffeado].Nerffeado){
-                    gestionarNerffeoJugador();
-                }
-                if(NPCs[n].Buffeado){
-                    gestionarBuffeoEnemigo();
-                }
-            }else
-                System.out.println();
-            n++;
-
-
-            //Comprobamos si jugadores mueren despues de cada turno enemigo
-            comprobarMuertesJugador();
-
-            //Turno segundo enemigo
-            if(!enemigo1muerto){
-                System.out.println(NPCs[n]);
-                turnoEnemigo();
-                if(Jugadores[NPCs[n].JugadorNerffeado].Nerffeado){
-                    gestionarNerffeoJugador();
-                }
-                if(NPCs[n].Buffeado){
-                    gestionarBuffeoEnemigo();
-                }
-            }else {
-                System.out.println();
+            if(jugador0muerto && jugador1muerto){
+                System.out.println("Los enemigos te han derrotado \n");
+                System.out.println(ColoresConsola.enRojo("Has perdido..."));
+                break;
             }
-            n--;
 
-            //Comprobamos si jugadores mueren
+            //Tercer turno
+            siguienteTurno();
+
+            inventarioVacio=validarInventario();
+            limitarEstamina();
+            limitarVida();
+
             comprobarMuertesJugador();
+            comprobarMuertesJugador();
+
+            if(enemigo1muerto && enemigo0muerto){
+                System.out.println("Has matado a todos los enemigos \n");
+                System.out.println(ColoresConsola.enVerde("¡Has ganado!"));
+                break;
+            }
+
+            if(jugador0muerto && jugador1muerto){
+                System.out.println("Los enemigos te han derrotado \n");
+                System.out.println(ColoresConsola.enRojo("Has perdido..."));
+                break;
+            }
+
+            //Cuarto y ultimo turno
+            siguienteTurno();
+
+            comprobarMuertesJugador();
+            comprobarMuertesEnemigo();
+
+            inventarioVacio=validarInventario();
+            limitarEstamina();
+            limitarVida();
+
+            if(enemigo1muerto && enemigo0muerto){
+                System.out.println("Has matado a todos los enemigos \n");
+                System.out.println(ColoresConsola.enVerde("¡Has ganado!"));
+                break;
+            }
 
             if(jugador0muerto && jugador1muerto){
                 System.out.println("Los enemigos te han derrotado \n");
@@ -194,9 +211,7 @@ public class Juego {
             //cada final de turno se reduce una unidad en las variables que manejan las habilidades que van por turnos
             manejarCoolDown();
 
-            //Limitamos siempre la estamina a 100
-            limitarEstamina();
-
+            //Si hemos invocado al Espiritu anteriormente, al final de cada ronda sera su turno para atacar
             if(espirituInvocado){
                 Jugadores[n].atacarEspiritu();
             }
@@ -215,21 +230,11 @@ public class Juego {
         switch (dificultad){
             case 1: { //Nivel Facil
                 System.out.println(ColoresConsola.enVerde("Has elegido el modo Facil \n "));
-
                 turnosInventario=4;
-
-                //Mejoramos atributos de los jugadores y reducimos los de los enemigos
-                for(int n=0; n<NPCs.length; n++){
-                    NPCs[n].Vida-=15;
-                    NPCs[n].Ataque-=3;
-                    Jugadores[n].Vida+=10;
-                    Jugadores[n].Ataque+=5;
-                }
                 break;
             }
 
             case 2:{ //Nivel Normal
-                //Vida y ataque predeterminado (no cambios)
                 System.out.println(ColoresConsola.enAmarillo("Has elegido el modo Normal \n "));
                 turnosInventario=3;
                 break;
@@ -237,16 +242,8 @@ public class Juego {
 
             case 3: { //Nivel Dificil
                 System.out.println(ColoresConsola.enRojo("Has elegido el modo Dificil"));
-
                 turnosInventario=2;
-
                 //Mejoramos atributos de los enemigos y reducimos los de los jugadores
-                for(int i=0; i<Jugadores.length; i++){
-                    NPCs[i].Vida+=10;
-                    NPCs[i].Ataque+=5;
-                    Jugadores[i].Vida-=10;
-                    Jugadores[i].Ataque-=5;
-                }
                 break;
             }
 
@@ -260,15 +257,21 @@ public class Juego {
 
     }
 
-    int escoger;
+
 
     public Jugador[] CrearPersonajes(){
 
         System.out.println("Bienvenido a mi Juego, para comenzar a jugar elige un Personaje:" +
-                " \n 1-guerrero (Vida: 100, Ataque: 25, Defensa: 5) \n 2-arquero (Vida: 85, Ataque: 20, Defensa: 10) \n 3-mago (Vida: 75, Ataque: 30, Defensa: 7) \n " +
-                "4-Caballero (Vida: 90, Ataque: 24, Defensa: 8) \n 5-Guardian (Vida: 125, Ataque: 17, Defensa: 15) \n 6-Valkyria (Vida: 80, Ataque: 27 Defensa: 6) \n " +
-                "7-Escudero (Vida: 110, Ataque: 15, Defensa: 20) \n 8-Ninja (Vida: 70, Ataque: 28, Defensa: 4) \n 9-Samurai (Vida: 95, Ataque: 22, Defensa: 12) \n " +
-                "10-Paladin (Vida: 120, Ataque: 29, Defensa: 12) ");
+                " \n 1-Guerrero ("+ColoresConsola.VERDE+"Vida: 100,"+ColoresConsola.ROJO+" Ataque: 25,"+ColoresConsola.AMARILLO+" Defensa: 5, "+ColoresConsola.AZUL+" Velocidad: 20"+ColoresConsola.RESET+") " +
+                " \n 2-Arquero ("+ColoresConsola.VERDE+"Vida: 85,"+ColoresConsola.ROJO+" Ataque: 20,"+ColoresConsola.AMARILLO+" Defensa: 10, "+ColoresConsola.AZUL+" Velocidad: 23"+ColoresConsola.RESET+") " +
+                " \n 3-Mago ("+ColoresConsola.VERDE+"Vida: 75,"+ColoresConsola.ROJO+" Ataque: 30,"+ColoresConsola.AMARILLO+" Defensa: 7, "+ColoresConsola.AZUL+" Velocidad: 18"+ColoresConsola.RESET+") " +
+                " \n 4-Caballero ("+ColoresConsola.VERDE+"Vida: 90,"+ColoresConsola.ROJO+" Ataque: 24,"+ColoresConsola.AMARILLO+" Defensa: 8, "+ColoresConsola.AZUL+" Velocidad: 24"+ColoresConsola.RESET+") " +
+                " \n 5-Guardian ("+ColoresConsola.VERDE+"Vida: 125,"+ColoresConsola.ROJO+" Ataque: 17,"+ColoresConsola.AMARILLO+" Defensa: 15, "+ColoresConsola.AZUL+" Velocidad: 19"+ColoresConsola.RESET+") " +
+                " \n 6-Valkyria ("+ColoresConsola.VERDE+"Vida: 80,"+ColoresConsola.ROJO+" Ataque: 27,"+ColoresConsola.AMARILLO+" Defensa: 6, "+ColoresConsola.AZUL+" Velocidad: 28"+ColoresConsola.RESET+") " +
+                " \n 7-Escudero ("+ColoresConsola.VERDE+"Vida: 110,"+ColoresConsola.ROJO+" Ataque: 15,"+ColoresConsola.AMARILLO+" Defensa: 20, "+ColoresConsola.AZUL+" Velocidad: 20"+ColoresConsola.RESET+") "+
+                " \n 8-Ninja ("+ColoresConsola.VERDE+"Vida: 70,"+ColoresConsola.ROJO+" Ataque: 28,"+ColoresConsola.AMARILLO+" Defensa: 4, "+ColoresConsola.AZUL+" Velocidad: 40"+ColoresConsola.RESET+") " +
+                " \n 9-Samurai ("+ColoresConsola.VERDE+"Vida: 95,"+ColoresConsola.ROJO+" Ataque: 22,"+ColoresConsola.AMARILLO+"  Defensa: 12, "+ColoresConsola.AZUL+" Velocidad: 21"+ColoresConsola.RESET+") " +
+                " \n 10-Paladin ("+ColoresConsola.VERDE+"Vida: 120,"+ColoresConsola.ROJO+" Ataque: 29,"+ColoresConsola.AMARILLO+" Defensa: 12, "+ColoresConsola.AZUL+" Velocidad: 25"+ColoresConsola.RESET+") ");
 
         Jugadores=new Jugador[EQUIPO];
 
@@ -321,10 +324,18 @@ public class Juego {
         }
 
         int escoger2;
-        System.out.println("Ahora elige un segundo personaje:  \n 1-guerrero (Vida: 100, Ataque:25, Defensa: 5) \n 2-arquero (Vida:85, Ataque:20, Defensa:10) \n 3-mago (Vida:75, Ataque:30, Defensa: 7) \n " +
-                " 4-Caballero (Vida:90, Ataque: 24, Defensa: 8) \n 5-Guardian (Vida: 125, Ataque: 17, Defensa: 15) \n 6-Valkyria (Vida: 80, Ataque: 27 Defensa: 6) \n  " +
-                " 7-Escudero (Vida: 110, Ataque: 15, Defensa: 20) \n 8-Ninja (Vida: 70, Ataque: 28, Defensa: 4) \n 9-Samurai (Vida: 95, Ataque: 22, Defensa: 12) \n " +
-                " 10-Paladin (Vida: 120, Ataque: 29, Defensa: 12) ");
+
+        System.out.println("Bienvenido a mi Juego, para comenzar a jugar elige un Personaje:" +
+                " \n 1-Guerrero ("+ColoresConsola.VERDE+"Vida: 100,"+ColoresConsola.ROJO+" Ataque: 25,"+ColoresConsola.AMARILLO+" Defensa: 5"+ColoresConsola.RESET+")  " +
+                " \n 2-Arquero ("+ColoresConsola.VERDE+"Vida: 85,"+ColoresConsola.ROJO+" Ataque: 20,"+ColoresConsola.AMARILLO+" Defensa: 10"+ColoresConsola.RESET+") " +
+                " \n 3-Mago ("+ColoresConsola.VERDE+"Vida: 75, "+ColoresConsola.ROJO+" Ataque: 30,"+ColoresConsola.AMARILLO+" Defensa: 7"+ColoresConsola.RESET+") " +
+                " \n 4-Caballero ("+ColoresConsola.VERDE+"Vida: 90,"+ColoresConsola.ROJO+" Ataque: 24,"+ColoresConsola.AMARILLO+" Defensa: 8"+ColoresConsola.RESET+") " +
+                " \n 5-Guardian ("+ColoresConsola.VERDE+"Vida: 125,"+ColoresConsola.ROJO+" Ataque: 17,"+ColoresConsola.AMARILLO+" Defensa: 15"+ColoresConsola.RESET+") " +
+                " \n 6-Valkyria ("+ColoresConsola.VERDE+"Vida: 80,"+ColoresConsola.ROJO+" Ataque: 27,"+ColoresConsola.AMARILLO+" Defensa: 6"+ColoresConsola.RESET+") " +
+                " \n 7-Escudero ("+ColoresConsola.VERDE+"Vida: 110,"+ColoresConsola.ROJO+" Ataque: 15,"+ColoresConsola.AMARILLO+" Defensa: 20"+ColoresConsola.RESET +") "+
+                " \n 8-Ninja ("+ColoresConsola.VERDE+"Vida: 70,"+ColoresConsola.ROJO+" Ataque: 28,"+ColoresConsola.AMARILLO+" Defensa: 4"+ColoresConsola.RESET+") " +
+                " \n 9-Samurai ("+ColoresConsola.VERDE+"Vida: 95,"+ColoresConsola.ROJO+" Ataque: 22,"+ColoresConsola.AMARILLO+"  Defensa: 12"+ColoresConsola.RESET+") " +
+                " \n 10-Paladin ("+ColoresConsola.VERDE+"Vida: 120,"+ColoresConsola.ROJO+" Ataque: 29,"+ColoresConsola.AMARILLO+" Defensa: 12"+ColoresConsola.RESET+") ");
 
         do{
             escoger2=sc.nextInt();
@@ -389,25 +400,25 @@ public class Juego {
         }else if(num > 1 && num < 2){
             NPCs[0]=new Bruja();
             System.out.println("Tu 1º rival es una Bruja (Vida inicial: 125) \n");
-        }else if(num > 3 && num < 4){
+        }else if(num > 2 && num < 3){
             NPCs[0]=new Zombi();
             System.out.println("Tu 1º rival es un Zombi (Vida inicial: 115)");
-        }else if(num > 4 && num < 5){
+        }else if(num > 3 && num < 4){
             NPCs[0]=new Araña();
             System.out.println("Tu 1º rival es una Araña (Vida inicial: 80)");
-        }else if(num > 5 && num < 6){
+        }else if(num > 4 && num < 5){
             NPCs[0]=new Gigante();
             System.out.println("Tu 1º rival es un Gigante (Vida inicial: 175)");
-        }else if(num > 6 && num < 7){
+        }else if(num > 5 && num < 6){
             NPCs[0]=new Fantasma();
             System.out.println("Tu 1º rival es un Fantasma (Vida inicial: 75)");
-        }else if(num > 7 && num < 8){
+        }else if(num > 6 && num < 7){
             NPCs[0]=new Espectro();
             System.out.println("Tu 1º rival es un Espectro (Vida inicial: 85)");
-        }else if(num > 8 && num < 9){
+        }else if(num > 7 && num < 8){
             NPCs[0]=new Sombra();
             System.out.println("Tu 1º rival es una Sombra (Vida inicial: 90)");
-        }else if(num > 9 && num < 10){
+        }else {
             NPCs[0]=new Dragon();
             System.out.println("Tu 1º rival es un Dragon (Vida inicial: 160)");
         }
@@ -420,25 +431,25 @@ public class Juego {
         }else if(mum > 1 && mum < 2){
             NPCs[1]=new Bruja();
             System.out.println("Tu 2º rival es una Bruja (Vida inicial: 125) \n");
-        }else if(mum > 3 && mum < 4){
+        }else if(mum > 2 && mum < 3){
             NPCs[1]=new Zombi();
             System.out.println("Tu 2º rival es un Zombi (Vida inicial: 115)");
-        }else if(mum > 4 && mum < 5){
+        }else if(mum > 3 && mum < 4){
             NPCs[1]=new Araña();
             System.out.println("Tu 2º rival es una Araña (Vida inicial: 80)");
-        }else if(mum > 5 && mum < 6){
+        }else if(mum > 4 && mum < 5){
             NPCs[1]=new Gigante();
             System.out.println("Tu 2º rival es un Gigante (Vida inicial: 175)");
-        }else if(mum > 6 && mum < 7){
+        }else if(mum > 5 && mum < 6){
             NPCs[1]=new Fantasma();
             System.out.println("Tu 2º rival es un Fantasma (Vida inicial: 75)");
-        }else if(mum > 7 && mum < 8){
+        }else if(mum > 6 && mum < 7){
             NPCs[1]=new Espectro();
             System.out.println("Tu 2º rival es un Espectro (Vida inicial: 85)");
-        }else if(mum > 8 && mum < 9){
+        }else if(mum > 7 && mum < 8){
             NPCs[1]=new Sombra();
             System.out.println("Tu 2º rival es una Sombra (Vida inicial: 90)");
-        }else if(mum > 9 && mum < 10){
+        }else {
             NPCs[1]=new Dragon();
             System.out.println("Tu 2º rival es un Dragon (Vida inicial: 160)");
         }
@@ -451,45 +462,82 @@ public class Juego {
 
         int jugar;
 
-        switch (dificultad){
-            case 1:{
-                if(n==0){
-                    System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador (CoolDown: "+coolDownDevastadorJ1+
-                            " ) \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (65 Estamina) (CoolDown: "+coolDownSuperAtaqueJ1+" ) " +
-                            "\n 6-Invocacion (CoolDown: "+coolDownInvocacion+ ")  \n 7-Objetos ("+turnosInventario+" turnos restantes )");
-                }else{
-                    System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador (CoolDown: "+coolDownDevastadorJ2+
-                            " ) \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (65 Estamina) (CoolDown: "+coolDownSuperAtaqueJ2+" ) " +
-                            "\n 6-Invocacion (CoolDown: "+coolDownInvocacion+ ") \n 7-Objetos ("+turnosInventario+" turnos restantes )");
-                }
-                break;
-            }
-            case 2:{
-                if(n==0){
-                    System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador (CoolDown: "+coolDownDevastadorJ1+
-                            " ) \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) (CoolDown: "+coolDownSuperAtaqueJ1+" ) " +
-                            "\n 6-Invocacion (CoolDown: "+coolDownInvocacion+ ") \n 7-Objetos ("+turnosInventario+" turnos restantes )");
-                }else{
-                    System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador (CoolDown: "+coolDownDevastadorJ2+
-                            " ) \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) (CoolDown: "+coolDownSuperAtaqueJ2+" ) " +
-                            "\n 6-Invocacion (CoolDown: "+coolDownInvocacion+ ") \n 7-Objetos ("+turnosInventario+" turnos restantes )");
-                }
-                break;
-            }
-            case 3:{
-                if(n==0){
-                    System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador (CoolDown: "+coolDownDevastadorJ1+
-                            " ) \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (85 Estamina) (CoolDown: "+coolDownSuperAtaqueJ1+" ) " +
-                            "\n 6-Invocacion (CoolDown: "+coolDownInvocacion+ ") \n 7-Objetos ("+turnosInventario+" turnos restantes )");
-                }else{
-                    System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador (CoolDown: "+coolDownDevastadorJ2+
-                            " ) \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (85 Estamina) (CoolDown: "+coolDownSuperAtaqueJ2+" ) " +
-                            "\n 6-Invocacion (CoolDown: "+coolDownInvocacion+ ") \n 7-Objetos ("+turnosInventario+ " turnos restantes )");
-                }
-                break;
-            }
 
+
+        switch(n){
+
+            case 0:{
+                if(coolDownInvocacion==0 && coolDownSuperAtaqueJ1==0 && coolDownDevastadorJ1==0){
+                    System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador "+ColoresConsola.VERDE+" (CoolDown: "+coolDownDevastadorJ1+
+                            " ) "+ColoresConsola.RESET+" \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) "+ColoresConsola.VERDE+" (CoolDown: "+coolDownSuperAtaqueJ1+" ) "+ColoresConsola.RESET+
+                            "\n 6-Invocacion "+ColoresConsola.VERDE+" (CoolDown: "+coolDownInvocacion+ ") "+ColoresConsola.RESET+" \n 7-Objetos ("+turnosInventario+" turnos restantes )");
+                }else{
+                    if(coolDownDevastadorJ1>0 && coolDownSuperAtaqueJ1==0 && coolDownInvocacion==0){
+                        System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador "+ColoresConsola.ROJO+" (CoolDown: "+coolDownDevastadorJ1+
+                                " ) "+ColoresConsola.RESET+" \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) "+ColoresConsola.VERDE+" (CoolDown: "+coolDownSuperAtaqueJ1+" ) "+ColoresConsola.RESET+
+                                "\n 6-Invocacion "+ColoresConsola.VERDE+" (CoolDown: "+coolDownInvocacion+ ") "+ColoresConsola.RESET+" \n 7-Objetos ("+turnosInventario+" turnos restantes )");
+                    }else if (coolDownSuperAtaqueJ1>0 && coolDownInvocacion==0 && coolDownDevastadorJ1==0){
+                        System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador "+ColoresConsola.VERDE+" (CoolDown: "+coolDownDevastadorJ1+
+                                " ) "+ColoresConsola.RESET+" \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) "+ColoresConsola.ROJO+" (CoolDown: "+coolDownSuperAtaqueJ1+" ) "+ColoresConsola.RESET+
+                                "\n 6-Invocacion "+ColoresConsola.VERDE+" (CoolDown: "+coolDownInvocacion+ ") "+ColoresConsola.RESET+" \n 7-Objetos ("+turnosInventario+" turnos restantes )");
+
+                    }else if(coolDownInvocacion>0 && coolDownDevastadorJ1==0 && coolDownSuperAtaqueJ1==0){
+                        System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador "+ColoresConsola.VERDE+" (CoolDown: "+coolDownDevastadorJ1+
+                                " ) "+ColoresConsola.RESET+" \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) "+ColoresConsola.VERDE+" (CoolDown: "+coolDownSuperAtaqueJ1+" ) "+ColoresConsola.RESET+
+                                "\n 6-Invocacion "+ColoresConsola.ROJO+" (CoolDown: "+coolDownInvocacion+ ") "+ColoresConsola.RESET+" \n 7-Objetos ("+turnosInventario+" turnos restantes )");
+                    }else if(coolDownInvocacion>0 && coolDownDevastadorJ1>0 && coolDownSuperAtaqueJ1==0){
+                        System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador "+ColoresConsola.ROJO+" (CoolDown: "+coolDownDevastadorJ1+
+                                " ) "+ColoresConsola.RESET+" \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) "+ColoresConsola.VERDE+" (CoolDown: "+coolDownSuperAtaqueJ1+" ) "+ColoresConsola.RESET+
+                                "\n 6-Invocacion "+ColoresConsola.ROJO+" (CoolDown: "+coolDownInvocacion+ ") "+ColoresConsola.RESET+" \n 7-Objetos ("+turnosInventario+" turnos restantes )");
+                    }else if(coolDownDevastadorJ1>0 && coolDownSuperAtaqueJ1>0 && coolDownInvocacion==0){
+                        System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador "+ColoresConsola.ROJO+" (CoolDown: "+coolDownDevastadorJ1+
+                                " ) "+ColoresConsola.RESET+" \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) "+ColoresConsola.ROJO+" (CoolDown: "+coolDownSuperAtaqueJ1+" ) "+ColoresConsola.RESET+
+                                "\n 6-Invocacion "+ColoresConsola.VERDE+" (CoolDown: "+coolDownInvocacion+ ") "+ColoresConsola.RESET+" \n 7-Objetos ("+turnosInventario+" turnos restantes )");
+                    }else{
+                        System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador "+ColoresConsola.ROJO+" (CoolDown: "+coolDownDevastadorJ1+
+                                " ) "+ColoresConsola.RESET+" \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) "+ColoresConsola.ROJO+" (CoolDown: "+coolDownSuperAtaqueJ1+" ) "+ColoresConsola.RESET+
+                                "\n 6-Invocacion "+ColoresConsola.ROJO+" (CoolDown: "+coolDownInvocacion+ ") "+ColoresConsola.RESET+" \n 7-Objetos ("+turnosInventario+" turnos restantes )");
+                    }
+                }
+                break;
+            }
+            case 1:{
+                if(coolDownInvocacion==0 && coolDownSuperAtaqueJ2==0 && coolDownDevastadorJ2==0){
+                    System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador "+ColoresConsola.VERDE+" (CoolDown: "+coolDownDevastadorJ2+
+                            " ) "+ColoresConsola.RESET+" \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) "+ColoresConsola.VERDE+" (CoolDown: "+coolDownSuperAtaqueJ2+" ) "+ColoresConsola.RESET+
+                            "\n 6-Invocacion "+ColoresConsola.VERDE+" (CoolDown: "+coolDownInvocacion+ ") "+ColoresConsola.RESET+" \n 7-Objetos ("+turnosInventario+" turnos restantes )");
+                }else{
+                    if(coolDownDevastadorJ2>0 && coolDownSuperAtaqueJ2==0 && coolDownInvocacion==0){
+                        System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador "+ColoresConsola.ROJO+" (CoolDown: "+coolDownDevastadorJ2+
+                                " ) "+ColoresConsola.RESET+" \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) "+ColoresConsola.VERDE+" (CoolDown: "+coolDownSuperAtaqueJ2+" ) "+ColoresConsola.RESET+
+                                "\n 6-Invocacion "+ColoresConsola.VERDE+" (CoolDown: "+coolDownInvocacion+ ") "+ColoresConsola.RESET+" \n 7-Objetos ("+turnosInventario+" turnos restantes )");
+                    }else if (coolDownSuperAtaqueJ2>0 && coolDownInvocacion==0 && coolDownDevastadorJ2==0){
+                        System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador "+ColoresConsola.VERDE+" (CoolDown: "+coolDownDevastadorJ2+
+                                " ) "+ColoresConsola.RESET+" \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) "+ColoresConsola.ROJO+" (CoolDown: "+coolDownSuperAtaqueJ2+" ) "+ColoresConsola.RESET+
+                                "\n 6-Invocacion "+ColoresConsola.VERDE+" (CoolDown: "+coolDownInvocacion+ ") "+ColoresConsola.RESET+" \n 7-Objetos ("+turnosInventario+" turnos restantes )");
+
+                    }else if(coolDownInvocacion>0 && coolDownDevastadorJ2==0 && coolDownSuperAtaqueJ2==0){
+                        System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador "+ColoresConsola.VERDE+" (CoolDown: "+coolDownDevastadorJ2+
+                                " ) "+ColoresConsola.RESET+" \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) "+ColoresConsola.VERDE+" (CoolDown: "+coolDownSuperAtaqueJ2+" ) "+ColoresConsola.RESET+
+                                "\n 6-Invocacion "+ColoresConsola.ROJO+" (CoolDown: "+coolDownInvocacion+ ") "+ColoresConsola.RESET+" \n 7-Objetos ("+turnosInventario+" turnos restantes )");
+                    }else if(coolDownInvocacion>0 && coolDownDevastadorJ2>0 && coolDownSuperAtaqueJ2==0){
+                        System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador "+ColoresConsola.ROJO+" (CoolDown: "+coolDownDevastadorJ2+
+                                " ) "+ColoresConsola.RESET+" \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) "+ColoresConsola.VERDE+" (CoolDown: "+coolDownSuperAtaqueJ2+" ) "+ColoresConsola.RESET+
+                                "\n 6-Invocacion "+ColoresConsola.ROJO+" (CoolDown: "+coolDownInvocacion+ ") "+ColoresConsola.RESET+" \n 7-Objetos ("+turnosInventario+" turnos restantes )");
+                    }else if(coolDownDevastadorJ2>0 && coolDownSuperAtaqueJ2>0 && coolDownInvocacion==0){
+                        System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador "+ColoresConsola.ROJO+" (CoolDown: "+coolDownDevastadorJ2+
+                                " ) "+ColoresConsola.RESET+" \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) "+ColoresConsola.ROJO+" (CoolDown: "+coolDownSuperAtaqueJ2+" ) "+ColoresConsola.RESET+
+                                "\n 6-Invocacion "+ColoresConsola.VERDE+" (CoolDown: "+coolDownInvocacion+ ") "+ColoresConsola.RESET+" \n 7-Objetos ("+turnosInventario+" turnos restantes )");
+                    }else{
+                        System.out.println("¿Que quieres hacer? \n 1-Ataque \n 2-Defensa \n 3-Golpe Devastador "+ColoresConsola.ROJO+" (CoolDown: "+coolDownDevastadorJ2+
+                                " ) "+ColoresConsola.RESET+" \n 4-Curacion (20 Estamina) \n 5-SuperAtaque (75 Estamina) "+ColoresConsola.ROJO+" (CoolDown: "+coolDownSuperAtaqueJ2+" ) "+ColoresConsola.RESET+
+                                "\n 6-Invocacion "+ColoresConsola.ROJO+" (CoolDown: "+coolDownInvocacion+ ") "+ColoresConsola.RESET+" \n 7-Objetos ("+turnosInventario+" turnos restantes )");
+                    }
+                }
+                break;
+            }
         }
+
 
         jugar=sc.nextInt();
 
@@ -530,68 +578,23 @@ public class Juego {
                     break;
                 }
             case 5:{
-                switch(dificultad){
-                    case 1:{
-                        if(n==0){
-                            if(Jugadores[n].Estamina >= 65 && coolDownSuperAtaqueJ1==0){
-                                Jugadores[n].SuperAtaque();
-                                coolDownSuperAtaqueJ1=5;
-                            }else{
-                                System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
-                                turnoJugador();
-                            }
-                        }else{
-                            if(Jugadores[n].Estamina >= 65 && coolDownSuperAtaqueJ2==0){
-                                Jugadores[n].SuperAtaque();
-                                coolDownSuperAtaqueJ2=5;
-                            }else{
-                                System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
-                                turnoJugador();
-                            }
-                        }
-                        break;
-                    }
-                    case 2:{
-                        if(n==0){
-                            if(Jugadores[n].Estamina >= 75 && coolDownSuperAtaqueJ1==0){
-                                Jugadores[n].SuperAtaque();
-                                coolDownSuperAtaqueJ1=5;
-                            }else{
-                                System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
-                                turnoJugador();
-                            }
-                        }else{
-                            if(Jugadores[n].Estamina >= 75 && coolDownSuperAtaqueJ2==0){
-                                Jugadores[n].SuperAtaque();
-                                coolDownSuperAtaqueJ2=5;
-                            }else{
-                                System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
-                                turnoJugador();
-                            }
-                        }
-                        break;
-                    }
-                    case 3:{
-                        if(n==0){
-                            if(Jugadores[n].Estamina >= 85 && coolDownSuperAtaqueJ1==0){
-                                Jugadores[n].SuperAtaque();
-                                coolDownSuperAtaqueJ1=5;
-                            }else{
-                                System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
-                                turnoJugador();
-                            }
-                        }else{
-                            if(Jugadores[n].Estamina >= 85 && coolDownSuperAtaqueJ2==0){
-                                Jugadores[n].SuperAtaque();
-                                coolDownSuperAtaqueJ2=5;
-                            }else{
-                                System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
-                                turnoJugador();
-                            }
-                        }
-                        break;
-                    }
 
+                if(n==0){
+                    if(Jugadores[n].Estamina >= 75 && coolDownSuperAtaqueJ1==0){
+                        Jugadores[n].SuperAtaque();
+                        coolDownSuperAtaqueJ1=5;
+                    }else{
+                        System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
+                        turnoJugador();
+                    }
+                }else{
+                    if(Jugadores[n].Estamina >= 75 && coolDownSuperAtaqueJ2==0){
+                        Jugadores[n].SuperAtaque();
+                        coolDownSuperAtaqueJ2=5;
+                    }else{
+                        System.out.println(ColoresConsola.enAmarillo("No tienes suficiente Estamina \n "));
+                        turnoJugador();
+                    }
                 }
                 break;
             }
@@ -695,14 +698,14 @@ public class Juego {
 
     public void recargarEstamina(){
         if(dificultad==1){
+            Jugadores[0].Estamina+=20;
+            Jugadores[1].Estamina+=20;
+        }else if(dificultad==2){
             Jugadores[0].Estamina+=15;
             Jugadores[1].Estamina+=15;
-        }else if(dificultad==2){
+        }else{
             Jugadores[0].Estamina+=10;
             Jugadores[1].Estamina+=10;
-        }else{
-            Jugadores[0].Estamina+=5;
-            Jugadores[1].Estamina+=5;
         }
     }
 
@@ -728,9 +731,7 @@ public class Juego {
 
     }
 
-    int turnoJ1des=2;
-    int turnoJ2des=2;
-    int sangrado=10;
+
 
     public void aplicarSangrado(){
 
@@ -770,9 +771,7 @@ public class Juego {
 
     }
 
-    int turnoJ1ven=6;
-    int turnoJ2ven=6;
-    int veneno=2;
+
 
     public void aplicarVeneno(){
 
@@ -808,9 +807,6 @@ public class Juego {
         }
 
     }
-
-    int turnosJ1par=2;
-    int turnosJ2par=2;
 
     public void aplicarParalizacion(){
 
@@ -1038,6 +1034,83 @@ public class Juego {
             return true;
         }else{
             return  false;
+        }
+
+
+    }
+
+    public void ordenarRonda(){
+
+       velJ1=Math.random()*Jugadores[0].Velocidad;
+       velJ2=Math.random()*Jugadores[1].Velocidad;
+       velE1=Math.random()*NPCs[0].Velocidad;
+       velE2=Math.random()*NPCs[1].Velocidad;
+
+    }
+
+    public void siguienteTurno(){
+
+        if(velJ1 > velJ2 && velJ1 > velE1 && velJ1 > velE2 ){
+
+            if (!jugador0muerto && !Jugadores[0].paralizado){
+                System.out.println(Jugadores[0]);
+                turnoJugador();
+                velJ1=0;
+                if(NPCs[Jugadores[0].EnemigoNerffeado].Nerffeado && NPCs[Jugadores[0].EnemigoNerffeado].Vida > 0){
+                    gestionarNerffeoEnemigo();
+                }
+                if(Jugadores[0].Buffeado){
+                    gestionarBuffeoJugador();
+                }
+            }else if (Jugadores[0].paralizado)
+                aplicarParalizacion();
+
+        }else if(velJ2 > velJ1 && velJ2 > velE1 && velJ2 > velE2){
+
+            if (!jugador1muerto && !Jugadores[1].paralizado){
+                System.out.println(Jugadores[1]);
+                ++n;
+                turnoJugador();
+                --n;
+                velJ2=0;
+                if(NPCs[Jugadores[1].EnemigoNerffeado].Nerffeado && NPCs[Jugadores[1].EnemigoNerffeado].Vida > 0){
+                    gestionarNerffeoEnemigo();
+                }
+                if(Jugadores[1].Buffeado){
+                    gestionarBuffeoJugador();
+                }
+            }else if (Jugadores[1].paralizado)
+                aplicarParalizacion();
+
+        }else if(velE1 > velJ1 && velE1 > velJ2 && velE1 > velE2){
+
+            if(!enemigo0muerto){
+                System.out.println(NPCs[0]);
+                turnoEnemigo();
+                velE1=0;
+                if(Jugadores[NPCs[0].JugadorNerffeado].Nerffeado && Jugadores[NPCs[0].JugadorNerffeado].Vida > 0){
+                    gestionarNerffeoJugador();
+                }
+                if(NPCs[0].Buffeado){
+                    gestionarBuffeoEnemigo();
+                }
+            }
+
+        }else{
+
+            if(!enemigo1muerto){
+                System.out.println(NPCs[1]);
+                ++n;
+                turnoEnemigo();
+                --n;
+                velE2=0;
+                if(Jugadores[NPCs[1].JugadorNerffeado].Nerffeado && Jugadores[NPCs[1].JugadorNerffeado].Vida > 0){
+                    gestionarNerffeoJugador();
+                }
+                if(NPCs[1].Buffeado){
+                    gestionarBuffeoEnemigo();
+                }
+            }
         }
 
 
