@@ -19,6 +19,7 @@ public class Mago extends Jugador implements AccionesJugador {
         Estamina=25;
         nombre="Mago";
         Nerffeado=false;
+        Buffeado=false;
     }
 
     int apuntar;
@@ -26,6 +27,10 @@ public class Mago extends Jugador implements AccionesJugador {
     final double VIDA_BASE=75;
     final double DEFENSA_BASE=7;
     final double ATAQUE_BASE=30;
+
+    double defense=Math.random();
+
+    double ataqueCargado=ATAQUE_BASE*2.2;
 
 
     @Override
@@ -101,7 +106,7 @@ public class Mago extends Jugador implements AccionesJugador {
 
         }
 
-        double defense=Math.random();
+
 
         //Sub-metodo para que el enemigo se defienda
         if(enemigoActual[apuntar].defenderse){
@@ -241,6 +246,8 @@ public class Mago extends Jugador implements AccionesJugador {
 
         defenderse=false;
 
+        esquivando=false;
+
     }
 
 
@@ -251,6 +258,8 @@ public class Mago extends Jugador implements AccionesJugador {
         defenderse=true;
 
         System.out.println("Has escogido defenderte \n ");
+
+        esquivando=false;
 
     }
 
@@ -305,6 +314,8 @@ public class Mago extends Jugador implements AccionesJugador {
 
 
         defenderse=false;
+
+        esquivando=false;
     }
 
     @Override
@@ -326,12 +337,14 @@ public class Mago extends Jugador implements AccionesJugador {
 
         }else if(enemigo1muerto){
             apuntar=0;
+            System.out.println(ColoresConsola.enAzul("Vas a por el enemigo 1 "+enemigoActual[0].nombre));
         }else{
             apuntar=1;
+            System.out.println(ColoresConsola.enAzul("Vas a por el enemigo 2 "+enemigoActual[1].nombre));
         }
 
 
-        System.out.println(("¡Has usado la lluvia de flechas!"));
+        System.out.println(("¡Has usado la Aurora de Fuego!"));
 
         Estamina-=75;
 
@@ -354,6 +367,8 @@ public class Mago extends Jugador implements AccionesJugador {
         }
 
         defenderse=false;
+
+        esquivando=false;
     }
 
     @Override
@@ -379,8 +394,10 @@ public class Mago extends Jugador implements AccionesJugador {
 
         }else if(enemigoActual[0].Vida > 0){
             apuntar=0;
+            System.out.println(ColoresConsola.enAzul("Vas a por el enemigo 1 "+enemigoActual[0].nombre));
         }else{
             apuntar=1;
+            System.out.println(ColoresConsola.enAzul("Vas a por el enemigo 2 "+enemigoActual[1].nombre));
         }
 
         double defense=Math.random();
@@ -393,21 +410,25 @@ public class Mago extends Jugador implements AccionesJugador {
             if(defense < 0.2){
                 System.out.println(ColoresConsola.enAmarillo("La defensa de " +enemigoActual[apuntar].nombre+ " ha resultado fallida \n "));
                 enemigoActual[apuntar].Vida-=Ataque;
+                danoIngfligido+=Ataque;
                 System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
             }else if (defense <= 0.8){
                 Ataque-=Ataque*0.25;
                 System.out.println(ColoresConsola.enAmarillo(enemigoActual[apuntar].nombre+ " se ha defendido del golpe devastador\n ") );
                 enemigoActual[apuntar].Vida-=Ataque;
+                danoIngfligido+=Ataque;
                 System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
             }else{
                 Ataque=ATAQUE_BASE;
                 System.out.println(ColoresConsola.enAmarillo(enemigoActual[apuntar].nombre+ " ha realizado una defensa perfecta y ha mermado tu golpe devastador \n "));
                 enemigoActual[apuntar].Vida-=Ataque;
+                danoIngfligido+=Ataque;
                 System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
             }
 
         }else{
             enemigoActual[apuntar].Vida-=Ataque;
+            danoIngfligido+=Ataque;
             System.out.println(ColoresConsola.enVerde("Daño inligido: "+Ataque));
         }
 
@@ -415,6 +436,8 @@ public class Mago extends Jugador implements AccionesJugador {
         Ataque=ATAQUE_BASE;
 
         defenderse=false;
+
+        esquivando=false;
 
     }
 
@@ -424,6 +447,10 @@ public class Mago extends Jugador implements AccionesJugador {
         System.out.println(ColoresConsola.enMorado("Has invocado al Espiritu Ancestral"));
 
         espirituInvocado=true;
+
+        defenderse=false;
+
+        esquivando=false;
 
     }
 
@@ -435,12 +462,24 @@ public class Mago extends Jugador implements AccionesJugador {
 
         int ataqueEspiritu=7;
 
-        if(elegir > 0.5){
-            punt=1;
-            System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 2 "+ enemigoActual[punt].nombre + enemigoActual[punt].Vida));
+        if(!enemigo0muerto && !enemigo1muerto){
+            if(elegir > 0.5){
+                punt=1;
+                System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 2 "+ enemigoActual[punt].nombre + enemigoActual[punt].Vida));
+            }else{
+                punt=0;
+                System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 1 "+ enemigoActual[punt].nombre + enemigoActual[punt].Vida));
+            }
         }else{
-            punt=0;
-            System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 1 "+ enemigoActual[punt].nombre + enemigoActual[punt].Vida));
+
+            if(enemigo1muerto){
+                punt=0;
+                System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 1 "+ enemigoActual[punt].nombre + enemigoActual[punt].Vida));
+            }else{
+                punt=1;
+                System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 2 "+ enemigoActual[punt].nombre + enemigoActual[punt].Vida));
+            }
+
         }
 
         enemigoActual[punt].Vida-=ataqueEspiritu;
@@ -454,6 +493,10 @@ public class Mago extends Jugador implements AccionesJugador {
 
         Vida+=VIDA_BASE*0.25;
         System.out.println(ColoresConsola.enVerde( nombre+ " ha regenerado el 25% de su vida"));
+
+        defenderse=false;
+
+        esquivando=false;
 
     }
 
@@ -494,7 +537,92 @@ public class Mago extends Jugador implements AccionesJugador {
         }
 
         enemigoActual[apuntar].Vida-=danoPocion;
+        danoIngfligido+=danoPocion;
         System.out.println("Daño infligido: "+danoPocion);
+
+        defenderse=false;
+
+        esquivando=false;
+
+    }
+
+    @Override
+    public void cargarAtaque() {
+
+        if(!cargandoAtaque){
+
+            System.out.println("Has escogido cargar el ataque");
+
+            System.out.println(ColoresConsola.enAzul("Cargando...."));
+
+            cargandoAtaque=true;
+
+        }else{
+
+            System.out.println(ColoresConsola.enVerde("Ataque Cargado"));
+
+            if(!enemigo0muerto && !enemigo1muerto){
+                int input=0;
+
+                do{
+
+                    System.out.println("Elige un enemigo al que atacar: (1) "+enemigoActual[0].nombre+
+                            " (("+enemigoActual[0].Vida+")) || (2) "+enemigoActual[1].nombre+
+                            " (("+enemigoActual[1].Vida+"))");
+                    input=sc.nextInt();
+                    apuntar=input-1;
+
+
+                }while(input!=1 && input!=2);
+
+            }else{
+
+                if(enemigo1muerto){
+                    apuntar=0;
+                    System.out.println(ColoresConsola.enAzul("Vas a por el enemigo 1 "+enemigoActual[0].nombre));
+                }else{
+                    apuntar=1;
+                    System.out.println(ColoresConsola.enAzul("Vas a por el enemigo 2 "+enemigoActual[1].nombre));
+                }
+
+            }
+
+            if(enemigoActual[apuntar].defenderse){
+                System.out.println(("El" +enemigoActual[apuntar].nombre+ " se esta defendiendo... \n "));
+
+                if(defense < 0.2){
+                    System.out.println(ColoresConsola.enAmarillo("La Defensa de" +enemigoActual[apuntar].nombre+ " ha resultado fallida \n "));
+                }else if (defense <= 0.8){
+                    ataqueCargado=ataqueCargado*0.9;
+                    System.out.println(ColoresConsola.enAmarillo(enemigoActual[apuntar].nombre+ " se ha defendido \n ") );
+                }else{
+                    System.out.println(ColoresConsola.enAmarillo(enemigoActual[apuntar].nombre+ " ha realizado una defensa genial y ha jodido tu ataque cargado \n "));
+                    ataqueCargado=ataqueCargado*0.7;
+                }
+            }
+
+            enemigoActual[apuntar].Vida-=ataqueCargado;
+            danoIngfligido+=ataqueCargado;
+            System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueCargado));
+
+            ataqueCargado=ATAQUE_BASE*2.2;
+
+            cargandoAtaque=false;
+
+        }
+
+        defenderse=false;
+
+        esquivando=false;
+
+    }
+
+    @Override
+    public void esquivar(){
+
+        System.out.println(ColoresConsola.enAzul("Has decidido esquivar al enemigo"));
+
+        esquivando=true;
 
     }
 

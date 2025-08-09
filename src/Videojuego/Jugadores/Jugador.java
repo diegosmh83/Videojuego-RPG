@@ -24,6 +24,8 @@ public abstract class Jugador extends Personaje implements AccionesJugador {
 
     public static final int TAM_INVENTARIO=3;
 
+    public boolean cargandoAtaque=false;
+
     public boolean paralizado;
     public boolean desangrado;
     public boolean envenenado;
@@ -37,6 +39,8 @@ public abstract class Jugador extends Personaje implements AccionesJugador {
     }
 
     public boolean defenderse;
+
+    public boolean esquivando;
 
 
 

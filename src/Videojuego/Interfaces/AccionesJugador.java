@@ -15,4 +15,8 @@ public interface AccionesJugador extends AccionesBasicas {
      void regeneracionRapida();
 
      void danoColateral();
+
+     void cargarAtaque();
+
+     void esquivar();
 }

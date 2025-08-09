@@ -26,6 +26,8 @@ public class Duende extends Enemigo implements AccionesBasicas {
 
         double defense = Math.random();
 
+        double esquivo=Math.random();
+
         //El enemigo puede perder el turno de ataque si se defiende
         if (defenderse) {
             double probabilidad = Math.random();
@@ -66,7 +68,7 @@ public class Duende extends Enemigo implements AccionesBasicas {
 
         }
 
-        System.out.println(("El Duende va a atacar \n "));
+        System.out.println(("El Duende va a atacar "));
 
         double ataqueBase = Ataque;
 
@@ -85,23 +87,33 @@ public class Duende extends Enemigo implements AccionesBasicas {
         }else{
             if(jugadorActual[0].Vida > 0){
                 apuntado=0;
+                System.out.println(ColoresConsola.enAmarillo("va a por el J1 "+jugadorActual[0].nombre+ "((" + jugadorActual[0].Vida + "))"));
             }else{
                 apuntado=1;
+                System.out.println(ColoresConsola.enAmarillo("va a por el J2 "+jugadorActual[1].nombre+ "((" + jugadorActual[1].Vida + "))"));
             }
         }
 
 
-        //Sub-metodo para defender:
-        if (jugadorActual[apuntado].defenderse) {
+        //Sub-metodo para defender o esquivar:
+        if(jugadorActual[apuntado].defenderse){
 
-            if (defense < 0.2) {
-                System.out.println(ColoresConsola.enAzul("Tu defensa ha resultado fallida \n "));
-            } else if ( defense <= 0.8) {
-                Ataque-=Ataque * 0.25;
-                System.out.println(ColoresConsola.enAzul("Defensa Normal \n "));
-            } else {
-                Ataque = 0;
-                System.out.println(ColoresConsola.enVerde("¡Has realizado una defensa perfecta! \n "));
+            if(defense < 0.2 ){
+                System.out.println(ColoresConsola.enAzul("Tu defensa ha resultado fallida ") );
+            }else if(defense <=0.8){
+                Ataque-=Ataque*0.25;
+                System.out.println(ColoresConsola.enAzul("Has realizado una defensa normal "));
+            }else{
+                System.out.println(ColoresConsola.enVerde("¡Has realizado una defensa Perfecta!  "));
+                return;
+            }
+        }else if(jugadorActual[apuntado].esquivando){
+
+            if(esquivo > 0.5){
+                System.out.println(ColoresConsola.enVerde("!Has esquivado al enemigo exitosamente¡"));
+                return;
+            }else{
+                System.out.println(ColoresConsola.enRojo("Has fallado a la hora de esquivar..."));
             }
 
         }
@@ -162,20 +174,20 @@ public class Duende extends Enemigo implements AccionesBasicas {
 
                     case 1:{
                         if(attack < 0.9){
-                            System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal \n"));
+                            System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal "));
                             Ataque-=jugadorActual[apuntado].Defensa;
                             jugadorActual[apuntado].Vida-=Ataque;
-                            System.out.println(ColoresConsola.enRojo("Daño recibido: "+Ataque));
+                            System.out.println(ColoresConsola.enRojo("Daño recibido: "+Ataque+ "\n"));
                             danoIngfligido+=Ataque;
                         }else{
-                            System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque critico \n"));
+                            System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque critico "));
                             if(jugadorActual[apuntado].defenderse && defense > 0.8){
                                 System.out.println(ColoresConsola.enVerde("Pero no le ha servido de nada"));
                                 return;
                             }
                             double ataqueC=Ataque*2;
                             jugadorActual[apuntado].Vida-=ataqueC;
-                            System.out.println(ColoresConsola.enRojo("Daño recibido: "+ataqueC));
+                            System.out.println(ColoresConsola.enRojo("Daño recibido: "+ataqueC+ "\n"));
                             danoIngfligido+=Ataque;
                             if(nerffeo > 0.9){
                                 System.out.println(ColoresConsola.enAmarillo("Se reduce temporalmente la defensa de "+jugadorActual[apuntado].nombre+" en un 20%"));
@@ -192,20 +204,20 @@ public class Duende extends Enemigo implements AccionesBasicas {
                     }
                     case 2:{
                         if(attack < 0.8){
-                            System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal \n"));
+                            System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal "));
                             Ataque-=jugadorActual[apuntado].Defensa;
                             jugadorActual[apuntado].Vida-=Ataque;
-                            System.out.println(ColoresConsola.enRojo("Daño recibido: "+Ataque));
+                            System.out.println(ColoresConsola.enRojo("Daño recibido: "+Ataque+ "\n"));
                             danoIngfligido+=Ataque;
                         }else{
-                            System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque critico \n"));
+                            System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque critico "));
                             if(jugadorActual[apuntado].defenderse && defense > 0.8){
                                 System.out.println(ColoresConsola.enVerde("Pero no le ha servido de nada"));
                                 return;
                             }
                             double ataqueC=Ataque*2;
                             jugadorActual[apuntado].Vida-=ataqueC;
-                            System.out.println(ColoresConsola.enRojo("Daño recibido: "+ataqueC));
+                            System.out.println(ColoresConsola.enRojo("Daño recibido: "+ataqueC+ "\n"));
                             danoIngfligido+=Ataque;
                             if(nerffeo > 0.8){
                                 System.out.println(ColoresConsola.enAmarillo("Se reduce temporalmente la defensa de "+jugadorActual[apuntado].nombre+" en un 20%"));
@@ -221,20 +233,20 @@ public class Duende extends Enemigo implements AccionesBasicas {
                     }
                     case 3:{
                         if(attack < 0.7){
-                            System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal \n"));
+                            System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque normal "));
                             Ataque-=jugadorActual[apuntado].Defensa;
                             jugadorActual[apuntado].Vida-=Ataque;
-                            System.out.println(ColoresConsola.enRojo("Daño recibido: "+Ataque));
+                            System.out.println(ColoresConsola.enRojo("Daño recibido: "+Ataque+ "\n"));
                             danoIngfligido+=Ataque;
                         }else{
-                            System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque critico \n"));
+                            System.out.println(ColoresConsola.enAmarillo("Ha realizado un ataque critico "));
                             if(jugadorActual[apuntado].defenderse && defense > 0.8){
                                 System.out.println(ColoresConsola.enVerde("Pero no le ha servido de nada"));
                                 return;
                             }
                             double ataqueC=Ataque*2;
                             jugadorActual[apuntado].Vida-=ataqueC;
-                            System.out.println(ColoresConsola.enRojo("Daño recibido: "+ataqueC));
+                            System.out.println(ColoresConsola.enRojo("Daño recibido: "+ataqueC+ "\n"));
                             danoIngfligido+=Ataque;
                             if(nerffeo > 0.7){
                                 System.out.println(ColoresConsola.enAmarillo("Se reduce temporalmente la defensa de "+jugadorActual[apuntado].nombre+" en un 20%"));

@@ -23,6 +23,8 @@ public class Sombra extends Enemigo implements AccionesBasicas {
 
         double defense=Math.random();
 
+        double esquivo=Math.random();
+
         //puedes perder el turno de ataque si te defiendes
         if(defenderse){
             double probabilidad=Math.random();
@@ -64,7 +66,7 @@ public class Sombra extends Enemigo implements AccionesBasicas {
 
         }
 
-        System.out.println(("La Sombra va a atacar \n "));
+        System.out.println(("La Sombra va a atacar  "));
 
         double ataqueBase = Ataque;
 
@@ -83,24 +85,35 @@ public class Sombra extends Enemigo implements AccionesBasicas {
         }else{
             if(jugadorActual[0].Vida > 0){
                 apuntado=0;
+                System.out.println(ColoresConsola.enAmarillo("va a por el J1 "+jugadorActual[0].nombre+ "((" + jugadorActual[0].Vida + "))"));
             }else{
                 apuntado=1;
+                System.out.println(ColoresConsola.enAmarillo("va a por el J2 "+jugadorActual[1].nombre+ "((" + jugadorActual[1].Vida + "))"));
             }
         }
 
 
-        //Sub-metodo para defender:
+        //Sub-metodo para defender o esquivar:
         if(jugadorActual[apuntado].defenderse){
 
             if(defense < 0.2 ){
-                System.out.println(ColoresConsola.enAzul("Tu defensa ha resultado fallida \n ") );
+                System.out.println(ColoresConsola.enAzul("Tu defensa ha resultado fallida ") );
             }else if(defense <=0.8){
                 Ataque-=Ataque*0.25;
-                System.out.println(ColoresConsola.enAzul("Has realizado una defensa normal \n "));
+                System.out.println(ColoresConsola.enAzul("Has realizado una defensa normal "));
             }else{
-                Ataque=0;
-                System.out.println(ColoresConsola.enVerde("¡Has realizado una defensa Perfecta! \n "));
+                System.out.println(ColoresConsola.enVerde("¡Has realizado una defensa Perfecta!  "));
+                return;
             }
+        }else if(jugadorActual[apuntado].esquivando){
+
+            if(esquivo > 0.5){
+                System.out.println(ColoresConsola.enVerde("!Has esquivado al enemigo exitosamente¡"));
+                return;
+            }else{
+                System.out.println(ColoresConsola.enRojo("Has fallado a la hora de esquivar..."));
+            }
+
         }
 
         double attack;
@@ -126,7 +139,7 @@ public class Sombra extends Enemigo implements AccionesBasicas {
             }
 
             case 2:{
-                if(estado > 0.9){
+                if(estado > 0.875){
                     if(elegir < 0.01){
                         jugadorActual[apuntado].envenenado=true;
                     }else if(elegir < 0.95){
@@ -140,7 +153,7 @@ public class Sombra extends Enemigo implements AccionesBasicas {
             }
 
             case 3:{
-                if(estado > 0.85){
+                if(estado > 0.8){
                     if(elegir < 0.01){
                         jugadorActual[apuntado].envenenado=true;
                     }else if(elegir < 0.95){
