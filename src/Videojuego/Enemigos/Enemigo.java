@@ -10,6 +10,12 @@ public  abstract class Enemigo extends Personaje implements AccionesBasicas {
 
     public int JugadorNerffeado;
 
+    public double contraatacar;
+
+    public static int contraAtaque=10;
+
+    public double contadorMuro=0;
+
     public static final double DEFENSA_BRUJA_BASE=8;
     public static final double DEFENSA_DUENDE_BASE=5;
     public static final double DEFENSA_ZOMBI_BASE=7;

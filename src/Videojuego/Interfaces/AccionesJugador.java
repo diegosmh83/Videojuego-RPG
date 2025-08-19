@@ -19,4 +19,6 @@ public interface AccionesJugador extends AccionesBasicas {
      void cargarAtaque();
 
      void esquivar();
+
+     void accionEspecial();
 }

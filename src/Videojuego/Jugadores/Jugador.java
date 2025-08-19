@@ -21,14 +21,37 @@ public abstract class Jugador extends Personaje implements AccionesJugador {
     public static final int DEFENSA_MAGO_BASE=7;
     public static final int DEFENSA_GUERRERO_BASE=5;
     public static final int DEFENSA_ARQUERO_BASE=10;
+    public static final int DEFENSA_CABALLERO_BASE=8;
+    public static final int DEFENSA_ESCUDERO_BASE=20;
+    public static final int DEFENSA_GUARDIAN_BASE=15;
+    public static final int DEFENSA_NINJA_BASE=4;
+    public static final int DEFENSA_PALADIN_BASE=12;
+    public static final int DEFENSA_SAMURAI_BASE=12;
+    public static final int DEFENSA_VALKYRIA_BASE=6;
 
     public static final int TAM_INVENTARIO=3;
+
+    public boolean Invisible=false;
 
     public boolean cargandoAtaque=false;
 
     public boolean paralizado;
     public boolean desangrado;
     public boolean envenenado;
+
+    public boolean Furia=false;
+
+
+
+    public int turnosFurioso=0;
+
+    public boolean tempDefensa=false;
+    public boolean tempAtaque=false;
+    public boolean tempVelocidad=false;
+
+    public boolean defenderse;
+
+    public boolean esquivando;
 
     public Jugador() {
     }
@@ -37,15 +60,6 @@ public abstract class Jugador extends Personaje implements AccionesJugador {
         this.enemigoActual=enemigo;
 
     }
-
-    public boolean defenderse;
-
-    public boolean esquivando;
-
-
-
-
-
 
 
 }

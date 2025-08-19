@@ -24,9 +24,10 @@ public class Mago extends Jugador implements AccionesJugador {
 
     int apuntar;
 
-    final double VIDA_BASE=75;
-    final double DEFENSA_BASE=7;
-    final double ATAQUE_BASE=30;
+    public static final double VIDA_BASE=75;
+    public static final double DEFENSA_BASE=7;
+    public static final double ATAQUE_BASE=30;
+    public static final double VELOCIDAD_BASE=18;
 
     double defense=Math.random();
 
@@ -131,12 +132,33 @@ public class Mago extends Jugador implements AccionesJugador {
         double buffeo=Math.random();
         double nerffeo=Math.random();
 
+        if(Furia){
+
+            if(turnosFurioso > 0){
+
+                Ataque=ATAQUE_BASE*1.5;
+
+                Velocidad=VELOCIDAD_BASE*1.5;
+
+                --turnosFurioso;
+
+            }else{
+
+                Furia=false;
+
+                System.out.println(ColoresConsola.enRojo(nombre+ " ha salido del estado de furia"));
+
+                turnosFurioso=4;
+
+            }
+
+        }
+
         switch (dificultad){
 
             case 1:{
 
                 if(attack < 0.1){
-                    Ataque-=enemigoActual[apuntar].Defensa;
                     double ataqueP = Ataque/2;
                     System.out.println(ColoresConsola.enAzul("Has realizado un ataque penoso (fallo) "));
                     danoIngfligido+=ataqueP;
@@ -145,14 +167,16 @@ public class Mago extends Jugador implements AccionesJugador {
                     Estamina++;
                 }else if(attack <= 0.7){
                     Ataque-=enemigoActual[apuntar].Defensa;
+                    if(Ataque <= 0){
+                        Ataque=3;
+                    }
                     System.out.println(ColoresConsola.enAzul("Has realizado un ataque normal  "));
                     danoIngfligido+=Ataque;
                     enemigoActual[apuntar].Vida-=Ataque;
                     System.out.println(ColoresConsola.enVerde("Daño infligido: "+Ataque+ "\n"));
                     Estamina+=5;
                 }else {
-
-                    double ataqueC = Ataque*1.5;
+                    double ataqueC = Ataque*1.75;
                     System.out.println(ColoresConsola.enVerde("¡Has realizado un ataque critico! (Suerte)  "));
                         danoIngfligido+=ataqueC;
                         enemigoActual[apuntar].Vida-=ataqueC;
@@ -173,7 +197,6 @@ public class Mago extends Jugador implements AccionesJugador {
             case 2:{
 
                 if(attack < 0.2){
-                    Ataque-=enemigoActual[apuntar].Defensa;
                     double ataqueP = Ataque/2;
                     System.out.println(ColoresConsola.AZUL+"Has realizado un ataque penoso (fallo)  "+ColoresConsola.RESET);
                     danoIngfligido+=ataqueP;
@@ -182,13 +205,16 @@ public class Mago extends Jugador implements AccionesJugador {
                     Estamina++;
                 }else if(attack <= 0.8){
                     Ataque-=enemigoActual[apuntar].Defensa;
+                    if(Ataque <= 0){
+                        Ataque=3;
+                    }
                     System.out.println(ColoresConsola.AZUL+"Has realizado un ataque normal "+ColoresConsola.RESET);
                     danoIngfligido+=Ataque;
                     enemigoActual[apuntar].Vida-=Ataque;
                     System.out.println(ColoresConsola.VERDE+"Daño infligido: " +Ataque+ColoresConsola.RESET);
                     Estamina+=5;
                 }else {
-                    double ataqueC = Ataque*1.5;
+                    double ataqueC = Ataque*1.75;
                     System.out.println(ColoresConsola.VERDE+"¡Has realizado un ataque critico! (Suerte) "+ColoresConsola.RESET);
                         danoIngfligido+=ataqueC;
                         enemigoActual[apuntar].Vida-=ataqueC;
@@ -208,7 +234,6 @@ public class Mago extends Jugador implements AccionesJugador {
             case 3:{
 
                 if(attack < 0.3){
-                    Ataque-=enemigoActual[apuntar].Defensa;
                     double ataqueP = Ataque/2;
                     System.out.println(ColoresConsola.enAzul("Has realizado un ataque penoso (fallo)") );
                     danoIngfligido+=ataqueP;
@@ -217,13 +242,16 @@ public class Mago extends Jugador implements AccionesJugador {
                     Estamina++;
                 }else if(attack <= 0.9){
                     Ataque-=enemigoActual[apuntar].Defensa;
+                    if(Ataque <= 0){
+                        Ataque=3;
+                    }
                     System.out.println(ColoresConsola.AZUL+"Has realizado un ataque normal \n" +ColoresConsola.RESET);
                     danoIngfligido+=Ataque;
                     enemigoActual[apuntar].Vida-=Ataque;
                     System.out.println(ColoresConsola.VERDE+"Daño infligido: "+Ataque+"\n"+ColoresConsola.RESET);
                     Estamina+=5;
                 }else {
-                    double ataqueC = Ataque*1.5;
+                    double ataqueC = Ataque*1.75;
                     System.out.println(ColoresConsola.VERDE+"¡Has realizado un ataque critico! (Suerte) ");
                         danoIngfligido+=ataqueC;
                         enemigoActual[apuntar].Vida-=ataqueC;
@@ -351,14 +379,14 @@ public class Mago extends Jugador implements AccionesJugador {
         double SuperA = Math.random();
 
         if(SuperA > 0.85){
-            double SuperC = ATAQUE_ARQUERO;
+            double SuperC = ATAQUE_MAGO*5;
             SuperC-=enemigoActual[apuntar].Defensa;
             System.out.println(ColoresConsola.enVerde("¡¡Y ademas has realizado un ataque critico!!"));
             enemigoActual[apuntar].Vida-=SuperC;
             System.out.println(ColoresConsola.enVerde("Daño: "+SuperC+"\n"));
             danoIngfligido+=SuperC;
         }else{
-            double Super = ATAQUE_ARQUERO*3;
+            double Super = ATAQUE_MAGO*3;
             Super-=enemigoActual[apuntar].Defensa;
             enemigoActual[apuntar].Vida-=Super;
             System.out.println(ColoresConsola.enVerde("Daño: "+Super+"\n"));
@@ -465,34 +493,88 @@ public class Mago extends Jugador implements AccionesJugador {
         if(!enemigo0muerto && !enemigo1muerto){
             if(elegir > 0.5){
                 punt=1;
-                System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 2 "+ enemigoActual[punt].nombre + enemigoActual[punt].Vida));
+                System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 2 "+ enemigoActual[punt].nombre + " ("+enemigoActual[punt].Vida+")"));
             }else{
                 punt=0;
-                System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 1 "+ enemigoActual[punt].nombre + enemigoActual[punt].Vida));
+                System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 1 "+ enemigoActual[punt].nombre + " ("+enemigoActual[punt].Vida+")"));
             }
         }else{
 
             if(enemigo1muerto){
                 punt=0;
-                System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 1 "+ enemigoActual[punt].nombre + enemigoActual[punt].Vida));
+                System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 1 "+ enemigoActual[punt].nombre + " ("+enemigoActual[punt].Vida+")"));
             }else{
                 punt=1;
-                System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 2 "+ enemigoActual[punt].nombre + enemigoActual[punt].Vida));
+                System.out.println(ColoresConsola.enMorado("El espiritu ancestral va a por el enemigo 2 "+ enemigoActual[punt].nombre + " ("+enemigoActual[punt].Vida+")"));
             }
 
         }
 
         enemigoActual[punt].Vida-=ataqueEspiritu;
 
-        System.out.println(ColoresConsola.enMorado("El espiritu ha infligido "+ataqueEspiritu+ " puntos de daño"));
+        System.out.println(ColoresConsola.enMorado("El espiritu ha infligido "+ataqueEspiritu+ " puntos de daño \n "));
 
     }
 
     @Override
     public void regeneracionRapida(){
 
-        Vida+=VIDA_BASE*0.25;
-        System.out.println(ColoresConsola.enVerde( nombre+ " ha regenerado el 25% de su vida"));
+        int input;
+
+        if(!jugador0muerto && !jugador1muerto){
+
+            do{
+
+                System.out.println("Elige a que jugador curar: (1) "+ Jugadores[0].nombre + Jugadores[0].Vida+ " || (2) "+ Jugadores[1].nombre + Jugadores[1].Vida);
+
+                input=sc.nextInt();
+                apuntar=input-1;
+
+            }while(input!=1 && input!=2);
+
+            String Clase = Jugadores[apuntar].getClass().getSimpleName();
+
+            switch (Clase){
+                case "Arquero":
+                    Jugadores[apuntar].Vida+=VIDA_BASE_ARQUERO*0.25;
+                    break;
+                case "Caballero":
+                    Jugadores[apuntar].Vida+=VIDA_BASE_CABALLERO*25;
+                    break;
+                case "Escudero":
+                    Jugadores[apuntar].Vida+=VIDA_BASE_ESCUDERO*0.25;
+                    break;
+                case "Guardian":
+                    Jugadores[apuntar].Vida+=VIDA_BASE_GUARDIAN*0.25;
+                    break;
+                case "Guerrero":
+                    Jugadores[apuntar].Vida+=VIDA_BASE_GUERRERO*0.25;
+                    break;
+                case "Mago":
+                    Jugadores[apuntar].Vida+=VIDA_BASE_MAGO*0.25;
+                    break;
+                case "Ninja":
+                    Jugadores[apuntar].Vida+=VIDA_BASE_NINJA*0.25;
+                    break;
+                case "Paladin":
+                    Jugadores[apuntar].Vida+=VIDA_BASE_PALADIN*0.25;
+                    break;
+                case "Samurai":
+                    Jugadores[apuntar].Vida+=VIDA_BASE_SAMURAI*0.25;
+                    break;
+                case "Valkyria":
+                    Jugadores[apuntar].Vida+=VIDA_BASE_VALKYRIA*0.25;
+                    break;
+            }
+
+            System.out.println(ColoresConsola.enVerde(Clase+" ha regenerado el 25% de su vida"));
+
+        }else{
+
+            Vida+=VIDA_BASE*0.25;
+            System.out.println(ColoresConsola.enVerde(nombre+" ha regenerado el 25% de su vida"));
+
+        }
 
         defenderse=false;
 
@@ -524,13 +606,13 @@ public class Mago extends Jugador implements AccionesJugador {
 
             if(enemigo1muerto){
                 apuntar=0;
-                System.out.println("Vas a por el enemigo 1 "+enemigoActual[apuntar].nombre);
+                System.out.println(ColoresConsola.enAzul("Vas a por el enemigo 1 "+enemigoActual[apuntar].nombre));
 
 
             }else{
                 apuntar=1;
 
-                System.out.println("Vas a por el enemigo 2 "+enemigoActual[apuntar].nombre);
+                System.out.println(ColoresConsola.enAzul("Vas a por el enemigo 2 "+enemigoActual[apuntar].nombre));
 
             }
 
@@ -538,7 +620,7 @@ public class Mago extends Jugador implements AccionesJugador {
 
         enemigoActual[apuntar].Vida-=danoPocion;
         danoIngfligido+=danoPocion;
-        System.out.println("Daño infligido: "+danoPocion);
+        System.out.println(ColoresConsola.enVerde("Daño infligido: "+danoPocion));
 
         defenderse=false;
 
@@ -624,6 +706,22 @@ public class Mago extends Jugador implements AccionesJugador {
 
         esquivando=true;
 
+        defenderse=false;
+
+    }
+
+    @Override
+    public void accionEspecial() {
+
+        Jugadores[0].Invisible=true;
+        Jugadores[1].Invisible=true;
+
+        System.out.println(ColoresConsola.enVerde("Los jugadores se han vuelto invisibles"));
+
+        esquivando=false;
+
+        defenderse=false;
+
     }
 
     @Override
@@ -644,10 +742,20 @@ public class Mago extends Jugador implements AccionesJugador {
 
     @Override
     public String toString() {
-        return ColoresConsola.AZUL+" (( MAGO: " +
-                " Vida=" + Vida +
-                " || Ataque=" + Ataque +
-                " || Estamina=" + Estamina +
-                " || Daño total: " +danoIngfligido+" )) \n"+ColoresConsola.RESET;
+
+        if(!Furia){
+            return ColoresConsola.AZUL+ " (( MAGO: " +
+                    " Vida=" + Vida +
+                    " || Ataque=" + Ataque +
+                    " || Estamina=" + Estamina +
+                    " || Daño total: " +danoIngfligido+" )) \n"+ColoresConsola.RESET;
+        }else{
+            return ColoresConsola.AZUL+ " (( MAGO: " +
+                    " Vida=" + Vida +
+                    " || Ataque=" + Ataque +
+                    " || Estamina=" + Estamina +
+                    " || Daño total: " +danoIngfligido+" )) "+ColoresConsola.ROJO+" (FURIOSO) \n "+ColoresConsola.RESET;
+        }
+
     }
 }
