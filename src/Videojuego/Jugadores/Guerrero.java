@@ -27,7 +27,7 @@ public class Guerrero extends Jugador implements AccionesJugador {
     public static final double ATAQUE_BASE=25;
     public static final double VELOCIDAD_BASE=20;
 
-    double defense=Math.random();
+    double defense;
 
     double ataqueCargado=ATAQUE_BASE*2.2;
 
@@ -103,6 +103,8 @@ public class Guerrero extends Jugador implements AccionesJugador {
 
         }
 
+        defense=Math.random();
+
         //Sub-metodo para que el enemigo se defienda
         if(enemigoActual[apuntar].defenderse){
             System.out.println(enemigoActual[apuntar].nombre+ " se esta defendiendo... \n ");
@@ -153,9 +155,16 @@ public class Guerrero extends Jugador implements AccionesJugador {
                 if(attack <= 0.1){
                     double ataqueP = Ataque/2;
                     System.out.println(ColoresConsola.AZUL+"Has realizado un ataque penoso (fallo) \n"+ColoresConsola.RESET);
-                    danoIngfligido+=ataqueP;
-                    enemigoActual[apuntar].Vida-=ataqueP;
-                    System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueP+ "\n"+ColoresConsola.RESET);
+                    if(contraatacar > 0.5){
+                        System.out.println(ColoresConsola.enAmarillo(enemigoActual[apuntar].nombre+ " ha contraatacado el ataque"));
+                        Vida-=contraAtaque;
+                        System.out.println(ColoresConsola.enRojo("Dano recibido: " +contraAtaque));
+                    }else{
+                        danoIngfligido+=ataqueP;
+                        enemigoActual[apuntar].Vida-=ataqueP;
+                        System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueP+ "\n"+ColoresConsola.RESET);
+                        ++Estamina;
+                    }
                 }else if( attack <= 0.7){
                     Ataque-=enemigoActual[apuntar].Defensa;
                     if(Ataque <= 0){
@@ -165,12 +174,14 @@ public class Guerrero extends Jugador implements AccionesJugador {
                     danoIngfligido+=Ataque;
                     enemigoActual[apuntar].Vida-=Ataque;
                     System.out.println(ColoresConsola.VERDE+"Daño infligido: "+Ataque+ "\n"+ColoresConsola.RESET);
+                    Estamina+=5;
                 }else {
                    double ataqueC = Ataque*1.75;
                     System.out.println(ColoresConsola.VERDE+"¡Has realizado un ataque critico! (Suerte) \n"+ColoresConsola.VERDE);
                         danoIngfligido+=ataqueC;
                         enemigoActual[apuntar].Vida-=ataqueC;
                         System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueC+ "\n"+ColoresConsola.RESET);
+                        Estamina+=15;
                     if(nerffeo > 0.7){
                         System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de "+enemigoActual[apuntar].nombre+" en un 20%"));
                         enemigoActual[apuntar].Nerffeado=true;
@@ -190,9 +201,16 @@ public class Guerrero extends Jugador implements AccionesJugador {
                 if(attack <= 0.2){
                     double ataqueP = Ataque/2;
                     System.out.println(ColoresConsola.AZUL+"Has realizado un ataque penoso (fallo) \n"+ColoresConsola.RESET);
-                    danoIngfligido+=ataqueP;
-                    enemigoActual[apuntar].Vida-=ataqueP;
-                    System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueP+ "\n"+ColoresConsola.RESET);
+                    if(contraatacar > 0.5){
+                        System.out.println(ColoresConsola.enAmarillo(enemigoActual[apuntar].nombre+ " ha contraatacado el ataque"));
+                        Vida-=contraAtaque;
+                        System.out.println(ColoresConsola.enRojo("Dano recibido: " +contraAtaque));
+                    }else{
+                        danoIngfligido+=ataqueP;
+                        enemigoActual[apuntar].Vida-=ataqueP;
+                        System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueP+ "\n"+ColoresConsola.RESET);
+                        ++Estamina;
+                    }
                 }else if( attack <= 0.8){
                     Ataque-=enemigoActual[apuntar].Defensa;
                     if(Ataque <= 0){
@@ -202,12 +220,14 @@ public class Guerrero extends Jugador implements AccionesJugador {
                     danoIngfligido+=Ataque;
                     enemigoActual[apuntar].Vida-=Ataque;
                     System.out.println(ColoresConsola.VERDE+"Daño infligido: "+Ataque+ "\n"+ColoresConsola.RESET);
+                    Estamina+=5;
                 }else {
                     double ataqueC = Ataque*1.75;
                     System.out.println(ColoresConsola.VERDE+"¡Has realizado un ataque critico! (Suerte) \n"+ColoresConsola.RESET);
                         danoIngfligido+=ataqueC;
                         enemigoActual[apuntar].Vida-=ataqueC;
                         System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueC+ "\n"+ColoresConsola.RESET);
+                        Estamina+=15;
                     if(nerffeo > 0.8){
                         System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de "+enemigoActual[apuntar].nombre+" en un 20%"));
                         enemigoActual[apuntar].Nerffeado=true;
@@ -226,9 +246,16 @@ public class Guerrero extends Jugador implements AccionesJugador {
                 if(attack <= 0.3){
                     double ataqueP = Ataque/2;
                     System.out.println(ColoresConsola.AZUL+"Has realizado un ataque penoso (fallo) " );
-                    danoIngfligido+=ataqueP;
-                    enemigoActual[apuntar].Vida-=ataqueP;
-                    System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueP));
+                    if(contraatacar > 0.5){
+                        System.out.println(ColoresConsola.enAmarillo(enemigoActual[apuntar].nombre+ " ha contraatacado el ataque"));
+                        Vida-=contraAtaque;
+                        System.out.println(ColoresConsola.enRojo("Dano recibido: " +contraAtaque));
+                    }else{
+                        danoIngfligido+=ataqueP;
+                        enemigoActual[apuntar].Vida-=ataqueP;
+                        System.out.println(ColoresConsola.enVerde("Daño infligido: "+ataqueP));
+                        ++Estamina;
+                    }
                 }else if(attack <= 0.9){
                     Ataque-=enemigoActual[apuntar].Defensa;
                     if(Ataque <= 0){
@@ -238,12 +265,14 @@ public class Guerrero extends Jugador implements AccionesJugador {
                     danoIngfligido+=Ataque;
                     enemigoActual[apuntar].Vida-=Ataque;
                     System.out.println(ColoresConsola.enVerde("Daño infligido: "+Ataque));
+                    Estamina+=5;
                 }else {
                     double ataqueC = Ataque*1.75;
                     System.out.println(ColoresConsola.VERDE+"¡Has realizado un ataque critico! (Suerte) \n"+ColoresConsola.RESET);
                         danoIngfligido+=ataqueC;
                         enemigoActual[apuntar].Vida-=ataqueC;
                         System.out.println(ColoresConsola.VERDE+"Daño infligido: "+ataqueC+ "\n"+ColoresConsola.RESET);
+                        Estamina+=15;
                     if(nerffeo > 0.9){
                         System.out.println(ColoresConsola.enVerde("Se reduce temporalmente la defensa de "+enemigoActual[apuntar].nombre+" en un 20%"));
                         enemigoActual[apuntar].Nerffeado=true;
@@ -410,7 +439,7 @@ public class Guerrero extends Jugador implements AccionesJugador {
             System.out.println(ColoresConsola.enAzul("Vas a por el enemigo 2 "+enemigoActual[1].nombre));
         }
 
-        double defense=Math.random();
+        defense=Math.random();
 
         if(enemigoActual[apuntar].defenderse){
 
@@ -651,6 +680,8 @@ public class Guerrero extends Jugador implements AccionesJugador {
 
             }
 
+            defense=Math.random();
+
             if(enemigoActual[apuntar].defenderse){
                 System.out.println(("El" +enemigoActual[apuntar].nombre+ " se esta defendiendo... \n "));
 
@@ -723,18 +754,36 @@ public class Guerrero extends Jugador implements AccionesJugador {
     @Override
     public String toString() {
 
-        if(!Furia){
-            return ColoresConsola.AZUL+ " (( GUERRERO: " +
-                    " Vida=" + Vida +
-                    " || Ataque=" + Ataque +
-                    " || Estamina=" + Estamina +
-                    " || Daño total: " +danoIngfligido+" )) \n"+ColoresConsola.RESET;
-        }else{
-            return ColoresConsola.AZUL+ " (( GUERRERO: " +
+        if(Furia){
+            return ColoresConsola.AZUL+ " (( GUERRERO : " +
                     " Vida=" + Vida +
                     " || Ataque=" + Ataque +
                     " || Estamina=" + Estamina +
                     " || Daño total: " +danoIngfligido+" )) "+ColoresConsola.ROJO+" (FURIOSO) \n "+ColoresConsola.RESET;
+        }else if (paralizado){
+            return ColoresConsola.AZUL+ " (( GUERRERO : " +
+                    " Vida=" + Vida +
+                    " || Ataque=" + Ataque +
+                    " || Estamina=" + Estamina +
+                    " || Daño total: " +danoIngfligido+" )) "+ColoresConsola.NARANJA+" (PARALIZADO) \n "+ColoresConsola.RESET;
+        }else if(envenenado){
+            return ColoresConsola.AZUL+ " (( GUERRERO : " +
+                    " Vida=" + Vida +
+                    " || Ataque=" + Ataque +
+                    " || Estamina=" + Estamina +
+                    " || Daño total: " +danoIngfligido+" )) "+ColoresConsola.NARANJA+" (ENVENENADO) \n "+ColoresConsola.RESET;
+        }else if(desangrado){
+            return ColoresConsola.AZUL+ " (( GUERRERO : " +
+                    " Vida=" + Vida +
+                    " || Ataque=" + Ataque +
+                    " || Estamina=" + Estamina +
+                    " || Daño total: " +danoIngfligido+" )) "+ColoresConsola.NARANJA+" (DESANGRADO) \n "+ColoresConsola.RESET;
+        }else{
+            return ColoresConsola.AZUL+ " (( GUERRERO : " +
+                    " Vida=" + Vida +
+                    " || Ataque=" + Ataque +
+                    " || Estamina=" + Estamina +
+                    " || Daño total: " +danoIngfligido+" ))  \n "+ColoresConsola.RESET;
         }
 
     }

@@ -1,5 +1,6 @@
 package Videojuego;
 import Videojuego.Enemigos.*;
+import Videojuego.Historia.IntroJuego;
 import Videojuego.Interfaces.ColoresConsola;
 import Videojuego.Jugadores.*;
 
@@ -103,6 +104,8 @@ public class Juego {
 
 
     public void controldelJuego(){
+
+        //IntroJuego.Introduccion(IntroJuego.intro);
 
         //Creamos todos los personajes
         CrearPersonajes();
@@ -296,6 +299,9 @@ public class Juego {
 
     public Jugador[] CrearPersonajes(){
 
+        String PJ1;
+        String PJ2;
+
         System.out.println("Bienvenido a mi Juego, para comenzar a jugar elige un Personaje:" +
                 " \n 1-Guerrero ("+ColoresConsola.VERDE+"Vida: 100,"+ColoresConsola.ROJO+" Ataque: 25,"+ColoresConsola.AMARILLO+" Defensa: 5, "+ColoresConsola.AZUL+" Velocidad: 20"+ColoresConsola.RESET+") " +
                 " \n 2-Arquero ("+ColoresConsola.VERDE+"Vida: 85,"+ColoresConsola.ROJO+" Ataque: 20,"+ColoresConsola.AMARILLO+" Defensa: 10, "+ColoresConsola.AZUL+" Velocidad: 23"+ColoresConsola.RESET+") " +
@@ -358,9 +364,11 @@ public class Juego {
                 break;
         }
 
+        PJ1=Jugadores[0].getClass().getSimpleName();
+
         int escoger2;
 
-        System.out.println("Bienvenido a mi Juego, para comenzar a jugar elige un Personaje:" +
+        System.out.println("Ahora escoge un segundo Personaje:" +
                 " \n 1-Guerrero ("+ColoresConsola.VERDE+"Vida: 100,"+ColoresConsola.ROJO+" Ataque: 25,"+ColoresConsola.AMARILLO+" Defensa: 5, "+ColoresConsola.AZUL+" Velocidad: 20"+ColoresConsola.RESET+") " +
                 " \n 2-Arquero ("+ColoresConsola.VERDE+"Vida: 85,"+ColoresConsola.ROJO+" Ataque: 20,"+ColoresConsola.AMARILLO+" Defensa: 10, "+ColoresConsola.AZUL+" Velocidad: 23"+ColoresConsola.RESET+") " +
                 " \n 3-Mago ("+ColoresConsola.VERDE+"Vida: 75,"+ColoresConsola.ROJO+" Ataque: 30,"+ColoresConsola.AMARILLO+" Defensa: 7, "+ColoresConsola.AZUL+" Velocidad: 18"+ColoresConsola.RESET+") " +
@@ -420,11 +428,73 @@ public class Juego {
             }
         }while(escoger2 > 10);
 
+        PJ2=Jugadores[1].getClass().getSimpleName();
+
+        while(PJ1.equals(PJ2)){
+
+            System.out.println("No se pueden escoger los mismos personajes, elige uno diferente");
+
+            do{
+                escoger2=sc.nextInt();
+                switch (escoger2){
+                    case 1:
+                        Jugadores[1]=new Guerrero();
+                        System.out.println("Has escogido el Guerrero  \n ");
+                        break;
+                    case 2:
+                        Jugadores[1]=new Arquero();
+                        System.out.println("Has escogido el Arquero \n ");
+                        break;
+                    case 3:
+                        Jugadores[1]=new Mago();
+                        System.out.println("Has escogido el Mago \n ");
+                        break;
+                    case 4:
+                        Jugadores[1]=new Caballero();
+                        System.out.println("Has escogido el Caballero \n ");
+                        break;
+                    case 5:
+                        Jugadores[1]=new Guardian();
+                        System.out.println("Has escogido al Guardian \n ");
+                        break;
+                    case 6:
+                        Jugadores[1]=new Valkyria();
+                        System.out.println("Has escogido a la Valkyria \n ");
+                        break;
+                    case 7:
+                        Jugadores[1]=new Escudero();
+                        System.out.println("Has escogido al Escudero \n ");
+                        break;
+                    case 8:
+                        Jugadores[1]=new Ninja();
+                        System.out.println("Has escogido al Ninja \n ");
+                        break;
+                    case 9:
+                        Jugadores[1]=new Samurai();
+                        System.out.println("Has escogido al Samurai \n ");
+                        break;
+                    case 10:
+                        Jugadores[1]=new Paladin();
+                        System.out.println("Has escogido al Paladin \n ");
+                        break;
+                    default:
+                        System.out.println("Elige una opcion valida.");
+                }
+            }while(escoger2 > 10);
+
+            PJ2=Jugadores[1].getClass().getSimpleName();
+
+        }
+
 
         return Jugadores;
     }
 
     public Enemigo[] CrearEnemigos(){
+
+        String E1;
+        String E2;
+
         NPCs=new Enemigo[EQUIPO];
 
         double num=Math.random()*10;
@@ -458,35 +528,78 @@ public class Juego {
             System.out.println("Tu 1º rival es un Dragon (Vida inicial: 160)");
         }
 
-        double mum=Math.random()*10;
+        E1=NPCs[0].getClass().getSimpleName();
 
-        if(mum < 1){
+         num=Math.random()*10;
+
+        if(num < 1){
             NPCs[1]=new Duende();
             System.out.println("Tu 2º rival es un Duende (Vida inicial: 150) \n");
-        }else if(mum > 1 && mum < 2){
+        }else if(num > 1 && num < 2){
             NPCs[1]=new Bruja();
             System.out.println("Tu 2º rival es una Bruja (Vida inicial: 125) \n");
-        }else if(mum > 2 && mum < 3){
+        }else if(num > 2 && num < 3){
             NPCs[1]=new Zombi();
             System.out.println("Tu 2º rival es un Zombi (Vida inicial: 115)");
-        }else if(mum > 3 && mum < 4){
+        }else if(num > 3 && num < 4){
             NPCs[1]=new Araña();
             System.out.println("Tu 2º rival es una Araña (Vida inicial: 80)");
-        }else if(mum > 4 && mum < 5){
+        }else if(num > 4 && num < 5){
             NPCs[1]=new Gigante();
             System.out.println("Tu 2º rival es un Gigante (Vida inicial: 175)");
-        }else if(mum > 5 && mum < 6){
+        }else if(num > 5 && num < 6){
             NPCs[1]=new Fantasma();
             System.out.println("Tu 2º rival es un Fantasma (Vida inicial: 75)");
-        }else if(mum > 6 && mum < 7){
+        }else if(num > 6 && num < 7){
             NPCs[1]=new Espectro();
             System.out.println("Tu 2º rival es un Espectro (Vida inicial: 85)");
-        }else if(mum > 7 && mum < 8){
+        }else if(num > 7 && num < 8){
             NPCs[1]=new Sombra();
             System.out.println("Tu 2º rival es una Sombra (Vida inicial: 90)");
         }else {
             NPCs[1]=new Dragon();
             System.out.println("Tu 2º rival es un Dragon (Vida inicial: 160)");
+        }
+
+        E2=NPCs[1].getClass().getSimpleName();
+
+        while(E1.equals(E2)){
+
+            System.out.println("Los enemigos no pueden ser repetidos");
+
+            num=Math.random()*10;
+
+            if(num < 1){
+                NPCs[1]=new Duende();
+                System.out.println("Tu 2º rival es un Duende (Vida inicial: 150) \n");
+            }else if(num > 1 && num < 2){
+                NPCs[1]=new Bruja();
+                System.out.println("Tu 2º rival es una Bruja (Vida inicial: 125) \n");
+            }else if(num > 2 && num < 3){
+                NPCs[1]=new Zombi();
+                System.out.println("Tu 2º rival es un Zombi (Vida inicial: 115)");
+            }else if(num > 3 && num < 4){
+                NPCs[1]=new Araña();
+                System.out.println("Tu 2º rival es una Araña (Vida inicial: 80)");
+            }else if(num > 4 && num < 5){
+                NPCs[1]=new Gigante();
+                System.out.println("Tu 2º rival es un Gigante (Vida inicial: 175)");
+            }else if(num > 5 && num < 6){
+                NPCs[1]=new Fantasma();
+                System.out.println("Tu 2º rival es un Fantasma (Vida inicial: 75)");
+            }else if(num > 6 && num < 7){
+                NPCs[1]=new Espectro();
+                System.out.println("Tu 2º rival es un Espectro (Vida inicial: 85)");
+            }else if(num > 7 && num < 8){
+                NPCs[1]=new Sombra();
+                System.out.println("Tu 2º rival es una Sombra (Vida inicial: 90)");
+            }else {
+                NPCs[1]=new Dragon();
+                System.out.println("Tu 2º rival es un Dragon (Vida inicial: 160)");
+            }
+
+            E2=NPCs[1].getClass().getSimpleName();
+
         }
 
         return NPCs;

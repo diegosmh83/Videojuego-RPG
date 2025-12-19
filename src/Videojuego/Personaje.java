@@ -11,6 +11,9 @@ public abstract class Personaje {
     public boolean Nerffeado=false;
     public boolean Buffeado=false;
 
+    public double contraatacar;
+    public static int contraAtaque=10;
+
     public static final int VIDA_BASE_GUERRERO=100;
     public static final int VIDA_BASE_MAGO=75;
     public static final int VIDA_BASE_ARQUERO=85;
